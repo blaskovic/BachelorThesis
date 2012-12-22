@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Disc count
-num_discs=3
+num_discs=1
 
 # Connections per disc
-num_connections=2
+num_connections=1
 
 service iptables stop
 

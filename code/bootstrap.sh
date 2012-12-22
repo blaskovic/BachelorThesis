@@ -11,6 +11,13 @@ then
     exit 1
 fi
 
+# Check for beakerlib
+if [ ! -f /usr/share/beakerlib/beakerlib.sh ]
+then
+    echo "No beakerlib file"
+    exit 1
+fi
+
 # Variables
 WORK_DIR="/tmp/tuned-tests"
 
@@ -18,6 +25,9 @@ WORK_DIR="/tmp/tuned-tests"
 rm -rf $WORK_DIR
 mkdir $WORK_DIR
 
+setenforce 0
+
 # Includes
-test -f /usr/share/beakerlib/beakerlib.sh && . /usr/share/beakerlib/beakerlib.sh
-test -f common_functions.sh && . common_functions.sh
+. /usr/share/beakerlib/beakerlib.sh
+. fun_overal.sh
+. fun_scsi.sh
