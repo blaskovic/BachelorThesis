@@ -5,7 +5,7 @@
 # asi budete chtit prejmenovat:
 CO=blaskovic-bp
 
-all: $(CO).pdf
+all: $(CO).pdf clean
 
 pdf: $(CO).pdf
 
@@ -36,4 +36,4 @@ clean:
 	rm -f *~
 
 pack:
-	tar czvf bp-xjmeno.tar.gz *.tex *.bib *.bst ./fig/* ./cls/* Makefile Changelog
+	tar czvf bp-blaskovic.tar.gz *.tex *.bib *.bst ./fig/* ./cls/* Makefile Changelog
