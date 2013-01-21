@@ -55,10 +55,17 @@ testov na virtuálnom stroji. V prípade vydania novej verzie $tuned$ alebo inej
 použitej komponenty je tu riziko, že testy nebudú stabilné a môžu sa správať
 nepredvídateľne.
 
-\section{Features to be Tested}
+%\section{Features to be Tested}
+\section{Čo sa bude testovať}
+Testy vytvárajú nové blokové zariadenia pomocou utility $tgtadm$. Tieto nové
+disky budú formátované na najpoužívanejšie súborové systémy a testované ich
+rýchlosti pri rôznych profiloch tuned.
 
+Taktiež sa budú simulovať rôzne sieťové situácie a prenášať dáta cez rozhrania.
+Démon $tuned$ by mál vedieť správne zareagovať a zvýšiť priepustnosť siete.
 
-\section{Features not to be Tested}
+%\section{Features not to be Tested}
+\section{Čo sa nebude testovať}
 Pretože testy bežia na virtualizovanom hardvéri, nie všetko je možné otestovať.
 Napríklad virtuálny procesor nepodporuje Cx stavy \footnote{Cx sú stavy, v
 ktorých sa môže vyskytovať procesor, typicky firmy Intel. Tieto stavy sa volajú
@@ -67,7 +74,11 @@ slúžia na šetrenie energie.}, ktoré ovplyvňuje profil $latency-performance$
 preto nie je možné spoľahlivo a automatizovane otestovať ich správu.
 
 \section{Approach}
-\section{Item Pass/Fail Criteria}
+%\section{Item Pass/Fail Criteria}
+\section{Kritéria pre splnenie testov}
+Počas testovania so zapnutým démonom $tuned$ by všetky I/O operácie diskov mali
+byť rýchlejšie a sieť by mala mať lepšiu priepustnosť.
+
 \section{Suspension Criteria and Resumption Requirements}
 \section{Test Deliverables}
 \section{Remaining Test Tasks}
