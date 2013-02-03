@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #
+# Bootstrap for testing - file to start with
 # Author: Branislav Blaskovic
 #
 
@@ -19,11 +20,9 @@ then
 fi
 
 # Variables
-WORK_DIR="/tmp/tuned-tests"
-
-# Clean working directory
-rm -rf $WORK_DIR
-mkdir $WORK_DIR
+ORIGINAL_DIR=`pwd`
+# WORK_DIR="/tmp/tuned-tests"
+WORK_DIR=`mktemp -d`
 
 setenforce 0
 
@@ -31,3 +30,15 @@ setenforce 0
 . /usr/share/beakerlib/beakerlib.sh
 . fun_overal.sh
 . fun_scsi.sh
+
+# Start Journal of testing
+rlJournalStart
+
+rlPhaseStartTest "Bootstrap"
+
+    rlLog "Go to work dir"
+    rlRun "pushd $WORK_DIR"
+
+    tlBackupTunedProfile
+
+rlPhaseEnd

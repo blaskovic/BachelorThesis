@@ -2,10 +2,17 @@
 
 function tlBackupTunedProfile()
 {
-    rlRun "tuned-adm active | awk '{print $NF}' | tee $WORK_DIR/active_profile.backup" 0 "Backing up current tuned profile"
+    rlLog "Backup tuned profile"
+    rlRun "tuned-adm active | awk '{print $NF}' | tee active_profile.backup" 0 "Backing up current tuned profile"
 }
 
 function tlRestoreTunedProfile()
 {
-    rlRun "tuned-adm profile `cat $WORK_DIR/active_profile.backup`" 0 "Restoring tuned profile"
+    rlLog "Restore tuned profile"
+    rlRun "tuned-adm profile `cat active_profile.backup`" 0 "Restoring tuned profile"
+}
+
+function parse_dd()
+{
+    tail -n 1 | awk '{print $(NF - 1)}'
 }

@@ -10,15 +10,13 @@
 NUM_DISKS=1
 NUM_CONNECTIONS=1
 
-rlJournalStart
+rlPhaseStartTest "Create discs"
+    
+    tlSCSIPrepareDisks $NUM_DISKS $NUM_CONNECTIONS
+    tlSCSIConnectDisks
+    rlRun "lsblk"
+    tlSCSICleanup $NUM_CONNECTIONS
 
-    rlPhaseStartTest "Create discs"
-        
-        tlSCSIPrepareDisks $NUM_DISKS $NUM_CONNECTIONS
-        tlSCSIConnectDisks
-        lsblk
-        tlSCSICleanup $NUM_CONNECTIONS
+rlPhaseEnd
 
-    rlPhaseEnd
-
-rlJournalEnd
+. $ORIGINAL_DIR/cleanup.sh
