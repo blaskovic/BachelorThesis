@@ -10,7 +10,7 @@
 NUM_DISKS=1
 NUM_CONNECTIONS=1
 
-rlPhaseStartTest "Create discs"
+rlPhaseStartTest "TEST: Sanity create discs"
     
     tlSCSIPrepareDisks $NUM_DISKS $NUM_CONNECTIONS
     tlSCSIConnectDisks

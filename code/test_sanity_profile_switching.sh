@@ -7,18 +7,17 @@
 
 . bootstrap.sh
 
-rlPhaseStartTest "Switching profiles"
+rlPhaseStartTest "TEST: Sanity switching profiles"
 
-    tlBackupTunedProfile
+    rlRun "systemctl start tuned.service"
 
     rlRun "tuned-adm list | grep ^- | sed 's/- //' > $WORK_DIR/available_profiles"
     
     for profile in `cat $WORK_DIR/available_profiles`
     do
-        rlLog "Profile: $profile"
+        rlLog "Switch to profile: $profile"
+        rlRun "tuned-adm profile $profile"
     done
-
-    tlRestoreTunedProfile
 
 rlPhaseEnd
 
