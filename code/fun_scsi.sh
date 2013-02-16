@@ -41,7 +41,7 @@ function tlSCSIPrepareDisks()
     done
 
     # Backup
-    rlRun "cp -f /etc/multipath.conf{,.old}"
+    rlRun "cp -f /etc/multipath.conf{,.old}" 0,1
     rlRun "cp -f /etc/tgt/targets.conf{,.old}"
 
     rlRun "echo \" default-driver iscsi\" > /etc/tgt/targets.conf"
@@ -137,6 +137,6 @@ function tlSCSICleanup()
 
     rlRun "service tgtd stop"
     rlRun "/bin/rm -f /etc/multipath.conf"
-    rlRun "cp -f /etc/multipath.conf.old /etc/multipath.conf"
+    rlRun "cp -f /etc/multipath.conf.old /etc/multipath.conf" 0,1
     rlRun "cp -f /etc/tgt/targets.conf.old /etc/tgt/targets.conf"
 }

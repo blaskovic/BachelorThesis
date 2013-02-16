@@ -9,7 +9,7 @@ function tlBackupTunedProfile()
 function tlRestoreTunedProfile()
 {
     rlLog "Restore tuned profile"
-    rlRun "tuned-adm profile `cat active_profile.backup`"
+    [ x`cat active_profile.backup` = x ] || rlRun "tuned-adm profile `cat active_profile.backup`"
 }
 
 function tlDropCaches()
