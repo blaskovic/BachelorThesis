@@ -19,10 +19,13 @@
 ## Zdroje, pouzite kniznice (zapisnik)
 
 * [BeakerLib](https://fedorahosted.org/beakerlib/)
-    * kniznica pre testovanie
+  * kniznica pre testovanie
 
 * [tuned](https://fedorahosted.org/tuned/)
-    * daemon na ladenie systemu
+  * daemon na ladenie systemu
 
 * IEEE829 test plan
-    * Priklady: [1](http://www.acomtech.com/testplan.html) [2](http://bazman.tripod.com/frame.html) [3](http://futurestuff4all.com/index.php/2011/08/sample-ieee-829-test-case-specification-template/) [4](http://www.gerrardconsulting.com/tkb/guidelines/ieee829/main.html)
+  * Priklady: [1](http://www.acomtech.com/testplan.html) [2](http://bazman.tripod.com/frame.html) [3](http://futurestuff4all.com/index.php/2011/08/sample-ieee-829-test-case-specification-template/) [4](http://www.gerrardconsulting.com/tkb/guidelines/ieee829/main.html)
+
+* Block devices
+  * [1](http://www.chesterproductions.net.nz/blogs/it/sysadmin/configuring-iscsi-targets-and-initiators-on-fedora-16/455/) 
