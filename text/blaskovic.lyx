@@ -25,6 +25,7 @@
 \output_sync 0
 \bibtex_command default
 \index_command default
+\float_placement h
 \paperfontsize default
 \spacing single
 \use_hyperref true
@@ -373,22 +374,19 @@ tuned
 \end_layout
 
 \begin_layout Standard
-Testy vytvárajú nové blokové zariadenia pomocou utility 
-\emph on
-tgtadm
-\emph default
-.
+Hostiteľský systém bude spúšťať predpripravené obrazy virtualizovaného systému
+ Fedora 17.
+ K virtualizovanému systému bude pripájať ďalšie disky.
  Tieto nové disky budú formátované na najpoužívanejšie súborové systémy
  a testované ich rýchlosti pri rôznych profiloch tuned.
 \end_layout
 
 \begin_layout Standard
-Taktiež sa budú simulovať rôzne sieťové situácie a prenášať dáta cez rozhrania.
- Démon 
+Na testovacie účely použijeme najnovšiu verziu 
 \emph on
 tuned
 \emph default
- by mál vedieť správne zareagovať a zvýšiť priepustnosť siete.
+ priamo z repozitára.
 \end_layout
 
 \begin_layout Section
@@ -486,7 +484,154 @@ Testovanie
 Príprava systému
 \end_layout
 
+\begin_layout Standard
+Pred testovaním je potrebné pripraviť si nainštalovaný systém Fedora 17
+ ako obraz disku.
+ Tento obraz sa bude spúšťať cez 
+\emph on
+qemu-kvm
+\emph default
+.
+ Disk, na ktorom sa bude testovať rýchlosť zápisu a čítania by mal byť v
+ ideálnom prípade nekešovaný.
+ Pred testovaním aj po testovaním je potrebné hostiteľský aj virtualizovaný
+ systém synchronizovať aj zmazať aj nakešované stránky (Algoritmus 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:Synchronizacia-systemu"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Synchronizácia systému
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Synchronizacia-systemu"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+/bin/sync
+\end_layout
+
+\begin_layout Plain Layout
+echo 3 > /proc/sys/vm/drop_caches
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Každé miesto, kde je možnosť, že by systém si uchovával nejaké nakešované
+ data, ktoré by mohli ovplyvniť výsledky testovania je potrebné eliminovať
+ (Obrázok 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:graf-cache"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:graf-cache"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename data/cache.svg
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Vyznačenie miest, kde môže nastať kešovanie
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Virtualizovaný systém musí obsahovať všetky potrebné balíčky, ktorých programy
+ sa používajú v testoch.
+ Spúštanie testov bude prebiehať cez 
+\emph on
+ssh
+\emph default
+ spojenie a preto je potrebné si zabezpečiť bezchybnú komunikáciu medzi
+ hostiteľským a virtualizovaným systémom - ideálne bez hesla pre 
+\emph on
+root
+\emph default
+ užívateľa a statickú IP adresu, ktorá sa nezmení po reštarte systému.
+\end_layout
+
 \begin_layout Chapter
+Výsledky testovania
+\end_layout
+
+\begin_layout Standard
+Výsledky
+\end_layout
+
+\begin_layout Chapter
+Záver
+\end_layout
+
+\begin_layout Standard
 Záver
 \end_layout
 
