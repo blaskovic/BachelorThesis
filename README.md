@@ -24,7 +24,7 @@
 * [tuned](https://fedorahosted.org/tuned/)
   * daemon na ladenie systemu
 
-* [qemu-kvm](http://doc.opensuse.org/products/draft/SLES/SLES-kvm_sd_draft/cha.qemu.running.html/)
+* [qemu-kvm](http://doc.opensuse.org/products/draft/SLES/SLES-kvm_sd_draft/cha.qemu.running.html)
   * zaklady qemu-kvm
 
 * IEEE829 test plan
