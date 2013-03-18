@@ -22,7 +22,7 @@ fi
 # Variables
 ORIGINAL_DIR=`pwd`
 # WORK_DIR="/tmp/tuned-tests"
-WORK_DIR=`mktemp -d`
+WORK_DIR=`mktemp -d /tmp/btXXX`
 
 setenforce 0
 
@@ -30,6 +30,7 @@ setenforce 0
 . /usr/share/beakerlib/beakerlib.sh
 . fun_overal.sh
 . fun_scsi.sh
+. fun_control_vm.sh
 
 # Start Journal of testing
 rlJournalStart
@@ -37,8 +38,9 @@ rlJournalStart
 rlPhaseStartTest "Bootstrap"
 
     rlLog "Go to work dir"
+    rlRun "chmod 755 $WORK_DIR"
     rlRun "pushd $WORK_DIR"
 
-    tlBackupTunedProfile
+    #tlBackupTunedProfile
 
 rlPhaseEnd

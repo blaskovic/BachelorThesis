@@ -7,7 +7,7 @@
 
 rlPhaseStartTest "Cleanup"
 
-    tlRestoreTunedProfile
+    #tlRestoreTunedProfile
 
     rlLog "Clean working directory"
     rlRun "popd"
@@ -20,3 +20,4 @@ rlPhaseEnd
 
 # End the journal
 rlJournalEnd
+
