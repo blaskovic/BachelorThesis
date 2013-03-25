@@ -5,7 +5,7 @@
 # Global variables
 # Set machine name and IP
 MACHINE_NAME="F18"
-MACHINE_IP="192.168.2.119"
+MACHINE_IP="192.168.2.120"
 
 # Do the action
 function tlVirshStart()
