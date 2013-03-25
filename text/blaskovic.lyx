@@ -251,6 +251,27 @@ ktune
  systém, čím dosahujeme ešte lepšie výsledky.
 \end_layout
 
+\begin_layout Subsection*
+História tuned
+\end_layout
+
+\begin_layout Standard
+V operačnom systéme Fedora 17 je aktuálne tuned vo verzii 2.
+ Oproti prechádzajúcej verzii nastalo mnoho zmien.
+ Prakticky celý kód bol prepísaný od základov a využíva sa technológia D-BUS.
+\end_layout
+
+\begin_layout Standard
+Správa profilov bola taktiež zmenená, profily boli vylepšené a niektoré
+ nahradené.
+ Pre zachovanie spätnej kompatibility so starými profilmi existuje balíček
+ 
+\emph on
+tuned-profiles-compat
+\emph default
+, ktorý obsahuje profily zo staršej verzie.
+\end_layout
+
 \begin_layout Section
 Profily
 \end_layout
@@ -432,8 +453,12 @@ Počas testovania so zapnutým démonom
 \emph on
 tuned
 \emph default
- by všetky I/O operácie diskov mali byť rýchlejšie a sieť by mala mať lepšiu
- priepustnosť.
+ by všetky I/O operácie diskov mali byť rýchlejšie alebo aspoň tak rýchle
+ ako s vypnutým 
+\emph on
+tuned
+\emph default
+.
 \end_layout
 
 \begin_layout Section
@@ -546,8 +571,8 @@ echo 3 > /proc/sys/vm/drop_caches
 
 \begin_layout Standard
 Každé miesto, kde je možnosť, že by systém si uchovával nejaké nakešované
- data, ktoré by mohli ovplyvniť výsledky testovania je potrebné eliminovať
- (Obrázok 
+ data, ktoré by mohli ovplyvniť výsledky testovania je potrebné poznať (Obrázok
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:graf-cache"
@@ -563,7 +588,7 @@ reference "fig:graf-cache"
 placement h
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -612,7 +637,8 @@ Virtualizovaný systém musí obsahovať všetky potrebné balíčky, ktorých p
 ssh
 \emph default
  spojenie a preto je potrebné si zabezpečiť bezchybnú komunikáciu medzi
- hostiteľským a virtualizovaným systémom - ideálne bez hesla pre 
+ hostiteľským a virtualizovaným systémom - ideálne certifikát bez hesla
+ pre 
 \emph on
 root
 \emph default
