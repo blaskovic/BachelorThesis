@@ -5,6 +5,7 @@
 # Prepare disk for attachment
 #
 
+# Is this file included?
 test x$ORIGINAL_DIR = x && exit 1
 
 # Prepare image
@@ -31,7 +32,10 @@ rlRun "sleep 10"
 
 rlRun "sync"
 rlRun "TIME_START=`date '+%s'`"
-rlRun "ssh root@$MACHINE_IP 'sync; dd bs=1G count=3 if=/dev/zero of=/mnt/vda/test.img'; cp -f /mnt/vda/test.img /mnt/vda/test2.img; sync"
+
+COMMAND="sync; for i in `seq -s \" \" 1 3`; do dd bs=1G count=1 if=/dev/zero of=/mnt/vda/test\$i.img; done; for i in `seq -s \" \" 1 3`; do cp -vf /mnt/vda/test\$i.img /mnt/vda/test\$i-2.img; done; rm -vrf test*.img; sync;"
+
+rlRun "ssh root@$MACHINE_IP '$COMMAND'"
 rlRun "sync"
 rlRun "TIME_END=`date '+%s'`"
 rlRun "echo \"Total time: $(($TIME_END - $TIME_START)) seconds\""
