@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# tlFileLog
+# Usage: tlFileLog log_file section variable value
+# Example: tlFileLog /tmp/log disk-tests total-time 15s
+
 function tlFileLog()
 {
     fileName=$1
