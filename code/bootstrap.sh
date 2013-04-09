@@ -31,6 +31,7 @@ setenforce 0
 . fun_overal.sh
 . fun_scsi.sh
 . fun_control_vm.sh
+. fun_logger.sh
 
 # Start Journal of testing
 rlJournalStart
