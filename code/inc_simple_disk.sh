@@ -38,7 +38,7 @@ COMMAND="sync; for i in `seq -s \" \" 1 3`; do dd bs=1G count=1 if=/dev/zero of=
 rlRun "ssh root@$MACHINE_IP '$COMMAND'"
 rlRun "sync"
 rlRun "TIME_END=`date '+%s'`"
-rlRun "echo \"Total time: $(($TIME_END - $TIME_START)) seconds\""
+rlRun "TOTAL_TIME=$(($TIME_END - $TIME_START))"
 
 # Cleanup
 rlRun "ssh root@$MACHINE_IP 'umount /mnt/vda'"
