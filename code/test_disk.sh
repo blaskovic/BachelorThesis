@@ -19,16 +19,16 @@ rlPhaseStartTest "TEST: Simple speed"
     sleep 10
 
     # Include simple disk test
-    . $ORIGINAL_DIR/test_inc_simple_disk.sh
-    tlFileLog "/tmp/tuned-log" "simple-disk-notuned" "total-time" "$TOTAL_TIME"
+    . $ORIGINAL_DIR/inc_simple_disk.sh
+    tlFileLog "$LOG_FILE" "simple-disk-notuned" "total-time" "$TOTAL_TIME"
 
     # Turn tuned on
     rlRun "ssh root@$MACHINE_IP 'systemctl start tuned.service'"
     sleep 10
 
     # Include simple disk test
-    . $ORIGINAL_DIR/test_inc_simple_disk.sh
-    tlFileLog "/tmp/tuned-log" "simple-disk-tuned" "total-time" "$TOTAL_TIME"
+    . $ORIGINAL_DIR/inc_simple_disk.sh
+    tlFileLog "$LOG_FILE" "simple-disk-tuned" "total-time" "$TOTAL_TIME"
 
 rlPhaseEnd
 
