@@ -41,7 +41,7 @@ function tlFileLog()
         variableFound=false
         
         # Loop!
-        for line in `cat test`
+        for line in `cat $fileName`
         do
             # Section delimiter?
             echo $line | grep "^\[.*\]$" 2>/dev/null >/dev/null
