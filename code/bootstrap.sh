@@ -23,7 +23,7 @@ fi
 ORIGINAL_DIR=`pwd`
 # WORK_DIR="/tmp/tuned-tests"
 WORK_DIR=`mktemp -d /tmp/btXXX`
-LOG_FILE="tuned-results.log"
+LOG_FILE="/tmp/tuned-results.log"
 
 setenforce 0
 

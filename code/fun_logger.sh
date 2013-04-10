@@ -94,4 +94,6 @@ function tlFileLog()
         echo "[$section]" >> "$fileName"
         echo "$variable: $value" >> "$fileName"
     fi
+
+    rlLog "Log file: $fileName, section: $section, variable: $variable, value: $value"
 }
