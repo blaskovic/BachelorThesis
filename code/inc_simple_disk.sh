@@ -12,7 +12,7 @@ test x$ORIGINAL_DIR = x && exit 1
 rlRun "dd if=/dev/zero of=disk1.img bs=1G count=8"
 
 # Make filesystem
-rlRun "mkfs.ext4 -F disk1.img"
+rlRun "$FS_COMMAND disk1.img"
 
 # Prepare device file
 cat > deviceVDA.xml \

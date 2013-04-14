@@ -48,7 +48,7 @@ rlRun "virsh attach-device $MACHINE_NAME deviceVDC.xml"
 
 # Make raid
 rlRun "ssh root@$MACHINE_IP 'yes | mdadm --create --verbose --force /dev/md0 --level=4 --raid-devices=3 /dev/vda /dev/vdb /dev/vdc'"
-rlRun "ssh root@$MACHINE_IP 'mkfs.ext4 -F /dev/md0; mount /dev/md0 /mnt/disk1'"
+rlRun "ssh root@$MACHINE_IP '$FS_COMMAND /dev/md0; mount /dev/md0 /mnt/disk1'"
 rlRun "ssh root@$MACHINE_IP 'echo 3 > /proc/sys/vm/drop_caches; sync'"
 rlRun "sleep 10"
 
