@@ -12,7 +12,10 @@ rlPhaseStartTest "TEST: Simple speed"
     
     tlVirshStatus || tlVirshStart
 
-    rlRun "ssh root@$MACHINE_IP 'lsblk'"
+    # Testing parameters
+    DISK_TYPE=virtio
+    TEST_COMMAND="sync; for i in `seq -s \" \" 1 3`; do dd bs=1G count=1 if=/dev/zero of=/mnt/disk1/test\$i.img; done; for i in `seq -s \" \" 1 3`; do cp -vf /mnt/disk1/test\$i.img /mnt/disk1/test\$i-2.img; done; rm -vrf /mnt/disk1/test*.img; sync;"
+    TO_TEST="simple_disk raid0 raid1"
 
     # Turn tuned off
     rlRun "ssh root@$MACHINE_IP 'systemctl stop tuned.service'"
@@ -20,25 +23,22 @@ rlPhaseStartTest "TEST: Simple speed"
 
     # And now run tests without tuned
     
-    # Simple disk test
-    . $ORIGINAL_DIR/inc_simple_disk.sh
-    tlFileLog "$LOG_FILE" "notuned-simple-disk" "total-time" "$TOTAL_TIME"
-    # RAID-0 test
-    . $ORIGINAL_DIR/inc_raid0.sh
-    tlFileLog "$LOG_FILE" "notuned-raid0" "total-time" "$TOTAL_TIME"
+    for name in $TO_TEST
+    do
+        . $ORIGINAL_DIR/inc_$name.sh
+        tlFileLog "$LOG_FILE" "notuned-$name" "$DISK_TYPE-total-time" "$TOTAL_TIME"
+    done
 
     # Turn tuned on
     rlRun "ssh root@$MACHINE_IP 'systemctl start tuned.service'"
     sleep 10
 
     # And now run tests with tuned
-
-    # Simple disk test
-    . $ORIGINAL_DIR/inc_simple_disk.sh
-    tlFileLog "$LOG_FILE" "tuned-simple-disk" "total-time" "$TOTAL_TIME"
-    # RAID-0 test
-    . $ORIGINAL_DIR/inc_raid0.sh
-    tlFileLog "$LOG_FILE" "tuned-raid0" "total-time" "$TOTAL_TIME"
+    for name in $TO_TEST
+    do
+        . $ORIGINAL_DIR/inc_$name.sh
+        tlFileLog "$LOG_FILE" "tuned-$name" "$DISK_TYPE-total-time" "$TOTAL_TIME"
+    done
 
 rlPhaseEnd
 

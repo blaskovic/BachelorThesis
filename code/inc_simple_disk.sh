@@ -20,7 +20,7 @@ cat > deviceVDA.xml \
 <disk type='block' device='disk'>
 <driver name='qemu' type='raw' cache='none' io='native'/>
 <source dev='`pwd`/disk1.img' bus='sata'/>
-<target dev='vda' bus='virtio'/>
+<target dev='vda' bus='$DISK_TYPE'/>
 </disk>
 DELIM
 
@@ -33,9 +33,7 @@ rlRun "sleep 10"
 rlRun "sync"
 rlRun "TIME_START=`date '+%s'`"
 
-COMMAND="sync; for i in `seq -s \" \" 1 3`; do dd bs=1G count=1 if=/dev/zero of=/mnt/disk1/test\$i.img; done; for i in `seq -s \" \" 1 3`; do cp -vf /mnt/disk1/test\$i.img /mnt/disk1/test\$i-2.img; done; rm -vrf /mnt/disk1/test*.img; sync;"
-
-rlRun "ssh root@$MACHINE_IP '$COMMAND'"
+rlRun "ssh root@$MACHINE_IP '$TEST_COMMAND'"
 rlRun "sync"
 rlRun "TIME_END=`date '+%s'`"
 rlRun "TOTAL_TIME=$(($TIME_END - $TIME_START))"
