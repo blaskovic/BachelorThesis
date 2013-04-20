@@ -2,13 +2,13 @@
 % FIT thesis
 % ----------------------------------------------------------------------------
 % (C) 2007 Zdenek Vasicek, 2008 Michal Bidlo
-% vim: set syntax=tex encoding=latin2:
+% vim: set syntax=tex
 % ----------------------------------------------------------------------------
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{fitthesis}[2007/04/13 Sablona pro BP/DP]
 
 %Vychozi hodnoty parametru
-\newif\ifslovak \let\ifslovak\iftrue
+\newif\ifczech \let\ifczech\iftrue
 \newif\ifcover \let\ifcover\iffalse
 \newif\ifPrint \let\ifPrint\iffalse
 \newif\ifWis   \let\ifWis\iftrue
@@ -17,7 +17,7 @@
 %-----------------------------------------------------------------------------
 %Parametry tridy
 %-----------------------------------------------------------------------------
-\DeclareOption{english}{\let\ifslovak\iffalse}
+\DeclareOption{english}{\let\ifczech\iffalse}
 \DeclareOption{cover}{\let\ifcover\iftrue}
 \DeclareOption{print}{\let\ifWis\iffalse \let\ifPrint\iftrue}
 
@@ -37,7 +37,7 @@
 \usepackage{amssymb}
 \usepackage[slovak,english]{babel}
 \usepackage[utf8]{inputenc} %kodovani
-\ifslovak
+\ifczech
   \main@language{slovak}
 \else
   \main@language{english}
@@ -126,7 +126,7 @@ je nezákonné, s výnimkou zákonom definovaných prípadov.}
 \def\@departmentname@EN{\@dep@EN\ \@department@EN}
 
 %Nazev prace (v jazyce prace)
-\def\@title{\ifslovak\@title@CS\else\@title@EN\fi}
+\def\@title{\ifczech\@title@CS\else\@title@EN\fi}
 
 %Jmeno, prijmeni, tituly autora
 \def\get@author{\ifx\undefined\@author@tp\else%
@@ -160,7 +160,7 @@ je nezákonné, s výnimkou zákonom definovaných prípadov.}
 
 %Vychozi hodnoty
 \setkeys{projinfo}{
-  title.cs={Název práce (česky)},title.en={Název práce(anglicky)}, 
+  title.cs={Názov práce (slovensky)},title.en={Název práce(anglicky)}, 
   date=\today, project=BP, department=UIFS, declaration=, 
   abstract.cs=, abstract.en=, keywords.cs=, keywords.en=,
   author=Jmeno Prijmeni, supervisor=Jmeno Prijmeni
@@ -418,7 +418,7 @@ je nezákonné, s výnimkou zákonom definovaných prípadov.}
 %
 % Macro \uv for other usage of \bq and \eq.
 %
-\ifundefined{uv}\iflanguage{slovak}%
+\ifundefined{uv}\iflanguage{czech}%
         \gdef\uv#1{\bq #1\eq}
 \fi
 %

@@ -27,7 +27,6 @@
 \usepackage{url}
 \usepackage[Algoritmus]{algorithm}
 \usepackage{algorithmic}
-\usepackage{fancyvrb}
 \DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>} \urlstyle{tt}}
 
 %zde muzeme vlozit vlastni balicky
@@ -108,7 +107,6 @@
 %(externí zadavatel, konzultant, apod.).}
 
 \begin{document}
-\VerbatimFootnotes
   % Vysazeni titulnich stran
   % ----------------------------------------------
   \maketitle
@@ -126,12 +124,12 @@
 
   % Pouzita literatura
   % ----------------------------------------------
-\ifslovak
+%\ifslovak
   \bibliographystyle{czechiso}
-\else 
-  \bibliographystyle{plain}
+%\else 
+%  \bibliographystyle{plain}
 %  \bibliographystyle{alpha}
-\fi
+%\fi
   \begin{flushleft}
   \bibliography{literatura} % viz. literatura.bib
   \end{flushleft}
