@@ -29,6 +29,11 @@ záťaž na disk je pri štarte systému alebo pri ukladaní dát na disk (napr�
 filmov). Inak je disk skoro nečinný. \emph{tuned} dokáže optimalizovať zápis práve v
 tej dobe, keď je to potreba. Rovnako je to aj pri sieťových operáciach.
 
+Niektoré profily zamedzujú aj prepínaniu Cx stavov \footnote{Cx sú stavy, v
+ktorých sa môže vyskytovať procesor, typicky firmy Intel. Tieto stavy sa volajú
+Spiacie stavy (ang. Sleep states) \cite{sleepStates}. Spiace stavy procesoru
+slúžia na šetrenie energie.}.
+
 Súčasťou \emph{tuned} je aj program \emph{tuned-adm}, ktorý nám dovoľuje
 prepínať medzi profilmi. Každý z~profilov slúži na iné zameranie a~napriamo
 podľa toho upravuje systém, čím dosahujeme ešte lepšie výsledky.
@@ -88,7 +93,7 @@ verziu \texttt{tuned-2.2.2-1} na \emph{Fedora 18}:
     \item \textbf{balanced} - predvolený profil pre väčšinu systémov s~výnimkou virtuálnych
     \item \textbf{latency-performance} - %TODO
     \item \textbf{powersave} - na zníženie odberu
-    \item \textbf{throughput-performance}i %TODO
+    \item \textbf{throughput-performance} %TODO
     \item \textbf{virtual-guest} - predvolený profil pre virtuálne systémy
     \item \textbf{virtual-host} %TODO
 \end{itemize}
@@ -130,38 +135,42 @@ batériu.} pri pripojovaní diskov.
 
 \chapter{Plán testovania pre Fedora Linux}
 
-\section{Test Plan Identifier}
-\section{References}
+%\section{Test Plan Identifier}
+%\section{References}
 
 %\section{Introduction}
 \section{Úvod}
 
 Na testovanie tuned využijeme pomocnú knižnicu beakerlib
 \cite{beakerlibHomepage} pre jednoduchšie písanie testov a~prehľadnejšiu
-interpretáciu dosiahnutých výsledkov. Cieľom testov je analýza, či tuned
-profily spĺňajú požadované vlastnosti.
+interpretáciu dosiahnutých výsledkov. Cieľom testovania je zistiť, nakoľko
+\emph{tuned} ovplyvňuje rýchlosť diskových operácií.
 
 %\section{Test Items}
 \section{Testovacie položky}
 
-Napísané testy budú overovať správnu funkcionalitu tuned démona a~taktiež
-ktune profilov v~zameraní na CPU, disky a~sieťové operácie. Všetky testy budú
-pripravené pre linuxovú distribúciu Fedora 17 \cite{fedoraHomepage}.
+Napísané testy budú overovať správnu funkcionalitu \emph{tuned} démona a~taktiež
+profilov v~zameraní na diskové operácie. Všetky testy budú
+pripravené pre linuxovú distribúciu Fedora 18\cite{fedoraHomepage}.
+
+Overí sa rýchlosť zápisu na bežných aj RAID diskoch a~s najpoužívanejšími
+súborovými systémami.
 
 %\section{Software Risk Issues}
 \section{Softvérové riziká}
+\label{sec:softverove-rizika}
 
 V prípade zlyhania niektorých testov môže prísť k~poškodeniu už pripojených
-diskov alebo k~rozladeniu sieťových rozhraní. Preto je vhodné spúšťat sadu
-testov na virtuálnom stroji. V~prípade vydania novej verzie tuned alebo inej
-použitej komponenty je tu riziko, že testy nebudú stabilné a~môžu sa správať
-nepredvídateľne.
+diskov. Preto je vhodné spúšťat sadu testov na virtuálnom stroji. V~prípade
+vydania novej verzie \emph{tuned} alebo inej použitej komponenty je tu riziko,
+že testy nebudú stabilné a~môžu sa správať nepredvídateľne. V~tomto prípade ale
+môžeme uvažovať o~nájdení chyby (dokonca regresie) v~\emph{tuned}.
 
 %\section{Features to be Tested}
 \section{Čo sa bude testovať}
 
 Hostiteľský systém bude spúšťať predpripravené obrazy virtualizovaného systému
-Fedora 17. K~virtualizovanému systému bude pripájať ďalšie disky. Tieto nové
+Fedora 18. K~virtualizovanému systému sa budú pripájať ďalšie disky. Tieto nové
 disky budú formátované na najpoužívanejšie súborové systémy a~testované ich
 rýchlosti pri rôznych profiloch tuned.
 
@@ -170,23 +179,41 @@ Na testovacie účely použijeme najnovšiu verziu tuned z~repozitára.
 %\section{Features not to be Tested}
 \section{Čo sa nebude testovať}
 
-Pretože testy bežia na virtualizovanom hardvéri, nie všetko je možné otestovať.
-Napríklad virtuálny procesor nepodporuje Cx stavy \footnote{Cx sú stavy, v
-ktorých sa môže vyskytovať procesor, typicky firmy Intel. Tieto stavy sa volajú
-Spiacie stavy (ang. Sleep states) \cite{sleepStates}. Spiace stavy procesoru
-slúžia na šetrenie energie.}, ktoré ovplyvňuje profil \emph{latency-performance} a
-preto nie je možné spoľahlivo a~automatizovane otestovať ich správu.
+Pretože testy bežia na virtualizovanom hardvéri, výsledky môžu byť trocha
+skreslené. Viac o~testovaní na virtualizovanom systéme v~kapitole %TODO:
+doplnit
 
-\section{Approach}
+%\section{Approach}
 
 %\section{Item Pass/Fail Criteria}
 \section{Kritéria pre splnenie testov}
 
-Počas testovania so zapnutým démonom tuned by všetky I/O operácie diskov mali
-byť rýchlejšie alebo aspoň tak rýchle ako s~vypnutým tuned.
+Počas testovania so zapnutým démonom \emph{tuned} by všetky I/O operácie diskov
+mali byť rýchlejšie alebo aspoň tak rýchle ako s~vypnutým \emph{tuned}. Žiadna
+operácia by nemala skončiť s~chybou a~disky by sa nemali poškodiť. Zápis so
+zapnutým \emph{tuned} musí mať rovnaké výsledky ako s~vypnutým.
 
-\section{Suspension Criteria and Resumption Requirements}
-\section{Test Deliverables}
+%\section{Suspension Criteria and Resumption Requirements}
+\section{Kritéria na prerušenie testovania}
+
+Ak zlyhá operácia pripájania disku k~virtuálnemu stroju, ďalšie testovanie
+stráca význam. Preto je potrebné počas testovanie kontrolovať, či táto kľúčová
+operácia dopadla úspešne. Rovnaká situácia môže nastať, ak zlyhá nahratie
+uloženého obrazu disku systému pred testovaním.
+
+%\section{Test Deliverables}
+\section{Čo obsahuje plán testovania a~jeho výsledky}
+
+Celé testovania sa skladá z~niekoľkých súčastí:
+
+\begin{itemize}
+    \item Plán testovania.
+    \item Zdrojové kódy jednotlivých testov.
+    \item Knižnica na spracovanie výsledkov.
+    \item Zoznam chýb, ktoré nastali.
+    \item Vyhodnotenie výsledkov.
+\end{itemize}
+
 \section{Remaining Test Tasks}
 \section{Environmental Needs}
 \section{Staffing and Training Needs}
@@ -204,11 +231,11 @@ byť rýchlejšie alebo aspoň tak rýchle ako s~vypnutým tuned.
 
 \section{Príprava systému}
 
-Pred testovaním je potrebné pripraviť si nainštalovaný systém Fedora 17 ako
-obraz disku. Tento obraz sa bude spúšťať cez qemu-kvm. Disk, na ktorom sa bude
-testovať rýchlosť zápisu a čítania by mal byť v~ideálnom prípade nekešovaný.
-Pred testovaním aj po testovaním je potrebné hostiteľský aj virtualizovaný
-systém synchronizovať aj zmazať aj nakešované stránky (Algoritmus
+Pred testovaním je potrebné pripraviť si nainštalovaný systém \emph{Fedora 18}
+ako obraz disku. Tento obraz sa bude spúšťať cez qemu-kvm. Disk, na ktorom sa
+bude testovať rýchlosť zápisu a čítania by mal byť v~ideálnom prípade
+nekešovaný.  Pred testovaním aj po testovaním je potrebné hostiteľský aj
+virtualizovaný systém synchronizovať a~zmazať nakešované stránky (Algoritmus
 \ref{alg:sync}).
 
 \begin{algorithm}
@@ -230,15 +257,81 @@ ktoré by mohli ovplyvniť výsledky testovania je potrebné poznať (Obrázok \
 \end{figure}
 
 Virtualizovaný systém musí obsahovať všetky potrebné balíčky, ktorých programy
-sa používajú v~testoch. Spúštanie testov bude prebiehať cez ssh spojenie a
-preto je potrebné si zabezpečiť bezchybnú komunikáciu medzi hostiteľským a
-virtualizovaným systémom - ideálne certifikát bez hesla pre root užívateľa a
-statickú IP adresu, ktorá sa nezmení po reštarte systému.
+sa používajú v~testoch. Ďalej by mali byť vypnuté všetky nepotrebné služby na
+pozadí (napríklad \emph{abrtd} alebo \emph{ntp}). Treba si dať pozor aj na
+zoznam \emph{cron}\footnote{Časovo závyslí plánovač úloh. Každý užívateľ si
+môže naplánovať vykonávanie príkazov v~daných časových intervaloch.} úloh,
+ktoré môžeme nájsť v~adresároch \texttt{/etc/cron.*}.
+
+%
+% Pouzitie virtualneho stroja
+%
 
 \section{Použitie virtuálneho stroja}
 
-Testovanie diskových operácií prebieha vo virtuálnom stroji za použitia \emph{qemu-kvm} pod \emph{libvirtd}. 
+Testovanie diskových operácií prebieha vo virtuálnom stroji za použitia
+\emph{qemu-kvm} pod \emph{libvirtd}. Tento spôsob testovania som zvolil pre
+minimalizáciu problémov, ktoré môžu nastať pri testovaní (popísané v~sekcii
+\ref{sec:softverove-rizika}) a~ochránenie hostiteľského operačného systému.
+
+\subsection{Výhody}
+
+Medzi hlavné výhody testovania na virtualizovanom systéme patrí:
+
+\begin{itemize}
+    \item Jednoduchšia správa obrazov celého systému.
+    \item Pohodlné pripájanie a~odpájanie diskov.
+    \item Dokonalé prispôsobenie systému pre požiadavky testov - na
+    hostiteľskom systéme moc nezáleží a~dá sa využiť skoro akákoľvek Linuxová
+    distribúcia.
+\end{itemize}
+
+\subsection{Nevýhody}
+
+Toto testovanie prináša ale aj množstvo nevýhod. 
+
+\begin{itemize}
+    \item Hostiteľský systém môže obmedzovať virtualizovaný systém.
+    \item Medzi systémami môže nastať kešovanie (ako je zobrazené aj na obrázku
+    \ref{graf-cache}). Toto sa ale dá do veľkej miery eliminovať a~nemalo by
+    mať vplyv na výsledky testov.
+    \item Virtualizovaný systém a~taktiež aj virtuálne disky budú vždy odlišné
+    od fyzických. Aj keď virtualízacia beží na úrovni jadra, stále su v
+    systémoch malé rozdiely. Preto je celé testovanie experimentálne a~výsledky
+    sa budú zbierať a~priemerovať z~viacerých iterácií testovania.
+\end{itemize}
+
+\subsection{Zhrnutie}
+
+Aj napriek všetkým nevýhodám je testovanie na virtualizovanom systéme vhodné.
+Výsledky testov sú porovnávacie (so zapnutým a~vypnutým \emph{tuned}) - to
+znamená, že aj keď by v~skutočnosti časy mohli byť odlišné, rozdiel medzi
+\emph{tuned} a~bez \emph{tuned} verziou ostáva rovnaký.
+
+Taktiež treba poznamenať, že je dnes virtualizácia využívaná veľmi často a
+preto virtualizácia pri testovaní nie je prekážkou.
+
+%
+% Implementacia testov
+%
+
+\section{Implementácia testov}
+
+Na implementáciu testov je využitý prevažne jazyk \emph{bash}~\cite{bash}. 
+
+
 
 \chapter{Záver}
-Zaver
+Záver
+
+%
+% Najdene chyby
+%
+
+\section{Nájdené chyby}
+
+Počas písania tejto bakalárskej práce, práce s~\emph{tuned} a~testovaní som
+narazil na niekoľko chýb, ktoré som nahlasoval do oficiálnej \emph{Red Hat} a
+\emph{Fedora} bugzilly~\cite{rhBugzilla}.
+
 
