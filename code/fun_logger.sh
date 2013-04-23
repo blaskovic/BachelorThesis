@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# tlFileLog
-# Usage: tlFileLog log_file section variable value
-# Example: tlFileLog /tmp/log disk-tests total-time 15s
+# tlFileLogGet
+# Usage: tlFileLog log_file section variable
+# Example: tlFileLog /tmp/log disk-tests total-time
 
 function tlFileLogGet()
 {
@@ -60,6 +60,10 @@ function tlFileLogGet()
 
     return 1
 }
+
+# tlFileLog
+# Usage: tlFileLog log_file section variable value
+# Example: tlFileLog /tmp/log disk-tests total-time 15s
 
 function tlFileLog()
 {
