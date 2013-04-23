@@ -4,6 +4,63 @@
 # Usage: tlFileLog log_file section variable value
 # Example: tlFileLog /tmp/log disk-tests total-time 15s
 
+function tlFileLogGet()
+{
+    fileName=$1
+    section=$2
+    variable=$3
+
+    # File exists? (wrong permissions, etc)
+    if ! test -e "$fileName"
+    then
+        rlFail "Log file '$fileName' does not exists"
+        return 1
+    fi
+
+    # Does this file contains this section?
+    grep "^\[$section\]$" "$fileName" >/dev/null 2>/dev/null
+
+    if [ $? -eq 0 ]
+    then
+        # Find this file and work with it
+
+        # Backup IFS
+        IFS_BAK=$IFS
+        IFS=$'\n'
+
+        inSection=false
+        # Loop!
+        for line in `cat $fileName`
+        do
+            # In needed section?
+            echo $line | grep "^\[$section\]$" 2>/dev/null >/dev/null
+            test $? -eq 0 && inSection=true
+
+            # Section delimiter?
+            echo $line | grep "^\[.*\]$" 2>/dev/null >/dev/null
+            if [ $? -eq 0 ]
+            then
+                [ $inSection = false ] && inSection=false
+            else
+                if [ $inSection = true ]
+                then
+                    # We are in section, lookup variable
+                    echo "$line" | grep "^$variable: " > /dev/null 2>/dev/null
+                    if [ $? -eq 0 ]
+                    then
+                        echo "$line" | sed "s/^$variable: //"
+                        return 0
+                    fi
+                fi
+            fi
+        done
+        # Restore IFS
+        IFS=$IFS_BAK
+    fi
+
+    return 1
+}
+
 function tlFileLog()
 {
     fileName=$1
