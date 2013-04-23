@@ -26,26 +26,42 @@ rlPhaseStartTest "TEST: Simple speed"
         # Set FS command
         FS_COMMAND="${FS["$FS_NAME"]}"
 
-        # Turn tuned off
-        rlRun "ssh root@$MACHINE_IP 'systemctl stop tuned.service'"
-        sleep 10
-
         # And now run tests without tuned
         
         for name in $TO_TEST
         do
-            . $ORIGINAL_DIR/inc_$name.sh
+            tlVirshShutdown
+            tlVirshStatus || tlVirshStart
+            
+            # Turn tuned off
+            rlRun "ssh root@$MACHINE_IP 'systemctl stop tuned.service'"
+            sleep 10
+
+            # Loop while test pass
+            while failedRunCheck
+            do
+                failedRunClear
+                . $ORIGINAL_DIR/inc_$name.sh
+            done
             tlFileLog "$LOG_FILE" "notuned-$name" "$DISK_TYPE-$FS_NAME-total-time" "$TOTAL_TIME"
         done
-
-        # Turn tuned on
-        rlRun "ssh root@$MACHINE_IP 'systemctl start tuned.service'"
-        sleep 10
 
         # And now run tests with tuned
         for name in $TO_TEST
         do
-            . $ORIGINAL_DIR/inc_$name.sh
+            tlVirshShutdown
+            tlVirshStatus || tlVirshStart
+            
+            # Turn tuned on
+            rlRun "ssh root@$MACHINE_IP 'systemctl start tuned.service'"
+            sleep 10
+
+            # Loop while test pass
+            while failedRunCheck
+            do
+                failedRunClear
+                . $ORIGINAL_DIR/inc_$name.sh
+            done
             tlFileLog "$LOG_FILE" "tuned-$name" "$DISK_TYPE-$FS_NAME-total-time" "$TOTAL_TIME"
         done
     done

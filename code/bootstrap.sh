@@ -24,6 +24,7 @@ ORIGINAL_DIR=`pwd`
 # WORK_DIR="/tmp/tuned-tests"
 WORK_DIR=`mktemp -d /tmp/btXXX`
 LOG_FILE="/tmp/tuned-results.log"
+FAILED_RUN_LOG="/tmp/failedRun"
 
 setenforce 0
 

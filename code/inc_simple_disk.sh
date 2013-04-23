@@ -25,15 +25,15 @@ cat > deviceVDA.xml \
 DELIM
 
 # Attach and mount it
-rlRun "virsh attach-device $MACHINE_NAME deviceVDA.xml"
-rlRun "ssh root@$MACHINE_IP 'mount /dev/vda /mnt/disk1'"
-rlRun "ssh root@$MACHINE_IP 'echo 3 > /proc/sys/vm/drop_caches; sync'"
+rlRun "virsh attach-device $MACHINE_NAME deviceVDA.xml" || failedRunSave
+rlRun "ssh root@$MACHINE_IP 'mount /dev/vda /mnt/disk1'" || failedRunSave
+rlRun "ssh root@$MACHINE_IP 'echo 3 > /proc/sys/vm/drop_caches; sync'" || failedRunSave
 rlRun "sleep 10"
 
 rlRun "sync"
 rlRun "TIME_START=`date '+%s'`"
 
-rlRun "ssh root@$MACHINE_IP '$TEST_COMMAND'"
+rlRun "ssh root@$MACHINE_IP '$TEST_COMMAND'" || failedRunSave
 rlRun "sync"
 rlRun "TIME_END=`date '+%s'`"
 rlRun "TOTAL_TIME=$(($TIME_END - $TIME_START))"

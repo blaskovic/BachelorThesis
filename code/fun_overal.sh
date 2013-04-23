@@ -28,3 +28,20 @@ function average()
     tr '\n' ' ' | awk '{ for (i = 1; i <= NF; i++) sum += $i }; END { print sum/(i-1) }'
 }
 
+function failedRunSave()
+{
+    touch "$FAILED_RUN_LOG"
+    return 0
+}
+
+function failedRunCheck()
+{
+    test -f "$FAILED_RUN_LOG" && return 0
+    return 1
+}
+
+function failedRunClear()
+{
+    rm -f "$FAILED_RUN_LOG"
+    return 0
+}
