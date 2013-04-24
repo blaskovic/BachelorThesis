@@ -9,17 +9,19 @@
 test x$ORIGINAL_DIR = x && exit 1
 
 # Prepare image
-rlRun "dd if=/dev/zero of=disk1.img bs=1G count=8"
+diskDir=`mktemp -d`
+chmod 755 $diskDir
+rlRun "dd if=/dev/zero of=$diskDir/disk1.img bs=1G count=8"
 
 # Make filesystem
-rlRun "$FS_COMMAND disk1.img"
+rlRun "$FS_COMMAND $diskDir/disk1.img"
 
 # Prepare device file
 cat > deviceVDA.xml \
 <<DELIM
 <disk type='block' device='disk'>
 <driver name='qemu' type='raw' cache='none' io='native'/>
-<source dev='`pwd`/disk1.img' bus='sata'/>
+<source dev='$diskDir/disk1.img' bus='sata'/>
 <target dev='vda' bus='$DISK_TYPE'/>
 </disk>
 DELIM
@@ -41,3 +43,4 @@ rlRun "TOTAL_TIME=$(($TIME_END - $TIME_START))"
 # Cleanup
 rlRun "ssh root@$MACHINE_IP 'umount /mnt/disk1'"
 rlRun "virsh detach-device $MACHINE_NAME deviceVDA.xml"
+rlRun "rm -rf $diskDir"

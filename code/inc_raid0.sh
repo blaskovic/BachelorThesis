@@ -9,15 +9,17 @@
 test x$ORIGINAL_DIR = x && exit 1
 
 # Prepare images
-rlRun "dd if=/dev/zero of=disk1.img bs=1G count=4"
-rlRun "dd if=/dev/zero of=disk2.img bs=1G count=4"
+diskDir=`mktemp -d`
+chmod 755 $diskDir
+rlRun "dd if=/dev/zero of=$diskDir/disk1.img bs=1G count=4"
+rlRun "dd if=/dev/zero of=$diskDir/disk2.img bs=1G count=4"
 
 # Prepare device file
 cat > deviceVDA.xml \
 <<DELIM
 <disk type='block' device='disk'>
 <driver name='qemu' type='raw' cache='none' io='native'/>
-<source dev='`pwd`/disk1.img' bus='sata'/>
+<source dev='$diskDir/disk1.img' bus='sata'/>
 <target dev='vda' bus='$DISK_TYPE'/>
 </disk>
 DELIM
@@ -26,7 +28,7 @@ cat > deviceVDB.xml \
 <<DELIM
 <disk type='block' device='disk'>
 <driver name='qemu' type='raw' cache='none' io='native'/>
-<source dev='`pwd`/disk2.img' bus='sata'/>
+<source dev='$diskDir/disk2.img' bus='sata'/>
 <target dev='vdb' bus='$DISK_TYPE'/>
 </disk>
 DELIM
@@ -53,3 +55,4 @@ rlRun "ssh root@$MACHINE_IP 'umount /mnt/disk1'"
 rlRun "ssh root@$MACHINE_IP 'mdadm --stop /dev/md0'"
 rlRun "virsh detach-device $MACHINE_NAME deviceVDA.xml"
 rlRun "virsh detach-device $MACHINE_NAME deviceVDB.xml"
+rlRun "rm -rf $diskDir"

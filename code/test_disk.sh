@@ -30,16 +30,17 @@ rlPhaseStartTest "TEST: Simple speed"
         
         for name in $TO_TEST
         do
-            tlVirshShutdown
-            tlVirshStatus || tlVirshStart
-            
-            # Turn tuned off
-            rlRun "ssh root@$MACHINE_IP 'systemctl stop tuned.service'"
-            sleep 10
-
             # Loop while test pass
+            failedRunSave
             while failedRunCheck
             do
+                tlVirshShutdown
+                tlVirshStatus || tlVirshStart
+                
+                # Turn tuned off
+                rlRun "ssh root@$MACHINE_IP 'systemctl stop tuned.service'"
+                sleep 10
+            
                 failedRunClear
                 . $ORIGINAL_DIR/inc_$name.sh
             done
@@ -49,16 +50,17 @@ rlPhaseStartTest "TEST: Simple speed"
         # And now run tests with tuned
         for name in $TO_TEST
         do
-            tlVirshShutdown
-            tlVirshStatus || tlVirshStart
-            
-            # Turn tuned on
-            rlRun "ssh root@$MACHINE_IP 'systemctl start tuned.service'"
-            sleep 10
-
             # Loop while test pass
+            failedRunSave
             while failedRunCheck
             do
+                tlVirshShutdown
+                tlVirshStatus || tlVirshStart
+                
+                # Turn tuned on
+                rlRun "ssh root@$MACHINE_IP 'systemctl start tuned.service'"
+                sleep 10
+
                 failedRunClear
                 . $ORIGINAL_DIR/inc_$name.sh
             done
