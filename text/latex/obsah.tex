@@ -319,6 +319,37 @@ preto virtualizácia pri testovaní nie je prekážkou.
 
 Na implementáciu testov je využitý prevažne jazyk \emph{bash}~\cite{bash}. 
 
+%
+% Vyhodnotenie testov
+%
+
+\section{Vyhodnotenie testov}
+
+\begin{center}
+\begin{tabular}{|l|r|r|r|}
+    \hline
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} \\ \hline
+    simple\_disk virtio ext3 & 112 s & 104 s & 8 s \\
+    \hline
+    raid0 virtio ext3 & 120 s & 111 s & 9 s \\
+    \hline
+    raid1 virtio ext3 & 131 s & 119 s & 12 s \\
+    \hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|l|r|r|r|}
+    \hline
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} \\ \hline
+    simple\_disk virtio ext4 & 116 s & 101 s & 15 s \\
+    \hline
+    raid0 virtio ext4 & 121 s & 107 s & 14 s \\
+    \hline
+    raid1 virtio ext4 & 121 s & 109 s & 12 s \\
+    \hline
+\end{tabular}
+\end{center}
 
 
 \chapter{Záver}
