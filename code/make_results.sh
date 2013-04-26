@@ -19,10 +19,14 @@ TESTS="simple_disk raid0 raid1"
 DISKS="virtio"
 FILESYSTEMS="ext3 ext4"
 
+echo "%"
+echo "% START Automatic results"
+echo "%"
 for fs in $FILESYSTEMS
 do
 
     # Header of table
+    echo "\\begin{table}[H]"
     echo "\\begin{center}"
     echo "\\begin{tabular}{|l|r|r|r|}"
     echo "    \\hline"
@@ -47,7 +51,14 @@ do
     done
 
     echo "\\end{tabular}"
+    echo "\\caption{Výsledky testov pre súborový systém $fs}"
+    echo "\\label{tab:results-$fs}"
     echo "\\end{center}"
+    echo "\\end{table}"
     echo
 done
+echo "%"
+echo "% END Automatic results"
+echo "%"
+echo
 
