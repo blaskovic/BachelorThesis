@@ -201,6 +201,8 @@ stráca význam. Preto je potrebné počas testovanie kontrolovať, či táto k�
 operácia dopadla úspešne. Rovnaká situácia môže nastať, ak zlyhá nahratie
 uloženého obrazu disku systému pred testovaním.
 
+Prvý prípad (pripájanie obrazu disku) sa rieší opakovaním testu. Takto dosiahneme vždy požadované výsledky, aj keď operácia zlyhá. Problematiku pripájania diskov je bližšie popísana v sekcii \ref{sec:libvirt-problem}.
+
 %\section{Test Deliverables}
 \section{Čo obsahuje plán testovania a~jeho výsledky}
 
@@ -317,7 +319,31 @@ preto virtualizácia pri testovaní nie je prekážkou.
 
 \section{Implementácia testov}
 
-Na implementáciu testov je využitý prevažne jazyk \emph{bash}~\cite{bash}. 
+Na implementáciu testov je využitý prevažne jazyk \emph{bash}. Testovanie riadi
+hlavný súbor \emph{test\_disk.sh}, v ktorom sa nastavujú parametre testov.
+Tieto testy su popísane v tabuľke \ref{tab:test-params}. Konkrétne podtesty
+začínajú prefixom \texttt{inc\_*}. Virtuálny systém sa pred každým testom
+vypne, obnoví zo zálohy disku a znova zapne.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|l|}
+    \hline
+    \textbf{Názov premennej} & \textbf{Popis} \\
+    \hline
+    TEST\_COMMAND & Sada príkazov pre diskové operácie \\
+    FS & Asociatívne pole, obsahujúce názov súborového systému \\ & a príkazu na jeho vytvorenie \\
+    TO\_TEST & Zoznam testov, ktoré sa prevedú \\
+    \hline
+\end{tabular}
+\caption{Popis premenných pre parametrizáciu testov.}
+\label{tab:test-params}
+\end{center}
+\end{table}
+
+Disky sa pripájajú podľa toho, ako to vyžaduje aktuálny test. Kešovanie diskov
+medzi hostiteľským a virtualizovaným systémom je vypnuté na miestach, ktoré su
+uvedené na obrázku \ref{graf-cache}. 
 
 %
 % Vyhodnotenie testov
@@ -368,12 +394,61 @@ Na implementáciu testov je využitý prevažne jazyk \emph{bash}~\cite{bash}.
 
 
 %
-% Zaver 
+% Bocné produkty
 %
 
-\chapter{Záver}
+\chapter{Bočné produkty práce}
 
-Z výsledkov je jasné, že \emph{tuned} naozaj optimalizuje I/O operácie na diskových poliach. 
+%
+% Libvirt problemy
+%
+
+\section{Problém s \emph{libvirtd}}
+
+Pri pripájaní diskov k virtuálnemu systému za použitia príkazu \texttt{virsh
+attach-device }, sa systém občas náhodne vypne. Nepodarilo sa mi spoľahlivo
+zreprodukovať túto chybu do takého stavu, aby som ju mohol nahlásiť vývojárom,
+pretože nastávala nepravidelne. 
+
+O páde systému som nenašiel žiadnu zmienku v logoch virtualizovaného ani
+hostovacieho systému. 
+
+%
+% Power Management testday
+%
+
+\section{Power Management Test Day}
+
+Dňa 17. apríla 2013 sa konal deň otvorených dverí Brnenskej pobočky firmy
+\emph{Red Hat}. Súčasťou programu bol aj \emph{Power Management Test Day}
+najnovšej verzie operačného systému \emph{Fedora 19}, ktorého som bol
+spoluorganizátor. 
+
+Mimo iné sa testovalo aj \emph{tuned} samotné. Najväčším prekvapením bolo
+testovanie \emph{tuned} profilu \emph{powersave}, ktorý by mal znižovať
+elektrický odber. Na testovanie prišlo množstvo ľudí s rôznymi notebookmi. Konkrétne výsledky sú uvedené v tabuľke \ref{tab:testday-results}.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|r|r|r|}
+    \hline
+    \textbf{Typ notebooku} & \textbf{Odber bez tuned} & \textbf{Odber s tuned} \\
+    \hline
+    Lenovo ThinkPad X230        & 4.540 Wh & 4.110 Wh & 9.47\% \\
+    HP Elitebook 8540w          & 7.566 Wh & 7.493 Wh &  \\
+    Lenovo T60 laptop           & 4.720 Wh & 4.500 Wh &  \\
+    Dell Optiplex 990           & 8.500 Wh & 7.700 Wh &  \\
+    Lenovo ThinkPad T61         & 4.880 Wh & 4.340 Wh &  \\
+    Lenovo ThinkPad T520        & 5.387 Wh & 4.815 Wh &  \\
+    Lenovo T510                 & 3.310 Wh & 2.820 Wh &  \\
+    ThinkPad T430               & 5.690 Wh & 5.370 Wh &  \\
+    Samsung N210 (Intel Atom)   & 1.402 Wh & 1.394 Wh &  \\
+    \hline
+\end{tabular}
+\caption{Odber rôznych notebookov s vypnutým a zapnutým tuned.}
+\label{tab:testday-results}
+\end{center}
+\end{table}
 
 %
 % Najdene chyby
@@ -388,8 +463,8 @@ balíku \emph{tuned}, ale taktiež v balíku \emph{selinux-policy}.
 
 Tieto chyby boli väčśinou opravené do pár dní. Ich prehľad je v tabuľke \ref{tab:bugs}.
 
-\begin{center}
 \begin{table}[H]
+\begin{center}
 \begin{tabular}{|l|l|l|}
     \hline
     \textbf{Číslo chyby} & \textbf{Názov} & \textbf{Status} \\
@@ -403,6 +478,15 @@ Tieto chyby boli väčśinou opravené do pár dní. Ich prehľad je v tabuľke 
 \end{tabular}
 \caption{Zoznam nájdených chýb}
 \label{tab:bugs}
-\end{table}
 \end{center}
+\end{table}
 
+
+%
+% Zaver 
+%
+
+\chapter{Záver}
+
+Z výsledkov je jasné, že \emph{tuned} naozaj optimalizuje I/O operácie na
+diskových poliach. 
