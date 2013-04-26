@@ -351,9 +351,13 @@ Na implementáciu testov je využitý prevažne jazyk \emph{bash}~\cite{bash}.
 \end{tabular}
 \end{center}
 
+%
+% Zaver 
+%
 
 \chapter{Záver}
-Záver
+
+Z výsledkov je jasné, že \emph{tuned} naozaj optimalizuje I/O operácie na diskových poliach. 
 
 %
 % Najdene chyby
@@ -361,8 +365,24 @@ Záver
 
 \section{Nájdené chyby}
 
-Počas písania tejto bakalárskej práce, práce s~\emph{tuned} a~testovaní som
+Počas písania tejto bakalárskej práce, narábanie s~\emph{tuned} a~testovaní som
 narazil na niekoľko chýb, ktoré som nahlasoval do oficiálnej \emph{Red Hat} a
-\emph{Fedora} bugzilly~\cite{rhBugzilla}.
+\emph{Fedora} bugzilly~\cite{rhBugzilla}. Chyby sa nachádzali väčšinou priamo v
+balíku \emph{tuned}, ale taktiež v balíku \emph{selinux-policy}.
 
+Tieto chyby boli väčśinou opravené do pár dní. Ich prehľad je v tabuľke %TODO ref tab
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{Číslo chyby} & \textbf{Názov} & \textbf{Status} \\
+    \hline
+    BZ\#907065 & tuned-adm can crash because of unknown variable log & opravené \\
+    BZ\#953128 & tuned does not start if active profile is missing & opravené \\
+    BZ\#953132 & AVCs after starting tuned daemon & opravené \\
+    BZ\#901689 & Typo in tuned-adm.py & opravené \\
+    BZ\#911138 & tuned-adm profile virtual-guest/host AVC denied & zatiaľ neopravené \\
+    \hline
+\end{tabular}
+\end{center}
 
