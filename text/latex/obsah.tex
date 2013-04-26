@@ -325,6 +325,10 @@ Na implementáciu testov je využitý prevažne jazyk \emph{bash}~\cite{bash}.
 
 \section{Vyhodnotenie testov}
 
+%
+% START Automatic results
+%
+\begin{table}[H]
 \begin{center}
 \begin{tabular}{|l|r|r|r|}
     \hline
@@ -336,8 +340,12 @@ Na implementáciu testov je využitý prevažne jazyk \emph{bash}~\cite{bash}.
     raid1 virtio ext3 & 131 s & 119 s & 12 s \\
     \hline
 \end{tabular}
+\caption{Výsledky testov pre súborový systém ext3}
+\label{tab:results-ext3}
 \end{center}
+\end{table}
 
+\begin{table}[H]
 \begin{center}
 \begin{tabular}{|l|r|r|r|}
     \hline
@@ -349,7 +357,15 @@ Na implementáciu testov je využitý prevažne jazyk \emph{bash}~\cite{bash}.
     raid1 virtio ext4 & 121 s & 109 s & 12 s \\
     \hline
 \end{tabular}
+\caption{Výsledky testov pre súborový systém ext4}
+\label{tab:results-ext4}
 \end{center}
+\end{table}
+
+%
+% END Automatic results
+%
+
 
 %
 % Zaver 
@@ -370,9 +386,10 @@ narazil na niekoľko chýb, ktoré som nahlasoval do oficiálnej \emph{Red Hat} 
 \emph{Fedora} bugzilly~\cite{rhBugzilla}. Chyby sa nachádzali väčšinou priamo v
 balíku \emph{tuned}, ale taktiež v balíku \emph{selinux-policy}.
 
-Tieto chyby boli väčśinou opravené do pár dní. Ich prehľad je v tabuľke %TODO ref tab
+Tieto chyby boli väčśinou opravené do pár dní. Ich prehľad je v tabuľke \ref{tab:bugs}.
 
 \begin{center}
+\begin{table}[H]
 \begin{tabular}{|l|l|l|}
     \hline
     \textbf{Číslo chyby} & \textbf{Názov} & \textbf{Status} \\
@@ -384,5 +401,8 @@ Tieto chyby boli väčśinou opravené do pár dní. Ich prehľad je v tabuľke 
     BZ\#911138 & tuned-adm profile virtual-guest/host AVC denied & zatiaľ neopravené \\
     \hline
 \end{tabular}
+\caption{Zoznam nájdených chýb}
+\label{tab:bugs}
+\end{table}
 \end{center}
 
