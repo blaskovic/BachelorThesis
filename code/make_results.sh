@@ -57,7 +57,7 @@ do
             # Write to table
             echo -n "    "
             echo -n "${testName//_/\_} $disk $fs & "
-            echo -n "${notuned}s & ${tuned}s & $(($notuned - $tuned))s & $((100-100*$tuned/$notuned))\% "
+            echo -n "${notuned} s & ${tuned} s & $(($notuned - $tuned)) s & `bc <<< \"scale=2;100-100*$tuned/$notuned\"` \% "
             echo "\\\\"
             echo "    \\hline"
         done
@@ -66,7 +66,7 @@ do
     # Averages
     echo -n "    "
     echo -n "\\textbf{Priemery} & "
-    echo -n "`bc <<< \"scale=2;$NOTUNED_SUM / $COUNT\"`s & `bc <<< \"scale=2;$TUNED_SUM / $COUNT\"`s & `bc <<< \"scale=2;$DIFF_SUM / $COUNT\"`s & `bc <<< \"scale=2;$PERCENT_SUM/$COUNT\"`\% "
+    echo -n "`bc <<< \"scale=2;$NOTUNED_SUM / $COUNT\"` s & `bc <<< \"scale=2;$TUNED_SUM / $COUNT\"` s & `bc <<< \"scale=2;$DIFF_SUM / $COUNT\"` s & `bc <<< \"scale=2;$PERCENT_SUM/$COUNT\"` \% "
     echo "\\\\"
     echo "    \\hline"
 
