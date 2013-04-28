@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#
+# Test config
+#
+
+DISK_TYPE=virtio
+declare -A FS
+FS[ext3]="mkfs.ext3 -F"
+FS[ext4]="mkfs.ext4 -F"
+TEST_COMMAND="sync; for i in `seq -s \" \" 1 3`; do dd bs=1G count=1 if=/dev/zero of=/mnt/disk1/test\$i.img; done; for i in `seq -s \" \" 1 3`; do cp -vf /mnt/disk1/test\$i.img /mnt/disk1/test\$i-2.img; done; rm -vrf /mnt/disk1/test*.img; sync;"
+TO_TEST="simple_disk raid0 raid1"
+TUNED_STATUS="stop"
+TUNED_PROFILES="balanced latency-performance powersave throughput-performance virtual-guest"
+
+#
+# Virtual machine config
+#
+
+MACHINE_NAME="F18"
+MACHINE_IP="192.168.0.120"

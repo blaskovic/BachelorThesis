@@ -9,16 +9,12 @@
 # Set number of disks and number of connections to test
 
 rlPhaseStartTest "TEST: Simple speed"
-    
-    tlVirshStatus || tlVirshStart
-
+   
+    #
     # Testing parameters
-    DISK_TYPE=virtio
-    declare -A FS
-    FS[ext3]="mkfs.ext3 -F"
-    FS[ext4]="mkfs.ext4 -F"
-    TEST_COMMAND="sync; for i in `seq -s \" \" 1 3`; do dd bs=1G count=1 if=/dev/zero of=/mnt/disk1/test\$i.img; done; for i in `seq -s \" \" 1 3`; do cp -vf /mnt/disk1/test\$i.img /mnt/disk1/test\$i-2.img; done; rm -vrf /mnt/disk1/test*.img; sync;"
-    TO_TEST="simple_disk raid0 raid1"
+    # Include config
+    #
+    . config
 
     for FS_NAME in ${!FS[@]}
     do
@@ -30,41 +26,33 @@ rlPhaseStartTest "TEST: Simple speed"
         
         for name in $TO_TEST
         do
-            # Loop while test pass
+            # Loop while test pass without tuned
+            TUNED_STATUS="stop"
             failedRunSave
             while failedRunCheck
             do
                 tlVirshShutdown
-                tlVirshStatus || tlVirshStart
                 
-                # Turn tuned off
-                rlRun "ssh root@$MACHINE_IP 'systemctl stop tuned.service'"
-                sleep 10
-            
                 failedRunClear
                 . $ORIGINAL_DIR/inc_$name.sh
             done
             tlFileLog "$LOG_FILE" "notuned-$name" "$DISK_TYPE-$FS_NAME-total-time" "$TOTAL_TIME"
-        done
 
-        # And now run tests with tuned
-        for name in $TO_TEST
-        do
-            # Loop while test pass
-            failedRunSave
-            while failedRunCheck
+            # Test all relevant profiles
+            for TUNED_PROFILE in $TUNED_PROFILES
             do
-                tlVirshShutdown
-                tlVirshStatus || tlVirshStart
-                
-                # Turn tuned on
-                rlRun "ssh root@$MACHINE_IP 'systemctl start tuned.service'"
-                sleep 10
+                # Loop while test pass with tuned
+                TUNED_STATUS="start"
+                failedRunSave
+                while failedRunCheck
+                do
+                    tlVirshShutdown
 
-                failedRunClear
-                . $ORIGINAL_DIR/inc_$name.sh
+                    failedRunClear
+                    . $ORIGINAL_DIR/inc_$name.sh
+                done
+                tlFileLog "$LOG_FILE" "tuned-$TUNED_PROFILE-$name" "$DISK_TYPE-$FS_NAME-total-time" "$TOTAL_TIME"
             done
-            tlFileLog "$LOG_FILE" "tuned-$name" "$DISK_TYPE-$FS_NAME-total-time" "$TOTAL_TIME"
         done
     done
 
