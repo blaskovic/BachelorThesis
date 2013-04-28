@@ -26,8 +26,15 @@ cat > deviceVDA.xml \
 </disk>
 DELIM
 
+tlVirshStatus || tlVirshStart
+
 # Attach and mount it
 rlRun "virsh attach-device $MACHINE_NAME deviceVDA.xml" || failedRunSave
+
+rlRun "ssh root@$MACHINE_IP 'systemctl $TUNED_STATUS tuned.service'"
+rlRun "ssh root@$MACHINE_IP 'tuned-adm profile $TUNED_PROFILE'" 0,1,2
+sleep 10
+
 rlRun "ssh root@$MACHINE_IP 'mount /dev/vda /mnt/disk1'" || failedRunSave
 rlRun "ssh root@$MACHINE_IP 'echo 3 > /proc/sys/vm/drop_caches; sync'" || failedRunSave
 rlRun "sleep 10"
@@ -35,7 +42,7 @@ rlRun "sleep 10"
 rlRun "sync"
 rlRun "TIME_START=`date '+%s'`"
 
-rlRun "ssh root@$MACHINE_IP '$TEST_COMMAND'" || failedRunSave
+failedRunCheck || { rlRun "ssh root@$MACHINE_IP '$TEST_COMMAND'" || failedRunSave; }
 rlRun "sync"
 rlRun "TIME_END=`date '+%s'`"
 rlRun "TOTAL_TIME=$(($TIME_END - $TIME_START))"
@@ -43,4 +50,5 @@ rlRun "TOTAL_TIME=$(($TIME_END - $TIME_START))"
 # Cleanup
 rlRun "ssh root@$MACHINE_IP 'umount /mnt/disk1'"
 rlRun "virsh detach-device $MACHINE_NAME deviceVDA.xml"
+tlVirshShutdown
 rlRun "rm -rf $diskDir"
