@@ -1,0 +1,12 @@
+\emph{Virtual-guest} by mal byť najvhodnejší profil pre virtuálny systém. Na
+diskoch upravuje \emph{readahead} hodnotu a nastavuje ju na 4 krát väčšiu. Je
+ale dobré vedieť, že taktiež zároveň načítava nastavenia z profilu
+\emph{throughput-performance}.
+
+Práve pri tomto profile su najviac viditeľné rozdiely medzi súborovými
+systémami. S použítím \emph{ext3} sme dosiahli zrýchlenie približne 5 \%, ale s
+použitím \emph{ext4} je to až cez 11 \%.
+
+Toto nastavenie taktiež môžeme označiť za veľmi vhodné pre zrýchlenie diskových
+operácií, ale ideálne je pre súborový systém \emph{ext4}. Ak využívamé variantu
+\emph{ext3}, vhodnejší bude profile \emph{throughput-performance}.

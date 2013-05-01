@@ -1,0 +1,212 @@
+%
+% START Automatic results
+%
+\subsection{Testovanie s profilom \emph{balanced}}
+\IfFileExists{obsah-test-balanced}{\input{obsah-test-balanced}}{}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|r|r|r|r|}
+    \hline
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
+    simple\_disk ext3 & 116 s & 110 s & 6 s & 5.18 \% \\
+    \hline
+    raid0 ext3 & 116 s & 116 s & 0 s & 0 \% \\
+    \hline
+    raid1 ext3 & 125 s & 121 s & 4 s & 3.20 \% \\
+    \hline
+    \textbf{Priemery} & 119.00 s & 115.66 s & 3.33 s & 3.33 \% \\
+    \hline
+\end{tabular}
+\caption{Výsledky testov pre súborový systém ext3}
+\label{tab:results-ext3}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|r|r|r|r|}
+    \hline
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
+    simple\_disk ext4 & 113 s & 114 s & -1 s & -.88 \% \\
+    \hline
+    raid0 ext4 & 121 s & 122 s & -1 s & -.82 \% \\
+    \hline
+    raid1 ext4 & 119 s & 116 s & 3 s & 2.53 \% \\
+    \hline
+    \textbf{Priemery} & 117.66 s & 117.33 s & .33 s & 1.00 \% \\
+    \hline
+\end{tabular}
+\caption{Výsledky testov pre súborový systém ext4}
+\label{tab:results-ext4}
+\end{center}
+\end{table}
+
+\subsection{Testovanie s profilom \emph{latency-performance}}
+\IfFileExists{obsah-test-latency-performance}{\input{obsah-test-latency-performance}}{}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|r|r|r|r|}
+    \hline
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
+    simple\_disk ext3 & 116 s & 100 s & 16 s & 13.80 \% \\
+    \hline
+    raid0 ext3 & 116 s & 109 s & 7 s & 6.04 \% \\
+    \hline
+    raid1 ext3 & 125 s & 107 s & 18 s & 14.40 \% \\
+    \hline
+    \textbf{Priemery} & 119.00 s & 105.33 s & 13.66 s & 12.00 \% \\
+    \hline
+\end{tabular}
+\caption{Výsledky testov pre súborový systém ext3}
+\label{tab:results-ext3}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|r|r|r|r|}
+    \hline
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
+    simple\_disk ext4 & 113 s & 103 s & 10 s & 8.85 \% \\
+    \hline
+    raid0 ext4 & 121 s & 112 s & 9 s & 7.44 \% \\
+    \hline
+    raid1 ext4 & 119 s & 107 s & 12 s & 10.09 \% \\
+    \hline
+    \textbf{Priemery} & 117.66 s & 107.33 s & 10.33 s & 9.33 \% \\
+    \hline
+\end{tabular}
+\caption{Výsledky testov pre súborový systém ext4}
+\label{tab:results-ext4}
+\end{center}
+\end{table}
+
+\subsection{Testovanie s profilom \emph{powersave}}
+\IfFileExists{obsah-test-powersave}{\input{obsah-test-powersave}}{}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|r|r|r|r|}
+    \hline
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
+    simple\_disk ext3 & 116 s & 111 s & 5 s & 4.32 \% \\
+    \hline
+    raid0 ext3 & 116 s & 115 s & 1 s & .87 \% \\
+    \hline
+    raid1 ext3 & 125 s & 126 s & -1 s & -.80 \% \\
+    \hline
+    \textbf{Priemery} & 119.00 s & 117.33 s & 1.66 s & 2.00 \% \\
+    \hline
+\end{tabular}
+\caption{Výsledky testov pre súborový systém ext3}
+\label{tab:results-ext3}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|r|r|r|r|}
+    \hline
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
+    simple\_disk ext4 & 113 s & 111 s & 2 s & 1.77 \% \\
+    \hline
+    raid0 ext4 & 121 s & 125 s & -4 s & -3.30 \% \\
+    \hline
+    raid1 ext4 & 119 s & 116 s & 3 s & 2.53 \% \\
+    \hline
+    \textbf{Priemery} & 117.66 s & 117.33 s & .33 s & .66 \% \\
+    \hline
+\end{tabular}
+\caption{Výsledky testov pre súborový systém ext4}
+\label{tab:results-ext4}
+\end{center}
+\end{table}
+
+\subsection{Testovanie s profilom \emph{throughput-performance}}
+\IfFileExists{obsah-test-throughput-performance}{\input{obsah-test-throughput-performance}}{}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|r|r|r|r|}
+    \hline
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
+    simple\_disk ext3 & 116 s & 105 s & 11 s & 9.49 \% \\
+    \hline
+    raid0 ext3 & 116 s & 109 s & 7 s & 6.04 \% \\
+    \hline
+    raid1 ext3 & 125 s & 107 s & 18 s & 14.40 \% \\
+    \hline
+    \textbf{Priemery} & 119.00 s & 107.00 s & 12.00 s & 10.66 \% \\
+    \hline
+\end{tabular}
+\caption{Výsledky testov pre súborový systém ext3}
+\label{tab:results-ext3}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|r|r|r|r|}
+    \hline
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
+    simple\_disk ext4 & 113 s & 99 s & 14 s & 12.39 \% \\
+    \hline
+    raid0 ext4 & 121 s & 107 s & 14 s & 11.58 \% \\
+    \hline
+    raid1 ext4 & 119 s & 106 s & 13 s & 10.93 \% \\
+    \hline
+    \textbf{Priemery} & 117.66 s & 104.00 s & 13.66 s & 12.00 \% \\
+    \hline
+\end{tabular}
+\caption{Výsledky testov pre súborový systém ext4}
+\label{tab:results-ext4}
+\end{center}
+\end{table}
+
+\subsection{Testovanie s profilom \emph{virtual-guest}}
+\IfFileExists{obsah-test-virtual-guest}{\input{obsah-test-virtual-guest}}{}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|r|r|r|r|}
+    \hline
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
+    simple\_disk ext3 & 116 s & 111 s & 5 s & 4.32 \% \\
+    \hline
+    raid0 ext3 & 116 s & 111 s & 5 s & 4.32 \% \\
+    \hline
+    raid1 ext3 & 125 s & 118 s & 7 s & 5.60 \% \\
+    \hline
+    \textbf{Priemery} & 119.00 s & 113.33 s & 5.66 s & 5.33 \% \\
+    \hline
+\end{tabular}
+\caption{Výsledky testov pre súborový systém ext3}
+\label{tab:results-ext3}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|r|r|r|r|}
+    \hline
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
+    simple\_disk ext4 & 113 s & 103 s & 10 s & 8.85 \% \\
+    \hline
+    raid0 ext4 & 121 s & 103 s & 18 s & 14.88 \% \\
+    \hline
+    raid1 ext4 & 119 s & 107 s & 12 s & 10.09 \% \\
+    \hline
+    \textbf{Priemery} & 117.66 s & 104.33 s & 13.33 s & 11.66 \% \\
+    \hline
+\end{tabular}
+\caption{Výsledky testov pre súborový systém ext4}
+\label{tab:results-ext4}
+\end{center}
+\end{table}
+
+%
+% END Automatic results
+%
+
