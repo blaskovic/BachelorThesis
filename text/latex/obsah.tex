@@ -150,10 +150,21 @@ interpretáciu dosiahnutých výsledkov. Cieľom testovania je zistiť, nakoľko
 
 Napísané testy budú overovať správnu funkcionalitu \emph{tuned} démona a~taktiež
 profilov v~zameraní na diskové operácie. Všetky testy budú
-pripravené pre linuxovú distribúciu Fedora 18\cite{fedoraHomepage}.
+pripravené pre linuxovú distribúciu Fedora 18 \cite{fedoraHomepage}.
 
 Overí sa rýchlosť zápisu na bežných aj RAID diskoch a~s najpoužívanejšími
-súborovými systémami.
+súborovými systémami uvedenými v~zozname nižsie.
+
+\begin{itemize}
+    \item ext2
+    \item ext3
+    \item ext4
+    \item xfs
+    \item jfs
+    \item ReiserFS
+\end{itemize}
+
+
 
 %\section{Software Risk Issues}
 \section{Softvérové riziká}
@@ -171,7 +182,7 @@ môžeme uvažovať o~nájdení chyby (dokonca regresie) v~\emph{tuned}.
 Hostiteľský systém bude spúšťať predpripravené obrazy virtualizovaného systému
 Fedora 18. K~virtualizovanému systému sa budú pripájať ďalšie disky. Tieto nové
 disky budú formátované na najpoužívanejšie súborové systémy a~testované ich
-rýchlosti pri rôznych profiloch tuned.
+rýchlosti pri rôznych profiloch \emph{tuned}.
 
 Na testovacie účely použijeme najnovšiu verziu \emph{tuned} z~repozitára \emph{Fedora 18}.
 
@@ -217,14 +228,17 @@ Celé testovania sa skladá z~niekoľkých súčastí:
     \item Vyhodnotenie výsledkov.
 \end{itemize}
 
-\section{Remaining Test Tasks}
-\section{Environmental Needs}
-\section{Staffing and Training Needs}
-\section{Responsibilities}
-\section{Schedule}
-\section{Planning Risks and Contingencies}
-\section{Approvals}
-\section{Glossary}
+Výsledky testov majú podobu nameraných hodnôt v tabuľkách (generujú sa
+automaticky) a písomného popisu týchto hodnôt.
+
+%\section{Remaining Test Tasks}
+%\section{Environmental Needs}
+%\section{Staffing and Training Needs}
+%\section{Responsibilities}
+%\section{Schedule}
+%\section{Planning Risks and Contingencies}
+%\section{Approvals}
+%\section{Glossary}
 
 %
 % Testovanie
