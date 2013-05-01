@@ -202,7 +202,7 @@ uloženého obrazu disku systému pred testovaním.
 
 Prvý prípad (pripájanie obrazu disku) sa rieší opakovaním testu. Takto
 dosiahneme vždy požadované výsledky, aj keď operácia zlyhá. Problém pripájania
-diskov je bližšie popísaný v sekcii \ref{sec:libvirt-problem}.
+diskov je bližšie popísaný v~sekcii \ref{sec:libvirt-problem}.
 
 %\section{Test Deliverables}
 \section{Čo obsahuje plán testovania a~jeho výsledky}
@@ -322,10 +322,10 @@ preto virtualizácia pri testovaní nie je prekážkou.
 \section{Implementácia testov}
 
 Na implementáciu testov je využitý prevažne jazyk \emph{bash}. Testovanie riadi
-hlavný súbor \emph{test\_disk.sh}, v ktorom sa nastavujú parametre testov.
-Tieto testy su popísane v tabuľke \ref{tab:test-params}. Konkrétne podtesty
+hlavný súbor \emph{test\_disk.sh}, v~ktorom sa nastavujú parametre testov.
+Tieto testy su popísane v~tabuľke \ref{tab:test-params}. Konkrétne podtesty
 začínajú prefixom \texttt{inc\_*}. Virtuálny systém sa pred každým testom
-vypne, obnoví zo zálohy disku a znova zapne.
+vypne, obnoví zo zálohy disku a~znova zapne.
 
 \begin{table}[H]
 \begin{center}
@@ -334,13 +334,13 @@ vypne, obnoví zo zálohy disku a znova zapne.
     \textbf{Názov premennej} & \textbf{Popis} \\
     \hline
     TEST\_COMMAND       & Sada príkazov pre diskové operácie \\
-    FS                  & Asociatívne pole, obsahujúce názov súborového systému \\ & a príkazu na jeho vytvorenie \\
+    FS                  & Asociatívne pole, obsahujúce názov súborového systému \\ & a~príkazu na jeho vytvorenie \\
     TO\_TEST            & Zoznam testov, ktoré sa prevedú \\
-    TUNED\_PROFILES     & Profily \emph{tuned}, ktoré sa zahrnú v testoch \\
+    TUNED\_PROFILES     & Profily \emph{tuned}, ktoré sa zahrnú v~testoch \\
     MACHINE\_NAME       & Názov virtuálneho systému pre ovládanie cez \emph{virsh} \\
     MACHINE\_IP         & IP adresa virtuálneho systému \\
-    LOG\_FILE           & Súbor s výsledkami \\
-    FAILED\_RUN\_LOG    & Súbor s príznakom chyby \\
+    LOG\_FILE           & Súbor s~výsledkami \\
+    FAILED\_RUN\_LOG    & Súbor s~príznakom chyby \\
     \hline
 \end{tabular}
 \caption{Popis premenných pre parametrizáciu testov.}
@@ -349,8 +349,8 @@ vypne, obnoví zo zálohy disku a znova zapne.
 \end{table}
 
 Disky sa pripájajú podľa toho, ako to vyžaduje aktuálny test. Kešovanie diskov
-medzi hostiteľským a virtualizovaným systémom je vypnuté na miestach, ktoré su
-uvedené na obrázku \ref{graf-cache} a zároveň neovplyvňujú prácu \emph{tuned}. 
+medzi hostiteľským a~virtualizovaným systémom je vypnuté na miestach, ktoré su
+uvedené na obrázku \ref{graf-cache} a~zároveň neovplyvňujú prácu \emph{tuned}. 
 
 %
 % Testflow
@@ -370,8 +370,8 @@ uvedené na obrázku \ref{graf-cache} a zároveň neovplyvňujú prácu \emph{tu
 \subsection{Riešenie problému so zlyhaním testu}
 \label{sec:test-failure}
 
-Test môže zlyhať z nepredvídateľných príčin, ako je napríklad chyba
-\emph{libvirt} popísaná v kapitole \ref{sec:libvirt-problem}. Ak v teste zlyhá
+Test môže zlyhať z~nepredvídateľných príčin, ako je napríklad chyba
+\emph{libvirt} popísaná v~kapitole \ref{sec:libvirt-problem}. Ak v~teste zlyhá
 operácia, ktorá má vplyv na výsledky, zavolá sa funkcia \texttt{failedRunSave},
 ktorá nastaví príznak chyby. Funkciou \texttt{failedRunCheck} vieme overiť
 tento príznak. Ak napríklad nastala chyba pripájania diskov, test zápisu sa už
@@ -382,11 +382,11 @@ daný test opakovane spúšťa, ak je to potreba.
 \section{Automatizované spracovanie výsledkov}
 
 Po skončení testov sa spúšťa skript \texttt{make\_results.sh}, ktorý
-automatizovane spracováva výsledky testov a generuje výstup vo formáte \LaTeX.
-Výsledky sú v tabuľkách a rozdelené do sekcií. Ak chceme niektorú sekciu
-dodatočne okomentovať, tento \LaTeX~kód očakáva dodatočné súbory s menom
+automatizovane spracováva výsledky testov a~generuje výstup vo formáte \LaTeX.
+Výsledky sú v~tabuľkách a~rozdelené do sekcií. Ak chceme niektorú sekciu
+dodatočne okomentovať, tento \LaTeX~kód očakáva dodatočné súbory s~menom
 \texttt{obsah-test-<názov tuned profilu>.tex}. Ak tento súbor existuje, jeho
-text sa vloží pre tabuľku s výsledkami.
+text sa vloží pre tabuľku s~výsledkami.
 
 %
 % Vyhodnotenie testov
@@ -407,20 +407,20 @@ text sa vloží pre tabuľku s výsledkami.
 % Libvirt problemy
 %
 
-\section{Problém s \emph{libvirtd}}
+\section{Problém s~\emph{libvirtd}}
 \label{sec:libvirt-problem}
 
-Pri pripájaní diskov k virtuálnemu systému za použitia príkazu \texttt{virsh
+Pri pripájaní diskov k~virtuálnemu systému za použitia príkazu \texttt{virsh
 attach-device }, sa systém občas náhodne vypne. Nepodarilo sa mi spoľahlivo
 zreprodukovať túto chybu do takého stavu, aby som ju mohol nahlásiť vývojárom,
 pretože nastávala nepravidelne. 
 
-O páde systému som nenašiel žiadnu zmienku v logoch virtualizovaného ani
+O páde systému som nenašiel žiadnu zmienku v~logoch virtualizovaného ani
 hostovacieho systému. 
 
-Tento problém som riešil tým, že kontrolujem úspešnosť operácií a test sa
+Tento problém som riešil tým, že kontrolujem úspešnosť operácií a~test sa
 automaticky opakuje, kým neskončí korektne. Táto problematika je presnejšie
-popísaná v kapitole \ref{sec:test-failure}.
+popísaná v~kapitole \ref{sec:test-failure}.
 
 %
 % Power Management testday
@@ -435,14 +435,14 @@ spoluorganizátor.
 
 Mimo iné sa testovalo aj \emph{tuned} samotné. Najväčším prekvapením bolo
 testovanie \emph{tuned} profilu \emph{powersave}, ktorý by mal znižovať
-elektrický odber. Na testovanie prišlo množstvo ľudí s rôznymi notebookmi.
-Konkrétne výsledky sú uvedené v tabuľke \ref{tab:testday-results}.
+elektrický odber. Na testovanie prišlo množstvo ľudí s~rôznymi notebookmi.
+Konkrétne výsledky sú uvedené v~tabuľke \ref{tab:testday-results}.
 
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{|l|r|r|r|}
     \hline
-    \textbf{Typ notebooku} & \textbf{Odber bez tuned} & \textbf{Odber s tuned} & \textbf{Zlepšenie} \\
+    \textbf{Typ notebooku} & \textbf{Odber bez tuned} & \textbf{Odber s~tuned} & \textbf{Zlepšenie} \\
     \hline
     Lenovo ThinkPad X230        & 4.540 Wh & 4.110 Wh & 9.47\% \\
     HP Elitebook 8540w          & 7.566 Wh & 7.493 Wh & 0.97\% \\
@@ -457,13 +457,13 @@ Konkrétne výsledky sú uvedené v tabuľke \ref{tab:testday-results}.
     \textbf{Priemerné zlepšenie} & \multicolumn{3}{|r|}{7.47\%} \\
     \hline
 \end{tabular}
-\caption{Odber rôznych notebookov s vypnutým a zapnutým tuned.}
+\caption{Odber rôznych notebookov s~vypnutým a~zapnutým tuned.}
 \label{tab:testday-results}
 \end{center}
 \end{table}
 
 Už na prvý pohľad je viditeľné, že tento \emph{tuned} profil si robí svoju
-prácu. V priemere sa odber znížil o 7.47 \%. 
+prácu. V~priemere sa odber znížil o 7.47 \%. 
 
 %
 % Najdene chyby
@@ -474,9 +474,9 @@ prácu. V priemere sa odber znížil o 7.47 \%.
 Počas písania tejto bakalárskej práce, narábanie s~\emph{tuned} a~testovaní som
 narazil na niekoľko chýb, ktoré som nahlasoval do oficiálnej \emph{Red Hat} a
 \emph{Fedora} bugzilly~\cite{rhBugzilla}. Chyby sa nachádzali väčšinou priamo v
-balíku \emph{tuned}, ale taktiež v balíku \emph{selinux-policy}.
+balíku \emph{tuned}, ale taktiež v~balíku \emph{selinux-policy}.
 
-Tieto chyby boli väčśinou opravené do pár dní. Ich prehľad je v tabuľke \ref{tab:bugs}.
+Tieto chyby boli väčśinou opravené do pár dní. Ich prehľad je v~tabuľke \ref{tab:bugs}.
 
 \begin{table}[H]
 \begin{center}
@@ -498,7 +498,7 @@ Tieto chyby boli väčśinou opravené do pár dní. Ich prehľad je v tabuľke 
 \end{table}
 
 Tieto chyby neovplyvnili testovanie, pretože neboli až tak závažné alebo ich
-vývojár rýchlo opravil. Jedine chyba v \texttt{mkfs.btrfs} znemožnila
+vývojár rýchlo opravil. Jedine chyba v~\texttt{mkfs.btrfs} znemožnila
 testovanie na súborovom systéme \emph{btrfs}.
 
 
