@@ -42,10 +42,9 @@ podľa toho upravuje systém, čím dosahujeme ešte lepšie výsledky.
 % Historia tuned
 %
 
-\subsection{História \emph{tuned}}
+\section{História \emph{tuned}}
 \label{sec:historiaTuned}
 
-%TODO: Skontrolovat rok
 Komponenta \emph{tuned} je vyvýjaná od roku 2008. Prvými autormi boli
 \emph{Philip Knirsh} a~\emph{Thomas WoVerner}. Dnes sú najväčšími
 prispievatelia \emph{Ján Včelák}, \emph{Jaroslav Škarvada} a~\emph{Ján Kaluža}.
@@ -141,7 +140,7 @@ batériu.} pri pripojovaní diskov.
 %\section{Introduction}
 \section{Úvod}
 
-Na testovanie tuned využijeme pomocnú knižnicu beakerlib
+Na testovanie tuned využijeme pomocnú knižnicu \emph{beakerlib}
 \cite{beakerlibHomepage} pre jednoduchšie písanie testov a~prehľadnejšiu
 interpretáciu dosiahnutých výsledkov. Cieľom testovania je zistiť, nakoľko
 \emph{tuned} ovplyvňuje rýchlosť diskových operácií.
@@ -174,14 +173,14 @@ Fedora 18. K~virtualizovanému systému sa budú pripájať ďalšie disky. Tiet
 disky budú formátované na najpoužívanejšie súborové systémy a~testované ich
 rýchlosti pri rôznych profiloch tuned.
 
-Na testovacie účely použijeme najnovšiu verziu tuned z~repozitára.
+Na testovacie účely použijeme najnovšiu verziu \emph{tuned} z~repozitára \emph{Fedora 18}.
 
 %\section{Features not to be Tested}
 \section{Čo sa nebude testovať}
 
 Pretože testy bežia na virtualizovanom hardvéri, výsledky môžu byť trocha
-skreslené. Viac o~testovaní na virtualizovanom systéme v~kapitole %TODO:
-doplnit
+skreslené. Viac o~testovaní na virtualizovanom systéme v~kapitole
+\ref{sec:virtual-machine}.
 
 %\section{Approach}
 
@@ -201,7 +200,9 @@ stráca význam. Preto je potrebné počas testovanie kontrolovať, či táto k�
 operácia dopadla úspešne. Rovnaká situácia môže nastať, ak zlyhá nahratie
 uloženého obrazu disku systému pred testovaním.
 
-Prvý prípad (pripájanie obrazu disku) sa rieší opakovaním testu. Takto dosiahneme vždy požadované výsledky, aj keď operácia zlyhá. Problematiku pripájania diskov je bližšie popísana v sekcii \ref{sec:libvirt-problem}.
+Prvý prípad (pripájanie obrazu disku) sa rieší opakovaním testu. Takto
+dosiahneme vždy požadované výsledky, aj keď operácia zlyhá. Problém pripájania
+diskov je bližšie popísaný v sekcii \ref{sec:libvirt-problem}.
 
 %\section{Test Deliverables}
 \section{Čo obsahuje plán testovania a~jeho výsledky}
@@ -270,6 +271,7 @@ ktoré môžeme nájsť v~adresároch \texttt{/etc/cron.*}.
 %
 
 \section{Použitie virtuálneho stroja}
+\label{sec:virtual-machine}
 
 Testovanie diskových operácií prebieha vo virtuálnom stroji za použitia
 \emph{qemu-kvm} pod \emph{libvirtd}. Tento spôsob testovania som zvolil pre
@@ -331,9 +333,14 @@ vypne, obnoví zo zálohy disku a znova zapne.
     \hline
     \textbf{Názov premennej} & \textbf{Popis} \\
     \hline
-    TEST\_COMMAND & Sada príkazov pre diskové operácie \\
-    FS & Asociatívne pole, obsahujúce názov súborového systému \\ & a príkazu na jeho vytvorenie \\
-    TO\_TEST & Zoznam testov, ktoré sa prevedú \\
+    TEST\_COMMAND       & Sada príkazov pre diskové operácie \\
+    FS                  & Asociatívne pole, obsahujúce názov súborového systému \\ & a príkazu na jeho vytvorenie \\
+    TO\_TEST            & Zoznam testov, ktoré sa prevedú \\
+    TUNED\_PROFILES     & Profily \emph{tuned}, ktoré sa zahrnú v testoch \\
+    MACHINE\_NAME       & Názov virtuálneho systému pre ovládanie cez \emph{virsh} \\
+    MACHINE\_IP         & IP adresa virtuálneho systému \\
+    LOG\_FILE           & Súbor s výsledkami \\
+    FAILED\_RUN\_LOG    & Súbor s príznakom chyby \\
     \hline
 \end{tabular}
 \caption{Popis premenných pre parametrizáciu testov.}
@@ -343,7 +350,43 @@ vypne, obnoví zo zálohy disku a znova zapne.
 
 Disky sa pripájajú podľa toho, ako to vyžaduje aktuálny test. Kešovanie diskov
 medzi hostiteľským a virtualizovaným systémom je vypnuté na miestach, ktoré su
-uvedené na obrázku \ref{graf-cache}. 
+uvedené na obrázku \ref{graf-cache} a zároveň neovplyvňujú prácu \emph{tuned}. 
+
+%
+% Testflow
+%
+
+\begin{figure}[ht]
+\begin{center}
+  \makebox[\textwidth]{\includegraphics[width=\paperwidth-200pt]{data/testflow.pdf}}
+  \caption{Priebeh testovania}
+  \label{pic:testflow}
+\end{center}
+\end{figure}
+%
+% Test failing solving
+%
+
+\subsection{Riešenie problému so zlyhaním testu}
+\label{sec:test-failure}
+
+Test môže zlyhať z nepredvídateľných príčin, ako je napríklad chyba
+\emph{libvirt} popísaná v kapitole \ref{sec:libvirt-problem}. Ak v teste zlyhá
+operácia, ktorá má vplyv na výsledky, zavolá sa funkcia \texttt{failedRunSave},
+ktorá nastaví príznak chyby. Funkciou \texttt{failedRunCheck} vieme overiť
+tento príznak. Ak napríklad nastala chyba pripájania diskov, test zápisu sa už
+nespustí. Hlavný súbor \texttt{test\_disk.sh} taktiež využíva túto funkciu a
+daný test opakovane spúšťa, ak je to potreba.
+
+
+\section{Automatizované spracovanie výsledkov}
+
+Po skončení testov sa spúšťa skript \texttt{make\_results.sh}, ktorý
+automatizovane spracováva výsledky testov a generuje výstup vo formáte \LaTeX.
+Výsledky sú v tabuľkách a rozdelené do sekcií. Ak chceme niektorú sekciu
+dodatočne okomentovať, tento \LaTeX~kód očakáva dodatočné súbory s menom
+\texttt{obsah-test-<názov tuned profilu>.tex}. Ak tento súbor existuje, jeho
+text sa vloží pre tabuľku s výsledkami.
 
 %
 % Vyhodnotenie testov
@@ -351,47 +394,8 @@ uvedené na obrázku \ref{graf-cache}.
 
 \section{Vyhodnotenie testov}
 
-%
-% START Automatic results
-%
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} \\ \hline
-    simple\_disk virtio ext3 & 112 s & 104 s & 8 s \\
-    \hline
-    raid0 virtio ext3 & 120 s & 111 s & 9 s \\
-    \hline
-    raid1 virtio ext3 & 131 s & 119 s & 12 s \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext3}
-\label{tab:results-ext3}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} \\ \hline
-    simple\_disk virtio ext4 & 116 s & 101 s & 15 s \\
-    \hline
-    raid0 virtio ext4 & 121 s & 107 s & 14 s \\
-    \hline
-    raid1 virtio ext4 & 121 s & 109 s & 12 s \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext4}
-\label{tab:results-ext4}
-\end{center}
-\end{table}
-
-%
-% END Automatic results
-%
-
+% Nacitaj subory s vysledkami
+\IfFileExists{test-results}{\input{test-results}}{}
 
 %
 % Bocné produkty
@@ -404,6 +408,7 @@ uvedené na obrázku \ref{graf-cache}.
 %
 
 \section{Problém s \emph{libvirtd}}
+\label{sec:libvirt-problem}
 
 Pri pripájaní diskov k virtuálnemu systému za použitia príkazu \texttt{virsh
 attach-device }, sa systém občas náhodne vypne. Nepodarilo sa mi spoľahlivo
@@ -412,6 +417,10 @@ pretože nastávala nepravidelne.
 
 O páde systému som nenašiel žiadnu zmienku v logoch virtualizovaného ani
 hostovacieho systému. 
+
+Tento problém som riešil tým, že kontrolujem úspešnosť operácií a test sa
+automaticky opakuje, kým neskončí korektne. Táto problematika je presnejšie
+popísaná v kapitole \ref{sec:test-failure}.
 
 %
 % Power Management testday
@@ -426,7 +435,8 @@ spoluorganizátor.
 
 Mimo iné sa testovalo aj \emph{tuned} samotné. Najväčším prekvapením bolo
 testovanie \emph{tuned} profilu \emph{powersave}, ktorý by mal znižovať
-elektrický odber. Na testovanie prišlo množstvo ľudí s rôznymi notebookmi. Konkrétne výsledky sú uvedené v tabuľke \ref{tab:testday-results}.
+elektrický odber. Na testovanie prišlo množstvo ľudí s rôznymi notebookmi.
+Konkrétne výsledky sú uvedené v tabuľke \ref{tab:testday-results}.
 
 \begin{table}[H]
 \begin{center}
@@ -452,6 +462,9 @@ elektrický odber. Na testovanie prišlo množstvo ľudí s rôznymi notebookmi.
 \end{center}
 \end{table}
 
+Už na prvý pohľad je viditeľné, že tento \emph{tuned} profil si robí svoju
+prácu. V priemere sa odber znížil o 7.47 \%. 
+
 %
 % Najdene chyby
 %
@@ -476,12 +489,17 @@ Tieto chyby boli väčśinou opravené do pár dní. Ich prehľad je v tabuľke 
     BZ\#953132 & AVCs after starting tuned daemon & opravené \\
     BZ\#901689 & Typo in tuned-adm.py & opravené \\
     BZ\#911138 & tuned-adm profile virtual-guest/host AVC denied & zatiaľ neopravené \\
+    BZ\#958575 & mkfs.btrfs segfaults & zatiaľ neopravené \\
     \hline
 \end{tabular}
 \caption{Zoznam nájdených chýb}
 \label{tab:bugs}
 \end{center}
 \end{table}
+
+Tieto chyby neovplyvnili testovanie, pretože neboli až tak závažné alebo ich
+vývojár rýchlo opravil. Jedine chyba v \texttt{mkfs.btrfs} znemožnila
+testovanie na súborovom systéme \emph{btrfs}.
 
 
 %
