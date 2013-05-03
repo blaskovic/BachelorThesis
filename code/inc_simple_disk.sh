@@ -40,12 +40,16 @@ rlRun "ssh root@$MACHINE_IP 'echo 3 > /proc/sys/vm/drop_caches; sync'" || failed
 rlRun "sleep 10"
 
 rlRun "sync"
-rlRun "TIME_START=`date '+%s'`"
 
 failedRunCheck || { rlRun "ssh root@$MACHINE_IP '$TEST_COMMAND'" || failedRunSave; }
+
+rlRun "TIME_HOST_START=`date '+%s'`"
 rlRun "sync"
-rlRun "TIME_END=`date '+%s'`"
-rlRun "TOTAL_TIME=$(($TIME_END - $TIME_START))"
+rlRun "TIME_HOST_END=`date '+%s'`"
+
+rlRun "TIME_START=`ssh root@$MACHINE_IP 'cat /tmp/TIME_START'`"
+rlRun "TIME_END=`ssh root@$MACHINE_IP 'cat /tmp/TIME_END'`"
+rlRun "TOTAL_TIME=$(($TIME_END - $TIME_START + $TIME_HOST_START - $TIME_HOST_END))"
 
 # Cleanup
 rlRun "ssh root@$MACHINE_IP 'umount /mnt/disk1'"

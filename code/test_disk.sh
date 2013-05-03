@@ -4,17 +4,21 @@
 # Author: Branislav Blaskovic
 #
 
+
+#
+# Testing parameters
+# Include config and bootstrap
+#
+. config
 . bootstrap.sh
 
 # Set number of disks and number of connections to test
 
 rlPhaseStartTest "TEST: Simple speed"
    
-    #
-    # Testing parameters
-    # Include config
-    #
-    . config
+    rlLog "Start time: `date`"
+
+    rlRun "sync"
 
     for FS_NAME in ${!FS[@]}
     do
@@ -55,6 +59,8 @@ rlPhaseStartTest "TEST: Simple speed"
             done
         done
     done
+
+    rlLog "End time: `date`"
 
 rlPhaseEnd
 
