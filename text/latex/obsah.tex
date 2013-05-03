@@ -90,11 +90,11 @@ verziu \texttt{tuned-2.2.2-1} na \emph{Fedora 18}:
 
 \begin{itemize}
     \item \textbf{balanced} - predvolený profil pre väčšinu systémov s~výnimkou virtuálnych
-    \item \textbf{latency-performance} - %TODO
-    \item \textbf{powersave} - na zníženie odberu
-    \item \textbf{throughput-performance} %TODO
+    \item \textbf{latency-performance} - znižuje latenciu systému
+    \item \textbf{powersave} - na zníženie odberu energie
+    \item \textbf{throughput-performance} 
     \item \textbf{virtual-guest} - predvolený profil pre virtuálne systémy
-    \item \textbf{virtual-host} %TODO
+    \item \textbf{virtual-host} - vhodný pre systémy, na ktorých sa prevádzkujú virtuálne systémy
 \end{itemize}
 
 Balíček \emph{tuned-profiles-compat} rozširuje zoznam o~tieto ďalšie profily:
@@ -110,9 +110,9 @@ Balíček \emph{tuned-profiles-compat} rozširuje zoznam o~tieto ďalšie profil
 \end{itemize}
 
 Medzi najčastejšie operácie profilov patrí menenie governoru\footnote{Rýchlosť
-procesora je možné meniť a~tým šetriť energiu v čase, ked ho naplno
+procesora je možné meniť a~tým šetriť energiu v čase, keď ho naplno
 nevyužívame. Túto rýchlosť ovplyvňujú rôzne druhy plánovačov.} procesoru medzi
-\texttt{ondeman}|\footnote{Nastavuje rýchlosť procesora podľa využitia.}
+\texttt{ondemand}|\footnote{Nastavuje rýchlosť procesora podľa využitia.}
 a~\texttt{performance}\footnote{Nastaví rýchlosť procesora na najvyššiu hodnotu
 bez ohľadu na využitie.}. Viac o~tejto vlastnosti je možné dočítať sa na wiki
 stránkach Arch Linuxu\cite{arch:governor}.
@@ -152,7 +152,7 @@ Napísané testy budú overovať správnu funkcionalitu \emph{tuned} démona a~t
 profilov v~zameraní na diskové operácie. Všetky testy budú
 pripravené pre linuxovú distribúciu Fedora 18 \cite{fedoraHomepage}.
 
-Overí sa rýchlosť zápisu na bežných aj RAID diskoch a~s najpoužívanejšími
+Overí sa rýchlosť zápisu na bežných aj RAID diskoch a~s~najpoužívanejšími
 súborovými systémami uvedenými v~zozname nižsie.
 
 \begin{itemize}
@@ -162,8 +162,8 @@ súborovými systémami uvedenými v~zozname nižsie.
     \item xfs
     \item jfs
     \item ReiserFS
+    \item btrfs
 \end{itemize}
-
 
 
 %\section{Software Risk Issues}
@@ -184,7 +184,8 @@ Fedora 18. K~virtualizovanému systému sa budú pripájať ďalšie disky. Tiet
 disky budú formátované na najpoužívanejšie súborové systémy a~testované ich
 rýchlosti pri rôznych profiloch \emph{tuned}.
 
-Na testovacie účely použijeme najnovšiu verziu \emph{tuned} z~repozitára \emph{Fedora 18}.
+Na testovacie účely použijeme najnovšiu verziu \emph{tuned} z~repozitára
+\emph{Fedora 18}.
 
 %\section{Features not to be Tested}
 \section{Čo sa nebude testovať}
@@ -202,6 +203,10 @@ Počas testovania so zapnutým démonom \emph{tuned} by všetky I/O operácie di
 mali byť rýchlejšie alebo aspoň tak rýchle ako s~vypnutým \emph{tuned}. Žiadna
 operácia by nemala skončiť s~chybou a~disky by sa nemali poškodiť. Zápis so
 zapnutým \emph{tuned} musí mať rovnaké výsledky ako s~vypnutým.
+
+Výnimku tvoria len tie profily, ktoré nemajú za úlohu zvyšovať výkon. Medzi
+tieto profily patrí napriklad \emph{powersave}, ktorý naopak môže diskové
+operácie spomalovať.
 
 %\section{Suspension Criteria and Resumption Requirements}
 \section{Kritéria na prerušenie testovania}
