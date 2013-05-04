@@ -89,12 +89,12 @@ Prehľad profilov zo základného balíčka \emph{tuned}. Zoznam je platný pre
 verziu \texttt{tuned-2.2.2-1} na \emph{Fedora 18}:
 
 \begin{itemize}
-    \item \textbf{balanced} - predvolený profil pre väčšinu systémov s~výnimkou virtuálnych
-    \item \textbf{latency-performance} - znižuje latenciu systému
-    \item \textbf{powersave} - na zníženie odberu energie
-    \item \textbf{throughput-performance} 
-    \item \textbf{virtual-guest} - predvolený profil pre virtuálne systémy
-    \item \textbf{virtual-host} - vhodný pre systémy, na ktorých sa prevádzkujú virtuálne systémy
+    \item \textbf{balanced} -- predvolený profil pre väčšinu systémov s~výnimkou virtuálnych
+    \item \textbf{latency-performance} -- znižuje latenciu systému
+    \item \textbf{powersave} -- na zníženie odberu energie
+    \item \textbf{throughput-performance} -- vylepšuje celkovú priepustnosť systému 
+    \item \textbf{virtual-guest} -- predvolený profil pre virtuálne systémy
+    \item \textbf{virtual-host} -- vhodný pre systémy, na ktorých sa prevádzkujú virtuálne systémy
 \end{itemize}
 
 Balíček \emph{tuned-profiles-compat} rozširuje zoznam o~tieto ďalšie profily:
@@ -129,10 +129,10 @@ poškodenie dát pri odpojení napájania diskov, pokiaľ disk nemá záložnú
 batériu.} pri pripojovaní diskov. 
 
 %
-% Moznosti emulacie diskovych zariadeni a sietovych sluzieb
+% Emulacia diskovych zariadeni a sietovych sluzieb
 %
 
-\chapter{Možnosti emulácie diskových zariadení a sieťových služieb}
+\chapter{Emulácia diskových zariadení a sieťových služieb}
 
 V tejto kapitole sa budem venovať emulácií diskových zariadení a sieťových
 služieb v teoretickej rovine. Je potrebné si uvedomiť, že na to, aby bolo
@@ -241,7 +241,124 @@ Automatické testy ale nemôžu používať klikacie GUI nástroje. Preto existu
 nástroj \texttt{/bin/virsh} z balíka \texttt{libvirt-client}, ktorý dokáže
 zjednodušene pracovať s virtuálnymi systémami z príkazovej riadky.  
 
+Nastavenia virtuálneho stroja cez \emph{libvirt} sa ukladajú ako
+\emph{XML}\footnote{eXtensible Markup Languagei -- rozšíriteľný značkovací
+jazyk} dokument. Tieto konfiguračné súbory sú uložené štandardne v zložke
+\texttt{/etc/libvirt/qemu} a majú ľahko pochopiteľnú štruktúru.
 
+Ak chceme pridať nový disk, tak do pridáme nového potomka k uzlu
+\texttt{<devices>}, ktorý môže vyzerať napríklad ako v ukážke
+\ref{alg:libvirt-xml-disk}.
+\\
+\renewcommand{\lstlistingname}{Ukážka}
+\begin{lstlisting}[label=alg:libvirt-xml-disk,caption=Príklad diskového zariadenia pre libvirt]
+<disk type='file' device='disk'>
+    <driver name='qemu' type='raw'/>
+    <source file='/home/user/Virtuals/F18.img'/>
+    <target dev='sda' bus='sata'/>
+    <address type='drive' controller='0' bus='0' target='0' unit='0'/>
+</disk>
+\end{lstlisting}
+\renewcommand{\lstlistingname}{\listingAlgoritmus}
+
+Niektoré typy zariadení je možné pripájať dokonca aj počas behu virtuálneho
+systému. Na to sa používa príkaz uvedený v \ref{alg:virsh-attach-device}.
+\\
+\begin{lstlisting}[label=alg:virsh-attach-device,caption=Pripojenie zariadenia bez priamej úpravy XML súbora]
+/bin/virsh attach-device <názov stroja> súbor.xml
+\end{lstlisting}
+
+Treba brať na vedomie ale to, že takto pridané zariadenie je pripojené len do
+najbližsieho vypnutia stroja, pretože tento príkaz neovplyvňuje hlavný XML
+súbor stroja.
+
+%
+% Testovanie diskovych zariadeni a sietovych sluzieb
+%
+
+\chapter{Testovanie diskových zariadení a sieťových služieb}
+
+Či už zariadenia máme fyzicky pripojené alebo ich len simulujeme, nemalo by to
+mať vplyv na spôsob ich testovania.
+
+%
+% Testy pre sietove sluzby
+%
+
+\section{Testy pre sieťové služby}
+
+V prvom rade je potrebné si rozmyslieť, čo konkrétne chceme zo sieťových
+služieb testovať a uvedomiť si, čo všetko má na testovanie vplyv a obsiahnuť
+všetky možnosti je nad rámec bakalárskej a asi aj diplomovej práce.
+
+Ako príklad môžeme uviesť jednoduchý test -- meranie rýchlosti LAN siete.
+Najjednoduchšia varianta, čo by mohla niekoho napadnúť je, merať rýchlosť
+sťahovania pripraveného súbora cez HTTP protokol. Na jednom uzly siete sa
+vytvorí server a na druhom uzly začneme sťahovanie. Toto riešenie ale nie je
+úplne presné, kedže samotný protokol má taktiež nejakú réžiu. Preto treba ísť
+na čo najnižšiu vrstvu a ideálne si spraviť vlastný merací nástroj, ktorý bude
+pracovať priamo s packetmi. Na meranie ale má vplyv každé zariadenie, ktoré je
+v ceste od jedného bodu k druhému.
+
+%
+% iperf
+%
+
+Na meranie výkonnosti siete existuje napríklad nástroj
+\emph{iperf}\footnote{Domovská stránka -- http://iperf.sourceforge.net}
+vyvýjaný \emph{NLANR/DAST}, ktorý dokáže merať priepustnosť siete, stratu
+paketov a iné.  Projekt NLANR bohužial skončil pred pár rokmi a preto je
+projekt neaktívny.  Posledná zmena na ňom bola v roku 2011.
+
+\emph{Iperf} je potrebné spustiť na jednom systéme ako server a na druhom ako
+klient. Príklad najjednoduchšieho použitia je v ukážke \ref{alg:iperf-usage}.
+\\
+\renewcommand{\lstlistingname}{Ukážka}
+\begin{lstlisting}[label=alg:iperf-usage,caption=Príklad použitia iperf]
+/bin/iperf -s # Spustenie ako server
+/bin/iperf -c <host> # Spustenie ako klient, kde <host> je IP adresa servera
+\end{lstlisting}
+\renewcommand{\lstlistingname}{\listingAlgoritmus}
+
+Výsledok takéhoto jednoduchého príkladu môže vyzerať napríklad ako v ukážke
+\ref{alg:iperf-results}. Ako je vidieť, server mal IP adresu
+\texttt{192.168.0.103} a program nameral rýchlosť 168\,Mbits/sec.
+\\
+\renewcommand{\lstlistingname}{Ukážka}
+\begin{lstlisting}[label=alg:iperf-results,caption=Výstup z programu iperf]
+-------------------------------------
+Client connecting to 192.168.0.103, TCP port 5001
+TCP window size: 22.9 KByte (default)
+-------------------------------------
+[  3] local 192.168.0.120 port 60573 connected with 192.168.0.103 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec   201 MBytes   168 Mbits/sec
+\end{lstlisting}
+\renewcommand{\lstlistingname}{\listingAlgoritmus}
+
+%
+% TTCP
+%
+
+Ďalší nástroj, ktorý je možné použiť je \emph{PCATTCP}\footnote{PCAUSA Test TCP
+-- http://www.pcausa.com/Utilities/pcattcp.htm}. Tento program má podporu aj
+pre \emph{IPv6} a je vyvýjaný pre Windows. Jeho unixová varianta sa volá
+\emph{Unix Test TCP}. 
+
+\section{Testy diskových zariadení}
+
+Meranie rýchlosti zápisu alebo čítania disku nie je až tak problematické, ak si dáme pozor na to, či zápis prebehol v skutočnosti alebo ešte len čaká vo vyrovnávacej pamäti. Najjednoduchší spôsob merania zápisu môžeme previesť nástrojom \texttt{/bin/dd}. Príklad použitia a jeho výsledku je možné vidieť v ukážke \ref{alg:dd-usage}.
+\\
+\renewcommand{\lstlistingname}{Ukážka}
+\begin{lstlisting}[label=alg:dd-usage,caption=Príklad použitia a výsledok nástroja dd]
+$ /bin/dd if=/dev/zero of=file bs=1M count=300 conv=fdatasync
+300+0 records in
+300+0 records out
+314572800 bytes (315 MB) copied, 2.96816 s, 106 MB/s
+\end{lstlisting}
+\renewcommand{\lstlistingname}{\listingAlgoritmus}
+
+Voľba \texttt{conv=fdatasync} nám zabezpečuje to, že \emph{dd} po zápise vyžiada synchronizáciu systému a tým sú dáta v skutočnosit naozaj zapísané na disk.
 
 %
 % Plan testovania
@@ -265,7 +382,7 @@ interpretáciu dosiahnutých výsledkov. Cieľom testovania je zistiť, nakoľko
 
 Napísané testy budú overovať správnu funkcionalitu \emph{tuned} démona a~taktiež
 profilov v~zameraní na diskové operácie. Všetky testy budú
-pripravené pre linuxovú distribúciu Fedora 18 \cite{fedoraHomepage}.
+pripravené pre linuxovú distribúciu Fedora~18~\cite{fedoraHomepage}.
 
 Overí sa rýchlosť zápisu na bežných aj RAID diskoch a~s~najpoužívanejšími
 súborovými systémami uvedenými v~zozname nižsie.
@@ -364,9 +481,9 @@ automaticky) a písomného popisu týchto hodnôt.
 % Testovanie
 %
 
-\chapter{Testovanie}
+\chapter{Príprava prostredia a implementácia testov}
 
-\section{Príprava systému}
+\section{Nastavenia systému}
 
 Pred testovaním je potrebné pripraviť si nainštalovaný systém \emph{Fedora 18}
 ako obraz disku. Tento obraz sa bude spúšťať cez qemu-kvm. Disk, na ktorom sa
@@ -376,12 +493,13 @@ virtualizovaný systém synchronizovať a~zmazať nakešované stránky (Algorit
 \ref{alg:sync}).
 \\
 \begin{lstlisting}[caption=Synchronizácia systému,label=alg:sync]
-    /bin/sync\\
-    echo 3 \textgreater /proc/sys/vm/drop\_caches
+    /bin/sync
+    echo 3 > /proc/sys/vm/drop_caches
 \end{lstlisting}
 
 Každé miesto, kde je možnosť, že by systém si uchovával nejaké nakešované data,
-ktoré by mohli ovplyvniť výsledky testovania je potrebné poznať (Obrázok \ref{graf-cache}).
+ktoré by mohli ovplyvniť výsledky testovania je potrebné poznať (Obrázok
+\ref{graf-cache}).
 
 \begin{figure}[ht]
 \begin{center}
@@ -417,7 +535,7 @@ Medzi hlavné výhody testovania na virtualizovanom systéme patrí:
 \begin{itemize}
     \item Jednoduchšia správa obrazov celého systému.
     \item Pohodlné pripájanie a~odpájanie diskov.
-    \item Dokonalé prispôsobenie systému pre požiadavky testov - na
+    \item Dokonalé prispôsobenie systému pre požiadavky testov -- na
     hostiteľskom systéme moc nezáleží a~dá sa využiť skoro akákoľvek Linuxová
     distribúcia.
 \end{itemize}
@@ -440,7 +558,7 @@ Toto testovanie prináša ale aj množstvo nevýhod.
 \subsection{Zhrnutie}
 
 Aj napriek všetkým nevýhodám je testovanie na virtualizovanom systéme vhodné.
-Výsledky testov sú porovnávacie (so zapnutým a~vypnutým \emph{tuned}) - to
+Výsledky testov sú porovnávacie (so zapnutým a~vypnutým \emph{tuned}) -- to
 znamená, že aj keď by v~skutočnosti časy mohli byť odlišné, rozdiel medzi
 \emph{tuned} a~bez \emph{tuned} verziou ostáva rovnaký.
 
@@ -466,7 +584,8 @@ vypne, obnoví zo zálohy disku a~znova zapne.
     \textbf{Názov premennej} & \textbf{Popis} \\
     \hline
     TEST\_COMMAND       & Sada príkazov pre diskové operácie \\
-    FS                  & Asociatívne pole, obsahujúce názov súborového systému \\ & a~príkazu na jeho vytvorenie \\
+    FS                  & Asociatívne pole, obsahujúce názov súborového systému \\
+                        & a~príkazu na jeho vytvorenie \\
     TO\_TEST            & Zoznam testov, ktoré sa prevedú \\
     TUNED\_PROFILES     & Profily \emph{tuned}, ktoré sa zahrnú v~testoch \\
     MACHINE\_NAME       & Názov virtuálneho systému pre ovládanie cez \emph{virsh} \\
@@ -510,6 +629,11 @@ tento príznak. Ak napríklad nastala chyba pripájania diskov, test zápisu sa 
 nespustí. Hlavný súbor \texttt{test\_disk.sh} taktiež využíva túto funkciu a
 daný test opakovane spúšťa, ak je to potreba.
 
+%
+% Vysledky testovania
+%
+
+\chapter{Výsledky testovania}
 
 \section{Automatizované spracovanie výsledkov}
 
@@ -519,6 +643,7 @@ Výsledky sú v~tabuľkách a~rozdelené do sekcií. Ak chceme niektorú sekciu
 dodatočne okomentovať, tento \LaTeX~kód očakáva dodatočné súbory s~menom
 \texttt{obsah-test-<názov tuned profilu>.tex}. Ak tento súbor existuje, jeho
 text sa vloží pre tabuľku s~výsledkami.
+
 
 %
 % Vyhodnotenie testov
@@ -621,7 +746,7 @@ Tieto chyby boli väčśinou opravené do pár dní. Ich prehľad je v~tabuľke 
     BZ\#953132 & AVCs after starting tuned daemon & opravené \\
     BZ\#901689 & Typo in tuned-adm.py & opravené \\
     BZ\#911138 & tuned-adm profile virtual-guest/host AVC denied & zatiaľ neopravené \\
-    BZ\#958575 & mkfs.btrfs segfaults & zatiaľ neopravené \\
+    BZ\#958575 & mkfs.btrfs segfaults & opravené \\
     \hline
 \end{tabular}
 \caption{Zoznam nájdených chýb}
