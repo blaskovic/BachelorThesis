@@ -31,20 +31,29 @@
 \usepackage[Algoritmus]{algorithm}
 \usepackage{algorithmic}
 
+% Chcem pouzivat listing pre kod
 \usepackage[usenames,dvipsnames]{color}
 \usepackage{listings}
 \lstset{
     columns=fullflexible,
     numbersep=5pt,
-    basicstyle=\fontfamily{pcr}\selectfont,
+    basicstyle=\ttfamily\footnotesize,
     numberstyle=\footnotesize\color{Gray},
     commentstyle=\it\footnotesize\color{Gray},
     captionpos=b, 
     frame=lines,
     framesep=10pt,
-    language=bash,
+    language=clean,
+    extendedchars=true,
+    inputencoding=utf8,
+    breaklines=true,
+    literate={ú}{{\'u}}1
+             {á}{{\'a}}1
 }
-\renewcommand{\lstlistingname}{Algoritmus}
+
+% Prepisanie default nazvov pre listing na algoritmus
+\newcommand{\listingAlgoritmus}{Algoritmus}
+\renewcommand{\lstlistingname}{\listingAlgoritmus}
 \renewcommand{\lstlistlistingname}{Zoznam algoritmov} %\lstlistingname
 
 \DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>} \urlstyle{tt}}
