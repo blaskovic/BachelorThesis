@@ -30,6 +30,23 @@
 \usepackage{url}
 \usepackage[Algoritmus]{algorithm}
 \usepackage{algorithmic}
+
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{listings}
+\lstset{
+    columns=fullflexible,
+    numbersep=5pt,
+    basicstyle=\fontfamily{pcr}\selectfont,
+    numberstyle=\footnotesize\color{Gray},
+    commentstyle=\it\footnotesize\color{Gray},
+    captionpos=b, 
+    frame=lines,
+    framesep=10pt,
+    language=bash,
+}
+\renewcommand{\lstlistingname}{Algoritmus}
+\renewcommand{\lstlistlistingname}{Zoznam algoritmov} %\lstlistingname
+
 \DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>} \urlstyle{tt}}
 
 %zde muzeme vlozit vlastni balicky

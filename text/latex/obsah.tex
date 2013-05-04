@@ -124,9 +124,124 @@ pre zníženie latencie. Obsahuje dve fronty a~každá požiadavka má deadline}
 Viac o~plánovačoch diskov je možné sa dočítať na stránkach dokumentácie
 \emph{OpenSuse}\cite{suse:scheduler} alebo v článku \cite{book:scheduler}.
 
-Niektoré profily taktiež vypínajú bariéry\footnote{Vypnutím bariér hrozí
+Niektoré profily taktiež vypínajú bpariéry\footnote{Vypnutím bariér hrozí
 poškodenie dát pri odpojení napájania diskov, pokiaľ disk nemá záložnú
 batériu.} pri pripojovaní diskov. 
+
+%
+% Moznosti emulacie diskovych zariadeni a sietovych sluzieb
+%
+
+\chapter{Možnosti emulácie diskových zariadení a sieťových služieb}
+
+V tejto kapitole sa budem venovať emulácií diskových zariadení a sieťových
+služieb v teoretickej rovine. Je potrebné si uvedomiť, že na to, aby bolo
+testovanie na 100\,\% valídne nám emulácia nestačí a bolo by potrebné všetky
+testovacie prostriedky mať k dispozícií, čo nie je možné.
+
+Aj keby tomu tak bolo, nie je možné program dokonale otestovať, pretože
+väčšinou existuje nekonečne veľa možností vstupu. V prípade testovania hardvéru
+sa táto skutočnosť ešte násobi, kedže na neho môže vplývať ešte viac vplyvov
+ako na softvér. Tejto myšlienke sa venuje aj \emph{Ron Patton} v Knihe
+\emph{Software Testing} \cite{Software_testing_patton}, kde opisuje testovanie
+obyčajnej kalkulačky.
+
+\section{Sieťové služby}
+
+Ak chceme testovať rôzne typy sietí, \emph{Linux} nám k tomu poskytuje sieťové
+skripty, ktorými dokážeme vytvárať pomerne zložité návrhy sieti v rámci jedného
+systému. Môžeme vytvárať mosty medzi zariadeniami, virtuálne podsiete a
+podobne.
+
+V prípade, že využijeme virtuálne systémy, sa dajú vytvoriť aj pokročilejšie
+situácie a pri testovaní môžeme využívať služby na rôznych strojoch. Na webový,
+emailový a DNS server môžeme použiť oddelené systémy a testovať ich navzájom.
+
+Existuje množstvo hardvérových riešení pre emuláciu sietí. Tieto zariadenia ale
+nie sú relevantné pre komponentu \emph{tuned}, pretože vyžaduje operačný systém
+\emph{Fedora} alebo jemu podobné. Pri týchto riešeniach sa jedná ale väčšinou o
+rôzne vstavané systémy.
+
+Testovanie sietí je veľmi obsiahla téma a nie je zameraním tejto bakalárskej
+práce.
+
+%
+% Diskove zariadenia
+%
+
+\section{Diskové zariadenia}
+
+K emulácii diskových zariadení sa dá pristupovať dvoma spôsobmi. 
+
+\begin{enumerate}
+    \item Bez využitia virtuálneho systému \label{item:without-virt-system}
+    \item S využítím virtuálneho systému \label{item:with-virt-system}
+\end{enumerate}
+
+%
+% Bez vyuzitia virtualneho systemu
+%
+
+\subsection{Bez využítia virtuálneho systému}
+
+Ak nechceme využiť virtuálny systém, potrebujeme vytvoriť blokové zariadenie
+diskou bez toho, aby sme v skutočnosti pripojili fyzický disk. K tomu slúži
+napríklad balíček \texttt{scsi-target-utils}, ktorý obsahuje nástroj
+\texttt{/usr/bin/tgtadm}.  Tento nástroj dokáže vytvoriť \emph{SCSI} cieľový
+disk aj zo súbora. 
+
+Ďalej budeme potrebovať spustiť službu \texttt{tgtd}, ktorá nám takto pridaný
+disk sprístupní na sieť. Tento prístup sa používa vtedy, keď potrebujeme takýto
+disk nazdielať cez sieť. Samozrejme, môžeme ho pripojiť aj s využítím
+\emph{localhost} PC.
+
+Keď máme takýto disk prichystaný, pripojíme ho za pomoci príkazu uvedenénho v
+algoritme \ref{alg:iscsiadm-discovery}. Tento nástroj sa nachádza v balíčku
+\texttt{iscsi-initiator-utils}.
+\\
+\begin{lstlisting}[caption=Vyhľadávanie diskov na sieti pomocou iscsiadm,label=alg:iscsiadm-discovery]
+    /usr/sbin/iscsiadm -m discovery -t st -p 127.0.0.1
+\end{lstlisting}
+
+Pre korektnosť pripojenia je vhodné premazať všetky nepoužité mapy zariadení.
+Na to nám poslúži nástroj \texttt{/sbin/multipath} z balíčka
+\texttt{device-mapper-multipath}. Aby sme ho mohli využiť, je taktiež potrebné
+zaviesť do jadra modul \texttt{dm-multipath}. Potom je vhodné reštartovať celú
+službu \texttt{multipathd}. Celý postup je uvedený v algoritme
+\ref{alg:multipathd}.
+\\
+\begin{lstlisting}[label=alg:multipathd,caption=Vyhľadanie zariadení pomocou multipathd]
+    modprobe dm-multipath
+    /sbin/multipath -F
+    /etc/init.d/multipathd restart
+    multipath -ll
+\end{lstlisting}
+
+Keď som testoval tento typ pripojenia diskov, narazil som na problém s
+načasovaním. Je potrebné nechať medzi príkazmi krátke časové intervaly na to,
+aby všetko prebehlo korektne. Ak sa tieto príkazy spustia za sebou, je vysoká
+pravdepodbobnosť, že sa disky nenájdu a nepripoja.
+
+%
+% S vyuzitim virtualneho systemu
+%
+
+\subsection{S využítím virtuálneho systému}
+
+S virtuálnym systémom sa situácia zjednodušuje. Virtualizácia je v dnešnej dobe
+veľmi pokročilá. Ak sa rozhodneme používať \emph{libvirt} a \emph{qemu-kvm},
+tak existuje viacero nástrojov, ktoré nám uľahčujú prácu s virtuálnymi
+systémami.
+
+Pre tých, ktorí majú radi klikacie nástroje, existuje skoro dokonalý
+\emph{virt-manager}. Vytvoriť si v ňom virtuálny systém a podrobne si ho
+nastaviť je otázka niekoľkých kliknutí. 
+
+Automatické testy ale nemôžu používať klikacie GUI nástroje. Preto existuje
+nástroj \texttt{/bin/virsh} z balíka \texttt{libvirt-client}, ktorý dokáže
+zjednodušene pracovať s virtuálnymi systémami z príkazovej riadky.  
+
+
 
 %
 % Plan testovania
@@ -259,13 +374,11 @@ bude testovať rýchlosť zápisu a čítania by mal byť v~ideálnom prípade
 nekešovaný.  Pred testovaním aj po testovaním je potrebné hostiteľský aj
 virtualizovaný systém synchronizovať a~zmazať nakešované stránky (Algoritmus
 \ref{alg:sync}).
-
-\begin{algorithm}
-    \label{alg:sync}
-    \caption{Synchronizácia systému}
+\\
+\begin{lstlisting}[caption=Synchronizácia systému,label=alg:sync]
     /bin/sync\\
     echo 3 \textgreater /proc/sys/vm/drop\_caches
-\end{algorithm}
+\end{lstlisting}
 
 Každé miesto, kde je možnosť, že by systém si uchovával nejaké nakešované data,
 ktoré by mohli ovplyvniť výsledky testovania je potrebné poznať (Obrázok \ref{graf-cache}).
@@ -529,3 +642,12 @@ testovanie na súborovom systéme \emph{btrfs}.
 
 Z výsledkov je jasné, že \emph{tuned} naozaj optimalizuje I/O operácie na
 diskových poliach. 
+
+%
+% Prilohy
+%
+
+\setcounter{chapter}{0}
+\renewcommand{\thechapter}{\Alph{chapter}}
+\chapter{Príloha CD}
+
