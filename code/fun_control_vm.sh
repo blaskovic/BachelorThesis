@@ -21,9 +21,13 @@ function tlVirshShutdown()
 {
     virsh shutdown "$MACHINE_NAME"
     # Check if it's stopped
+    local counter=1
     while virsh list | grep "$MACHINE_NAME" > /dev/null
     do
         :
+        sleep 1
+        let counter++
+        [ $counter -gt 60 ] && virsh destroy "$MACHINE_NAME"
     done
 
     rlPass "Shutdown of '$MACHINE_NAME' was successful"
