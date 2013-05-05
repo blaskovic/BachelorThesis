@@ -31,6 +31,22 @@ do
     echo "\\IfFileExists{obsah-test-$profile}{\\input{obsah-test-$profile}}{}"
     echo
 
+        # Header of table
+        echo "{\\renewcommand{\\arraystretch}{1.1}"
+        echo "\\begin{table}[H]"
+        echo "\\begin{center}"
+        echo "\\begin{tabular}{|l|r r r r|}"
+        echo "    \\hline"
+        echo "    \\textbf{Test} & \\textbf{bez tuned} & \\textbf{s tuned} & \\textbf{rozdiel} & \\textbf{rozdiel [\%]} \\\\"
+        
+
+    COUNT_PROF=0
+    TUNED_SUM_PROF=0
+    NOTUNED_SUM_PROF=0
+    DIFF_SUM_PROF=0
+    PERCENT_SUM_PROF=0
+
+
     for fs in ${!FS[@]}
     do
 
@@ -40,13 +56,10 @@ do
         DIFF_SUM=0
         PERCENT_SUM=0
 
-        # Header of table
-        echo "\\begin{table}[H]"
-        echo "\\begin{center}"
-        echo "\\begin{tabular}{|l|r|r|r|r|}"
-        echo "    \\hline"
-        echo "    \\textbf{Test} & \\textbf{bez tuned} & \\textbf{s tuned} & \\textbf{rozdiel} & \\textbf{rozdiel [\%]} \\\\ \\hline"
-        
+        let COUNT_PROF++
+
+        echo "    \\hline & \\\\[-1em]\\hline"
+
         # List results
         for testName in $TO_TEST
         do
@@ -66,29 +79,57 @@ do
                 DIFF_SUM=$(($DIFF_SUM + $notuned - $tuned))
                 PERCENT_SUM=$(($PERCENT_SUM + 100 - 100 * $tuned / $notuned))
 
+
                 # Write to table
                 echo -n "    "
                 echo -n "${testName//_/\_} $fs & "
-                echo -n "${notuned} s & ${tuned} s & $(($notuned - $tuned)) s & `bc <<< \"scale=2;100-100*$tuned/$notuned\"`\\,\% "
+                echo -n "${notuned}\\,s & ${tuned}\\,s & $(($notuned - $tuned))\\,s & `bc <<< \"scale=2;100-100*$tuned/$notuned\"`\\,\% "
                 echo "\\\\"
-                echo "    \\hline"
             done
         done
 
         # Averages
+        AVG_NOTUNED="`echo $NOTUNED_SUM $COUNT | awk '{printf "%.2f", $1 / $2}'`"
+        AVG_TUNED="`echo $TUNED_SUM $COUNT  | awk '{printf "%.2f", $1 / $2}'`"
+        AVG_DIFF="`echo $DIFF_SUM $COUNT | awk '{printf "%.2f", $1 / $2}'`"
+        AVG_PERCENT="`echo $PERCENT_SUM $COUNT | awk '{printf "%.2f", $1 / $2}'`"
+
+        # Sum it up for averages
+        TUNED_SUM_PROF=`echo $TUNED_SUM_PROF $AVG_TUNED | awk '{printf "%.2f", $1 + $2'}`
+        NOTUNED_SUM_PROF=`echo $NOTUNED_SUM_PROF $AVG_NOTUNED | awk '{printf "%.2f", $1 + $2'}`
+        DIFF_SUM_PROF=`echo $DIFF_SUM_PROF $AVG_DIFF | awk '{printf "%.2f", $1 + $2'}`
+        PERCENT_SUM_PROF=`echo $PERCENT_SUM_PROF $AVG_PERCENT | awk '{printf "%.2f", $1 + $2'}`
+
+        echo "    \\hline"
         echo -n "    "
         echo -n "\\textbf{Priemery} & "
-        echo -n "`bc <<< \"scale=2;$NOTUNED_SUM / $COUNT\"` s & `bc <<< \"scale=2;$TUNED_SUM / $COUNT\"` s & `bc <<< \"scale=2;$DIFF_SUM / $COUNT\"` s & `bc <<< \"scale=2;$PERCENT_SUM/$COUNT\"`\\,\% "
+        echo -n "\\textbf{$AVG_TUNED s}\\,& \\textbf{$AVG_TUNED\\,s} & \\textbf{$AVG_DIFF\\,s} & \\textbf{$AVG_PERCENT\\,\%} "
         echo "\\\\"
-        echo "    \\hline"
 
-        echo "\\end{tabular}"
-        echo "\\caption{Výsledky testov pre súborový systém $fs}"
-        echo "\\label{tab:results-$fs}"
-        echo "\\end{center}"
-        echo "\\end{table}"
-        echo
     done
+
+    echo "    \\hline & \\\\[-1em]\\hline"
+
+    # Averages for profile
+    PROF_AVG_NOTUNED="`echo $NOTUNED_SUM_PROF $COUNT_PROF | awk '{printf "%.2f", $1 / $2}'`"
+    PROF_AVG_TUNED="`echo $TUNED_SUM_PROF $COUNT_PROF  | awk '{printf "%.2f", $1 / $2}'`"
+    PROF_AVG_DIFF="`echo $DIFF_SUM_PROF $COUNT_PROF | awk '{printf "%.2f", $1 / $2}'`"
+    PROF_AVG_PERCENT="`echo $PERCENT_SUM_PROF $COUNT_PROF | awk '{printf "%.2f", $1 / $2}'`"
+
+    echo -n "    "
+    echo -n "\\textbf{Celkové riemery} & "
+    echo -n "\\textbf{$PROF_AVG_TUNED s}\\,& \\textbf{$PROF_AVG_TUNED\\,s} & \\textbf{$PROF_AVG_DIFF\\,s} & \\textbf{$PROF_AVG_PERCENT\\,\%} "
+    echo "\\\\"
+
+    echo "    \\hline"
+
+    echo "\\end{tabular}"
+    echo "\\caption{Výsledky testov pre profil $profile}"
+    echo "\\label{tab:results-$fs}"
+    echo "\\end{center}"
+    echo "\\end{table}"
+    echo
+
 done
 echo "%"
 echo "% END Automatic results"
