@@ -304,6 +304,8 @@ v ceste od jedného bodu k druhému.
 % iperf
 %
 
+\subsection{iperf}
+
 Na meranie výkonnosti siete existuje napríklad nástroj
 \emph{iperf}\footnote{Domovská stránka -- http://iperf.sourceforge.net}
 vyvýjaný \emph{NLANR/DAST}, ktorý dokáže merať priepustnosť siete, stratu
@@ -340,6 +342,8 @@ TCP window size: 22.9 KByte (default)
 % TTCP
 %
 
+\subsection{TTCP}
+
 Ďalší nástroj, ktorý je možné použiť je \emph{PCATTCP}\footnote{PCAUSA Test TCP
 -- http://www.pcausa.com/Utilities/pcattcp.htm}. Tento program má podporu aj
 pre \emph{IPv6} a je vyvýjaný pre Windows. Jeho unixová varianta sa volá
@@ -349,7 +353,15 @@ pre \emph{IPv6} a je vyvýjaný pre Windows. Jeho unixová varianta sa volá
 
 Meranie rýchlosti zápisu alebo čítania disku nie je až tak problematické, ak si
 dáme pozor na to, či zápis prebehol v skutočnosti alebo ešte len čaká vo
-vyrovnávacej pamäti. Najjednoduchší spôsob merania zápisu môžeme previesť
+vyrovnávacej pamäti.
+
+%
+% dd
+%
+
+\subsection{dd}
+
+Najjednoduchší spôsob merania zápisu môžeme previesť
 nástrojom \texttt{/bin/dd}. Príklad použitia a jeho výsledku je možné vidieť v
 ukážke \ref{alg:dd-usage}.
 \\
@@ -365,6 +377,132 @@ $ /bin/dd if=/dev/zero of=file bs=1M count=300 conv=fdatasync
 Voľba \texttt{conv=fdatasync} nám zabezpečuje to, že \emph{dd} po zápise
 vyžiada synchronizáciu systému a tým sú dáta v skutočnosit naozaj zapísané na
 disk.
+
+%
+% hdparm
+%
+
+\subsection{hdparm}
+
+Ďalšou možnosťou je použiť program \texttt{/usr/sbin/hdparm}. Konkrétne nás na účely testovania rýchlosti disku budú zaujímať prepínače uvedené v tabuľke \ref{tab:hdparm-args}.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|l|}
+    \hline
+    \textbf{Argument} & \textbf{Popis} \\
+    \hline
+    \texttt{-t}  & Testuje rýchlosť čítania cez vyrovnávaciu pamäť disku \\
+    \texttt{-T}  & Testuje rýchlosť čítania priamo z linuxovej vyrovnávacej pamäte \\
+    \hline
+\end{tabular}
+\caption{Popis argumentov hdparm pre testovanie rýchlosti}
+\label{tab:hdparm-args}
+\end{center}
+\end{table}
+
+Existuje aj argument \texttt{-f}, ktorý pred koncom synchronizuje systém a
+vyprázdni vyrovnávaciu pamäť. Pri použití prepínača \texttt{-t} alebo
+\texttt{-T} to nie je potrebné, pretože to robia implicitne.
+
+\renewcommand{\lstlistingname}{Ukážka}
+\begin{lstlisting}[label=alg:hdparm-usage,caption=Príklad použitia nástroja hdparm]
+$ /usr/sbin/hdparm -t -T /dev/sda
+/dev/sda:
+ Timing cached reads:   22722 MB in  1.98 seconds = 11476.62 MB/sec
+  Timing buffered disk reads: 386 MB in  3.01 seconds = 128.18 MB/sec
+
+\end{lstlisting}
+\renewcommand{\lstlistingname}{\listingAlgoritmus}
+
+%
+% bonnie++
+%
+
+\subsection{bonnie++}
+
+Medzi pokročilejšie merače rýchlosti môžeme zaradiť napríklad \emph{Bonnie++}.
+
+\renewcommand{\lstlistingname}{Ukážka}
+\begin{lstlisting}[label=alg:bonnie-usage,caption=Príklad použitia nástroja Bonnie++]
+$ /usr/sbin/bonnie++
+Writing a byte at a time...done
+Writing intelligently...
+done
+Rewriting...done
+Reading a byte at a time...done
+Reading intelligently...done
+start 'em...done...done...done...done...done...
+Create files in sequential order...done.
+Stat files in sequential order...done.
+Delete files in sequential order...done.
+Create files in random order...done.
+Stat files in random order...done.
+Delete files in random order...done.
+Version  1.96       ------Sequential Output------ --Sequential Input- --Random-
+Concurrency   1     -Per Chr- --Block-- -Rewrite- -Per Chr- --Block-- --Seeks--
+Machine        Size K/sec %CP K/sec %CP K/sec %CP K/sec %CP K/sec %CP  /sec %CP
+hostname       31984M  1118  96 95761   7 46341   5  4279  78 115086   8 216.4   2
+Latency              9476us   17262ms   13180ms   42596us     258ms    1516ms
+Version  1.96       ------Sequential Create------ --------Random Create--------
+hostname            -Create-- --Read--- -Delete-- -Create-- --Read--- -Delete--
+              files  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
+                               16 17190  37 +++++ +++ +++++ +++ 28574  59 +++++ +++ +++++ +++
+                               Latency             90450us     226us     252us      91us      29us     151us
+                               1.96,1.96,laura.blaskovic.sk,1,1367789311,31984M,,1118,96,95761,7,46341,5,4279,78,115086,8,216.4,2,16,,,,,17190,37,+++++,+++,+++++,+++,28574,59,+++++,+++,
+                               +++++,+++,9476us,17262ms,13180ms,42596us,258ms,1516ms,90450us,226us,252us,91us,29us,151us
+\end{lstlisting}
+\renewcommand{\lstlistingname}{\listingAlgoritmus}
+
+Z ukážky \ref{alg:bonnie-usage} je vidieť, aké testy približne \emph{bonnie++}
+prevádza. Jedná sa o zápis do súbora, jeho prepisovanie, čítanie, mazanie a
+iné. Oproti vyššie uvedeným nástrojom ako \emph{dd} a \emph{hdparm} je
+\emph{bonnie++} priamo určený na meranie rýchlosti pevného disku a preto sú
+jeho výsledky pravdepodobne najviac relevantné.
+
+%
+% iozone
+%
+
+\subsection{iozone}
+
+Ďalší z rady meračov rýchlosti diskov má názov \emph{IOzone Filesystem
+Benchmark}. Podobne ako \emph{bonnie++} testuje zápis, čítanie, opätovný zápis,
+opätovné čítanie, náhodné čítanie a iné. Tento nástroj sa nenachádza v
+bežných\footnote{Základné repozitáre a rpmfusion repozitár} repozitároch
+systému \emph{Fedora} a je ho potrebné stiahnuť na jeho domovskej stránke
+\texttt{http://www.iozone.org}.
+
+Pre bližšiu špecifikáciu toho, čo chceme otestovať, je možné presne definovať,
+aké testy sa majú spustiť. \emph{IOzone} rozlišuje presne 13 testov, ktoré sa
+dajú nastaviť argumentom \texttt{-i}. Prehľad testov je v tabuľke
+\ref{tab:iozone-tests}.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|r|l|}
+    \hline
+    \textbf{Číslo} & \textbf{Názov testu} \\
+    \hline
+    0 & write/rewrite \\
+    1 & read/re-read \\
+    2 & random-read/write \\
+    3 & Read-backwards \\
+    4 & Re-write-record \\
+    5 & stride-read \\
+    6 & fwrite/re-fwrite \\
+    7 & fread/Re-fread, \\
+    8 & random mix \\
+    9 & pwrite/Re-pwrite \\
+    10 & pread/Re-pread \\
+    11 & pwritev/Re-pwritev \\
+    12 & preadv/Re-preadv \\
+    \hline
+\end{tabular}
+\caption{Prehľad dostupných testov programu IOzone}
+\label{tab:iozone-tests}
+\end{center}
+\end{table}
 
 %
 % Plan testovania
