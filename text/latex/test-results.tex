@@ -4,116 +4,59 @@
 \subsection{Testovanie s profilom \emph{balanced}}
 \IfFileExists{obsah-test-balanced}{\input{obsah-test-balanced}}{}
 
+{\renewcommand{\arraystretch}{1.1}
 \begin{table}[H]
 \begin{center}
-\begin{tabular}{|l|r|r|r|r|}
+\begin{tabular}{|l|r r r r|}
     \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext3 & 116 s & 110 s & 6 s & 5.18\,\% \\
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext3 & 105\,s & 107\,s & -2\,s & -1.90\,\% \\
+    raid0 ext3 & 117\,s & 117\,s & 0\,s & 0\,\% \\
+    raid1 ext3 & 108\,s & 119\,s & -11\,s & -10.18\,\% \\
     \hline
-    raid0 ext3 & 116 s & 116 s & 0 s & 0\,\% \\
+    \textbf{Priemery} & \textbf{114.33 s}\,& \textbf{114.33\,s} & \textbf{-4.33\,s} & \textbf{-3.67\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext2 & 123\,s & 121\,s & 2\,s & 1.63\,\% \\
+    raid0 ext2 & 116\,s & 120\,s & -4\,s & -3.44\,\% \\
+    raid1 ext2 & 121\,s & 121\,s & 0\,s & 0\,\% \\
     \hline
-    raid1 ext3 & 125 s & 121 s & 4 s & 3.20\,\% \\
+    \textbf{Priemery} & \textbf{120.67 s}\,& \textbf{120.67\,s} & \textbf{-0.67\,s} & \textbf{-0.33\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext4 & 117\,s & 117\,s & 0\,s & 0\,\% \\
+    raid0 ext4 & 114\,s & 116\,s & -2\,s & -1.75\,\% \\
+    raid1 ext4 & 118\,s & 120\,s & -2\,s & -1.69\,\% \\
     \hline
-    \textbf{Priemery} & 119.00 s & 115.66 s & 3.33 s & 3.33\,\% \\
+    \textbf{Priemery} & \textbf{117.67 s}\,& \textbf{117.67\,s} & \textbf{-1.33\,s} & \textbf{-0.67\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk jfs & 123\,s & 122\,s & 1\,s & .82\,\% \\
+    raid0 jfs & 123\,s & 118\,s & 5\,s & 4.07\,\% \\
+    raid1 jfs & 129\,s & 131\,s & -2\,s & -1.55\,\% \\
     \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext3}
-\label{tab:results-ext3}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
+    \textbf{Priemery} & \textbf{123.67 s}\,& \textbf{123.67\,s} & \textbf{1.33\,s} & \textbf{1.67\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk reiserfs & 128\,s & 119\,s & 9\,s & 7.04\,\% \\
+    raid0 reiserfs & 138\,s & 136\,s & 2\,s & 1.45\,\% \\
+    raid1 reiserfs & 194\,s & 199\,s & -5\,s & -2.57\,\% \\
     \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext2 & 121 s & 125 s & -4 s & -3.30\,\% \\
+    \textbf{Priemery} & \textbf{151.33 s}\,& \textbf{151.33\,s} & \textbf{2.00\,s} & \textbf{2.67\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk btrfs & 108\,s & 110\,s & -2\,s & -1.85\,\% \\
+    raid0 btrfs & 123\,s & 116\,s & 7\,s & 5.70\,\% \\
+    raid1 btrfs & 103\,s & 113\,s & -10\,s & -9.70\,\% \\
     \hline
-    raid0 ext2 & 120 s & 122 s & -2 s & -1.66\,\% \\
+    \textbf{Priemery} & \textbf{113.00 s}\,& \textbf{113.00\,s} & \textbf{-1.67\,s} & \textbf{-1.33\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk xfs & 105\,s & 108\,s & -3\,s & -2.85\,\% \\
+    raid0 xfs & 113\,s & 111\,s & 2\,s & 1.77\,\% \\
+    raid1 xfs & 116\,s & 116\,s & 0\,s & 0\,\% \\
     \hline
-    raid1 ext2 & 125 s & 123 s & 2 s & 1.60\,\% \\
-    \hline
-    \textbf{Priemery} & 122.00 s & 123.33 s & -1.33 s & -.66\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext2}
-\label{tab:results-ext2}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext4 & 113 s & 114 s & -1 s & -.88\,\% \\
-    \hline
-    raid0 ext4 & 121 s & 122 s & -1 s & -.82\,\% \\
-    \hline
-    raid1 ext4 & 119 s & 116 s & 3 s & 2.53\,\% \\
-    \hline
-    \textbf{Priemery} & 117.66 s & 117.33 s & .33 s & 1.00\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext4}
-\label{tab:results-ext4}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk jfs & 123 s & 122 s & 1 s & .82\,\% \\
-    \hline
-    raid0 jfs & 123 s & 120 s & 3 s & 2.44\,\% \\
-    \hline
-    raid1 jfs & 128 s & 127 s & 1 s & .79\,\% \\
-    \hline
-    \textbf{Priemery} & 124.66 s & 123.00 s & 1.66 s & 1.66\,\% \\
+    \textbf{Priemery} & \textbf{111.67 s}\,& \textbf{111.67\,s} & \textbf{-0.33\,s} & \textbf{0.00\,\%} \\
+    \hline & \\[-1em]\hline
+    \textbf{Celkové riemery} & \textbf{121.76 s}\,& \textbf{121.76\,s} & \textbf{-0.71\,s} & \textbf{-0.24\,\%} \\
     \hline
 \end{tabular}
-\caption{Výsledky testov pre súborový systém jfs}
-\label{tab:results-jfs}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk reiserfs & 133 s & 138 s & -5 s & -3.75\,\% \\
-    \hline
-    raid0 reiserfs & 143 s & 139 s & 4 s & 2.80\,\% \\
-    \hline
-    raid1 reiserfs & 160 s & 158 s & 2 s & 1.25\,\% \\
-    \hline
-    \textbf{Priemery} & 145.33 s & 145.00 s & .33 s & .66\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém reiserfs}
-\label{tab:results-reiserfs}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk xfs & 113 s & 112 s & 1 s & .89\,\% \\
-    \hline
-    raid0 xfs & 116 s & 116 s & 0 s & 0\,\% \\
-    \hline
-    raid1 xfs & 123 s & 120 s & 3 s & 2.44\,\% \\
-    \hline
-    \textbf{Priemery} & 117.33 s & 116.00 s & 1.33 s & 1.33\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém xfs}
+\caption{Výsledky testov pre profil balanced}
 \label{tab:results-xfs}
 \end{center}
 \end{table}
@@ -121,116 +64,59 @@
 \subsection{Testovanie s profilom \emph{latency-performance}}
 \IfFileExists{obsah-test-latency-performance}{\input{obsah-test-latency-performance}}{}
 
+{\renewcommand{\arraystretch}{1.1}
 \begin{table}[H]
 \begin{center}
-\begin{tabular}{|l|r|r|r|r|}
+\begin{tabular}{|l|r r r r|}
     \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext3 & 116 s & 100 s & 16 s & 13.80\,\% \\
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext3 & 105\,s & 100\,s & 5\,s & 4.77\,\% \\
+    raid0 ext3 & 117\,s & 107\,s & 10\,s & 8.55\,\% \\
+    raid1 ext3 & 108\,s & 107\,s & 1\,s & .93\,\% \\
     \hline
-    raid0 ext3 & 116 s & 109 s & 7 s & 6.04\,\% \\
+    \textbf{Priemery} & \textbf{104.67 s}\,& \textbf{104.67\,s} & \textbf{5.33\,s} & \textbf{5.00\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext2 & 123\,s & 99\,s & 24\,s & 19.52\,\% \\
+    raid0 ext2 & 116\,s & 111\,s & 5\,s & 4.32\,\% \\
+    raid1 ext2 & 121\,s & 113\,s & 8\,s & 6.62\,\% \\
     \hline
-    raid1 ext3 & 125 s & 107 s & 18 s & 14.40\,\% \\
+    \textbf{Priemery} & \textbf{107.67 s}\,& \textbf{107.67\,s} & \textbf{12.33\,s} & \textbf{10.67\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext4 & 117\,s & 97\,s & 20\,s & 17.10\,\% \\
+    raid0 ext4 & 114\,s & 104\,s & 10\,s & 8.78\,\% \\
+    raid1 ext4 & 118\,s & 110\,s & 8\,s & 6.78\,\% \\
     \hline
-    \textbf{Priemery} & 119.00 s & 105.33 s & 13.66 s & 12.00\,\% \\
+    \textbf{Priemery} & \textbf{103.67 s}\,& \textbf{103.67\,s} & \textbf{12.67\,s} & \textbf{11.33\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk jfs & 123\,s & 110\,s & 13\,s & 10.57\,\% \\
+    raid0 jfs & 123\,s & 118\,s & 5\,s & 4.07\,\% \\
+    raid1 jfs & 129\,s & 111\,s & 18\,s & 13.96\,\% \\
     \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext3}
-\label{tab:results-ext3}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
+    \textbf{Priemery} & \textbf{113.00 s}\,& \textbf{113.00\,s} & \textbf{12.00\,s} & \textbf{10.00\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk reiserfs & 128\,s & 134\,s & -6\,s & -4.68\,\% \\
+    raid0 reiserfs & 138\,s & 136\,s & 2\,s & 1.45\,\% \\
+    raid1 reiserfs & 194\,s & 166\,s & 28\,s & 14.44\,\% \\
     \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext2 & 121 s & 105 s & 16 s & 13.23\,\% \\
+    \textbf{Priemery} & \textbf{145.33 s}\,& \textbf{145.33\,s} & \textbf{8.00\,s} & \textbf{4.33\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk btrfs & 108\,s & 100\,s & 8\,s & 7.41\,\% \\
+    raid0 btrfs & 123\,s & 106\,s & 17\,s & 13.83\,\% \\
+    raid1 btrfs & 103\,s & 96\,s & 7\,s & 6.80\,\% \\
     \hline
-    raid0 ext2 & 120 s & 110 s & 10 s & 8.34\,\% \\
+    \textbf{Priemery} & \textbf{100.67 s}\,& \textbf{100.67\,s} & \textbf{10.67\,s} & \textbf{9.67\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk xfs & 105\,s & 94\,s & 11\,s & 10.48\,\% \\
+    raid0 xfs & 113\,s & 110\,s & 3\,s & 2.66\,\% \\
+    raid1 xfs & 116\,s & 109\,s & 7\,s & 6.04\,\% \\
     \hline
-    raid1 ext2 & 125 s & 113 s & 12 s & 9.60\,\% \\
-    \hline
-    \textbf{Priemery} & 122.00 s & 109.33 s & 12.66 s & 11.00\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext2}
-\label{tab:results-ext2}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext4 & 113 s & 103 s & 10 s & 8.85\,\% \\
-    \hline
-    raid0 ext4 & 121 s & 112 s & 9 s & 7.44\,\% \\
-    \hline
-    raid1 ext4 & 119 s & 107 s & 12 s & 10.09\,\% \\
-    \hline
-    \textbf{Priemery} & 117.66 s & 107.33 s & 10.33 s & 9.33\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext4}
-\label{tab:results-ext4}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk jfs & 123 s & 100 s & 23 s & 18.70\,\% \\
-    \hline
-    raid0 jfs & 123 s & 109 s & 14 s & 11.39\,\% \\
-    \hline
-    raid1 jfs & 128 s & 113 s & 15 s & 11.72\,\% \\
-    \hline
-    \textbf{Priemery} & 124.66 s & 107.33 s & 17.33 s & 14.33\,\% \\
+    \textbf{Priemery} & \textbf{104.33 s}\,& \textbf{104.33\,s} & \textbf{7.00\,s} & \textbf{7.00\,\%} \\
+    \hline & \\[-1em]\hline
+    \textbf{Celkové riemery} & \textbf{111.33 s}\,& \textbf{111.33\,s} & \textbf{9.71\,s} & \textbf{8.29\,\%} \\
     \hline
 \end{tabular}
-\caption{Výsledky testov pre súborový systém jfs}
-\label{tab:results-jfs}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk reiserfs & 133 s & 125 s & 8 s & 6.02\,\% \\
-    \hline
-    raid0 reiserfs & 143 s & 133 s & 10 s & 7.00\,\% \\
-    \hline
-    raid1 reiserfs & 160 s & 154 s & 6 s & 3.75\,\% \\
-    \hline
-    \textbf{Priemery} & 145.33 s & 137.33 s & 8.00 s & 6.00\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém reiserfs}
-\label{tab:results-reiserfs}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk xfs & 113 s & 97 s & 16 s & 14.16\,\% \\
-    \hline
-    raid0 xfs & 116 s & 106 s & 10 s & 8.63\,\% \\
-    \hline
-    raid1 xfs & 123 s & 111 s & 12 s & 9.76\,\% \\
-    \hline
-    \textbf{Priemery} & 117.33 s & 104.66 s & 12.66 s & 11.33\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém xfs}
+\caption{Výsledky testov pre profil latency-performance}
 \label{tab:results-xfs}
 \end{center}
 \end{table}
@@ -238,116 +124,59 @@
 \subsection{Testovanie s profilom \emph{powersave}}
 \IfFileExists{obsah-test-powersave}{\input{obsah-test-powersave}}{}
 
+{\renewcommand{\arraystretch}{1.1}
 \begin{table}[H]
 \begin{center}
-\begin{tabular}{|l|r|r|r|r|}
+\begin{tabular}{|l|r r r r|}
     \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext3 & 116 s & 111 s & 5 s & 4.32\,\% \\
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext3 & 105\,s & 108\,s & -3\,s & -2.85\,\% \\
+    raid0 ext3 & 117\,s & 112\,s & 5\,s & 4.28\,\% \\
+    raid1 ext3 & 108\,s & 126\,s & -18\,s & -16.66\,\% \\
     \hline
-    raid0 ext3 & 116 s & 115 s & 1 s & .87\,\% \\
+    \textbf{Priemery} & \textbf{115.33 s}\,& \textbf{115.33\,s} & \textbf{-5.33\,s} & \textbf{-4.33\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext2 & 123\,s & 118\,s & 5\,s & 4.07\,\% \\
+    raid0 ext2 & 116\,s & 111\,s & 5\,s & 4.32\,\% \\
+    raid1 ext2 & 121\,s & 125\,s & -4\,s & -3.30\,\% \\
     \hline
-    raid1 ext3 & 125 s & 126 s & -1 s & -.80\,\% \\
+    \textbf{Priemery} & \textbf{118.00 s}\,& \textbf{118.00\,s} & \textbf{2.00\,s} & \textbf{2.33\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext4 & 117\,s & 113\,s & 4\,s & 3.42\,\% \\
+    raid0 ext4 & 114\,s & 118\,s & -4\,s & -3.50\,\% \\
+    raid1 ext4 & 118\,s & 127\,s & -9\,s & -7.62\,\% \\
     \hline
-    \textbf{Priemery} & 119.00 s & 117.33 s & 1.66 s & 2.00\,\% \\
+    \textbf{Priemery} & \textbf{119.33 s}\,& \textbf{119.33\,s} & \textbf{-3.00\,s} & \textbf{-2.00\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk jfs & 123\,s & 119\,s & 4\,s & 3.26\,\% \\
+    raid0 jfs & 123\,s & 119\,s & 4\,s & 3.26\,\% \\
+    raid1 jfs & 129\,s & 134\,s & -5\,s & -3.87\,\% \\
     \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext3}
-\label{tab:results-ext3}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
+    \textbf{Priemery} & \textbf{124.00 s}\,& \textbf{124.00\,s} & \textbf{1.00\,s} & \textbf{1.67\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk reiserfs & 128\,s & 166\,s & -38\,s & -29.68\,\% \\
+    raid0 reiserfs & 138\,s & 142\,s & -4\,s & -2.89\,\% \\
+    raid1 reiserfs & 194\,s & 151\,s & 43\,s & 22.17\,\% \\
     \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext2 & 121 s & 130 s & -9 s & -7.43\,\% \\
+    \textbf{Priemery} & \textbf{153.00 s}\,& \textbf{153.00\,s} & \textbf{0.33\,s} & \textbf{-2.67\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk btrfs & 108\,s & 111\,s & -3\,s & -2.77\,\% \\
+    raid0 btrfs & 123\,s & 118\,s & 5\,s & 4.07\,\% \\
+    raid1 btrfs & 103\,s & 101\,s & 2\,s & 1.95\,\% \\
     \hline
-    raid0 ext2 & 120 s & 124 s & -4 s & -3.33\,\% \\
+    \textbf{Priemery} & \textbf{110.00 s}\,& \textbf{110.00\,s} & \textbf{1.33\,s} & \textbf{1.67\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk xfs & 105\,s & 107\,s & -2\,s & -1.90\,\% \\
+    raid0 xfs & 113\,s & 124\,s & -11\,s & -9.73\,\% \\
+    raid1 xfs & 116\,s & 115\,s & 1\,s & .87\,\% \\
     \hline
-    raid1 ext2 & 125 s & 113 s & 12 s & 9.60\,\% \\
-    \hline
-    \textbf{Priemery} & 122.00 s & 122.33 s & -.33 s & 0\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext2}
-\label{tab:results-ext2}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext4 & 113 s & 111 s & 2 s & 1.77\,\% \\
-    \hline
-    raid0 ext4 & 121 s & 125 s & -4 s & -3.30\,\% \\
-    \hline
-    raid1 ext4 & 119 s & 116 s & 3 s & 2.53\,\% \\
-    \hline
-    \textbf{Priemery} & 117.66 s & 117.33 s & .33 s & .66\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext4}
-\label{tab:results-ext4}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk jfs & 123 s & 122 s & 1 s & .82\,\% \\
-    \hline
-    raid0 jfs & 123 s & 135 s & -12 s & -9.75\,\% \\
-    \hline
-    raid1 jfs & 128 s & 123 s & 5 s & 3.91\,\% \\
-    \hline
-    \textbf{Priemery} & 124.66 s & 126.66 s & -2.00 s & -1.33\,\% \\
+    \textbf{Priemery} & \textbf{115.33 s}\,& \textbf{115.33\,s} & \textbf{-4.00\,s} & \textbf{-3.00\,\%} \\
+    \hline & \\[-1em]\hline
+    \textbf{Celkové riemery} & \textbf{122.14 s}\,& \textbf{122.14\,s} & \textbf{-1.10\,s} & \textbf{-0.90\,\%} \\
     \hline
 \end{tabular}
-\caption{Výsledky testov pre súborový systém jfs}
-\label{tab:results-jfs}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk reiserfs & 133 s & 132 s & 1 s & .76\,\% \\
-    \hline
-    raid0 reiserfs & 143 s & 137 s & 6 s & 4.20\,\% \\
-    \hline
-    raid1 reiserfs & 160 s & 155 s & 5 s & 3.13\,\% \\
-    \hline
-    \textbf{Priemery} & 145.33 s & 141.33 s & 4.00 s & 3.33\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém reiserfs}
-\label{tab:results-reiserfs}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk xfs & 113 s & 110 s & 3 s & 2.66\,\% \\
-    \hline
-    raid0 xfs & 116 s & 115 s & 1 s & .87\,\% \\
-    \hline
-    raid1 xfs & 123 s & 120 s & 3 s & 2.44\,\% \\
-    \hline
-    \textbf{Priemery} & 117.33 s & 115.00 s & 2.33 s & 2.33\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém xfs}
+\caption{Výsledky testov pre profil powersave}
 \label{tab:results-xfs}
 \end{center}
 \end{table}
@@ -355,116 +184,59 @@
 \subsection{Testovanie s profilom \emph{throughput-performance}}
 \IfFileExists{obsah-test-throughput-performance}{\input{obsah-test-throughput-performance}}{}
 
+{\renewcommand{\arraystretch}{1.1}
 \begin{table}[H]
 \begin{center}
-\begin{tabular}{|l|r|r|r|r|}
+\begin{tabular}{|l|r r r r|}
     \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext3 & 116 s & 105 s & 11 s & 9.49\,\% \\
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext3 & 105\,s & 100\,s & 5\,s & 4.77\,\% \\
+    raid0 ext3 & 117\,s & 107\,s & 10\,s & 8.55\,\% \\
+    raid1 ext3 & 108\,s & 116\,s & -8\,s & -7.40\,\% \\
     \hline
-    raid0 ext3 & 116 s & 109 s & 7 s & 6.04\,\% \\
+    \textbf{Priemery} & \textbf{107.67 s}\,& \textbf{107.67\,s} & \textbf{2.33\,s} & \textbf{2.33\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext2 & 123\,s & 105\,s & 18\,s & 14.64\,\% \\
+    raid0 ext2 & 116\,s & 110\,s & 6\,s & 5.18\,\% \\
+    raid1 ext2 & 121\,s & 119\,s & 2\,s & 1.66\,\% \\
     \hline
-    raid1 ext3 & 125 s & 107 s & 18 s & 14.40\,\% \\
+    \textbf{Priemery} & \textbf{111.33 s}\,& \textbf{111.33\,s} & \textbf{8.67\,s} & \textbf{7.67\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext4 & 117\,s & 100\,s & 17\,s & 14.53\,\% \\
+    raid0 ext4 & 114\,s & 108\,s & 6\,s & 5.27\,\% \\
+    raid1 ext4 & 118\,s & 113\,s & 5\,s & 4.24\,\% \\
     \hline
-    \textbf{Priemery} & 119.00 s & 107.00 s & 12.00 s & 10.66\,\% \\
+    \textbf{Priemery} & \textbf{107.00 s}\,& \textbf{107.00\,s} & \textbf{9.33\,s} & \textbf{8.67\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk jfs & 123\,s & 106\,s & 17\,s & 13.83\,\% \\
+    raid0 jfs & 123\,s & 104\,s & 19\,s & 15.45\,\% \\
+    raid1 jfs & 129\,s & 108\,s & 21\,s & 16.28\,\% \\
     \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext3}
-\label{tab:results-ext3}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
+    \textbf{Priemery} & \textbf{106.00 s}\,& \textbf{106.00\,s} & \textbf{19.00\,s} & \textbf{15.67\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk reiserfs & 128\,s & 123\,s & 5\,s & 3.91\,\% \\
+    raid0 reiserfs & 138\,s & 136\,s & 2\,s & 1.45\,\% \\
+    raid1 reiserfs & 194\,s & 156\,s & 38\,s & 19.59\,\% \\
     \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext2 & 121 s & 101 s & 20 s & 16.53\,\% \\
+    \textbf{Priemery} & \textbf{138.33 s}\,& \textbf{138.33\,s} & \textbf{15.00\,s} & \textbf{8.67\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk btrfs & 108\,s & 102\,s & 6\,s & 5.56\,\% \\
+    raid0 btrfs & 123\,s & 107\,s & 16\,s & 13.01\,\% \\
+    raid1 btrfs & 103\,s & 90\,s & 13\,s & 12.63\,\% \\
     \hline
-    raid0 ext2 & 120 s & 112 s & 8 s & 6.67\,\% \\
+    \textbf{Priemery} & \textbf{99.67 s}\,& \textbf{99.67\,s} & \textbf{11.67\,s} & \textbf{11.00\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk xfs & 105\,s & 97\,s & 8\,s & 7.62\,\% \\
+    raid0 xfs & 113\,s & 102\,s & 11\,s & 9.74\,\% \\
+    raid1 xfs & 116\,s & 107\,s & 9\,s & 7.76\,\% \\
     \hline
-    raid1 ext2 & 125 s & 120 s & 5 s & 4.00\,\% \\
-    \hline
-    \textbf{Priemery} & 122.00 s & 111.00 s & 11.00 s & 9.33\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext2}
-\label{tab:results-ext2}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext4 & 113 s & 99 s & 14 s & 12.39\,\% \\
-    \hline
-    raid0 ext4 & 121 s & 107 s & 14 s & 11.58\,\% \\
-    \hline
-    raid1 ext4 & 119 s & 106 s & 13 s & 10.93\,\% \\
-    \hline
-    \textbf{Priemery} & 117.66 s & 104.00 s & 13.66 s & 12.00\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext4}
-\label{tab:results-ext4}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk jfs & 123 s & 99 s & 24 s & 19.52\,\% \\
-    \hline
-    raid0 jfs & 123 s & 133 s & -10 s & -8.13\,\% \\
-    \hline
-    raid1 jfs & 128 s & 115 s & 13 s & 10.16\,\% \\
-    \hline
-    \textbf{Priemery} & 124.66 s & 115.66 s & 9.00 s & 7.66\,\% \\
+    \textbf{Priemery} & \textbf{102.00 s}\,& \textbf{102.00\,s} & \textbf{9.33\,s} & \textbf{8.67\,\%} \\
+    \hline & \\[-1em]\hline
+    \textbf{Celkové riemery} & \textbf{110.29 s}\,& \textbf{110.29\,s} & \textbf{10.76\,s} & \textbf{8.95\,\%} \\
     \hline
 \end{tabular}
-\caption{Výsledky testov pre súborový systém jfs}
-\label{tab:results-jfs}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk reiserfs & 133 s & 124 s & 9 s & 6.77\,\% \\
-    \hline
-    raid0 reiserfs & 143 s & 133 s & 10 s & 7.00\,\% \\
-    \hline
-    raid1 reiserfs & 160 s & 157 s & 3 s & 1.88\,\% \\
-    \hline
-    \textbf{Priemery} & 145.33 s & 138.00 s & 7.33 s & 5.33\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém reiserfs}
-\label{tab:results-reiserfs}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk xfs & 113 s & 99 s & 14 s & 12.39\,\% \\
-    \hline
-    raid0 xfs & 116 s & 106 s & 10 s & 8.63\,\% \\
-    \hline
-    raid1 xfs & 123 s & 111 s & 12 s & 9.76\,\% \\
-    \hline
-    \textbf{Priemery} & 117.33 s & 105.33 s & 12.00 s & 10.66\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém xfs}
+\caption{Výsledky testov pre profil throughput-performance}
 \label{tab:results-xfs}
 \end{center}
 \end{table}
@@ -472,116 +244,59 @@
 \subsection{Testovanie s profilom \emph{virtual-guest}}
 \IfFileExists{obsah-test-virtual-guest}{\input{obsah-test-virtual-guest}}{}
 
+{\renewcommand{\arraystretch}{1.1}
 \begin{table}[H]
 \begin{center}
-\begin{tabular}{|l|r|r|r|r|}
+\begin{tabular}{|l|r r r r|}
     \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext3 & 116 s & 111 s & 5 s & 4.32\,\% \\
+    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext3 & 105\,s & 101\,s & 4\,s & 3.81\,\% \\
+    raid0 ext3 & 117\,s & 109\,s & 8\,s & 6.84\,\% \\
+    raid1 ext3 & 108\,s & 116\,s & -8\,s & -7.40\,\% \\
     \hline
-    raid0 ext3 & 116 s & 111 s & 5 s & 4.32\,\% \\
+    \textbf{Priemery} & \textbf{108.67 s}\,& \textbf{108.67\,s} & \textbf{1.33\,s} & \textbf{1.33\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext2 & 123\,s & 100\,s & 23\,s & 18.70\,\% \\
+    raid0 ext2 & 116\,s & 109\,s & 7\,s & 6.04\,\% \\
+    raid1 ext2 & 121\,s & 115\,s & 6\,s & 4.96\,\% \\
     \hline
-    raid1 ext3 & 125 s & 118 s & 7 s & 5.60\,\% \\
+    \textbf{Priemery} & \textbf{108.00 s}\,& \textbf{108.00\,s} & \textbf{12.00\,s} & \textbf{10.33\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk ext4 & 117\,s & 105\,s & 12\,s & 10.26\,\% \\
+    raid0 ext4 & 114\,s & 105\,s & 9\,s & 7.90\,\% \\
+    raid1 ext4 & 118\,s & 111\,s & 7\,s & 5.94\,\% \\
     \hline
-    \textbf{Priemery} & 119.00 s & 113.33 s & 5.66 s & 5.33\,\% \\
+    \textbf{Priemery} & \textbf{107.00 s}\,& \textbf{107.00\,s} & \textbf{9.33\,s} & \textbf{8.33\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk jfs & 123\,s & 98\,s & 25\,s & 20.33\,\% \\
+    raid0 jfs & 123\,s & 115\,s & 8\,s & 6.51\,\% \\
+    raid1 jfs & 129\,s & 118\,s & 11\,s & 8.53\,\% \\
     \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext3}
-\label{tab:results-ext3}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
+    \textbf{Priemery} & \textbf{110.33 s}\,& \textbf{110.33\,s} & \textbf{14.67\,s} & \textbf{12.33\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk reiserfs & 128\,s & 118\,s & 10\,s & 7.82\,\% \\
+    raid0 reiserfs & 138\,s & 125\,s & 13\,s & 9.43\,\% \\
+    raid1 reiserfs & 194\,s & 169\,s & 25\,s & 12.89\,\% \\
     \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext2 & 121 s & 102 s & 19 s & 15.71\,\% \\
+    \textbf{Priemery} & \textbf{137.33 s}\,& \textbf{137.33\,s} & \textbf{16.00\,s} & \textbf{10.33\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk btrfs & 108\,s & 108\,s & 0\,s & 0\,\% \\
+    raid0 btrfs & 123\,s & 105\,s & 18\,s & 14.64\,\% \\
+    raid1 btrfs & 103\,s & 89\,s & 14\,s & 13.60\,\% \\
     \hline
-    raid0 ext2 & 120 s & 109 s & 11 s & 9.17\,\% \\
+    \textbf{Priemery} & \textbf{100.67 s}\,& \textbf{100.67\,s} & \textbf{10.67\,s} & \textbf{9.67\,\%} \\
+    \hline & \\[-1em]\hline
+    simple\_disk xfs & 105\,s & 94\,s & 11\,s & 10.48\,\% \\
+    raid0 xfs & 113\,s & 104\,s & 9\,s & 7.97\,\% \\
+    raid1 xfs & 116\,s & 107\,s & 9\,s & 7.76\,\% \\
     \hline
-    raid1 ext2 & 125 s & 123 s & 2 s & 1.60\,\% \\
-    \hline
-    \textbf{Priemery} & 122.00 s & 111.33 s & 10.66 s & 9.33\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext2}
-\label{tab:results-ext2}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk ext4 & 113 s & 103 s & 10 s & 8.85\,\% \\
-    \hline
-    raid0 ext4 & 121 s & 103 s & 18 s & 14.88\,\% \\
-    \hline
-    raid1 ext4 & 119 s & 107 s & 12 s & 10.09\,\% \\
-    \hline
-    \textbf{Priemery} & 117.66 s & 104.33 s & 13.33 s & 11.66\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém ext4}
-\label{tab:results-ext4}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk jfs & 123 s & 100 s & 23 s & 18.70\,\% \\
-    \hline
-    raid0 jfs & 123 s & 109 s & 14 s & 11.39\,\% \\
-    \hline
-    raid1 jfs & 128 s & 114 s & 14 s & 10.94\,\% \\
-    \hline
-    \textbf{Priemery} & 124.66 s & 107.66 s & 17.00 s & 14.00\,\% \\
+    \textbf{Priemery} & \textbf{101.67 s}\,& \textbf{101.67\,s} & \textbf{9.67\,s} & \textbf{9.00\,\%} \\
+    \hline & \\[-1em]\hline
+    \textbf{Celkové riemery} & \textbf{110.52 s}\,& \textbf{110.52\,s} & \textbf{10.52\,s} & \textbf{8.76\,\%} \\
     \hline
 \end{tabular}
-\caption{Výsledky testov pre súborový systém jfs}
-\label{tab:results-jfs}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk reiserfs & 133 s & 123 s & 10 s & 7.52\,\% \\
-    \hline
-    raid0 reiserfs & 143 s & 129 s & 14 s & 9.80\,\% \\
-    \hline
-    raid1 reiserfs & 160 s & 152 s & 8 s & 5.00\,\% \\
-    \hline
-    \textbf{Priemery} & 145.33 s & 134.66 s & 10.66 s & 7.66\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém reiserfs}
-\label{tab:results-reiserfs}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|l|r|r|r|r|}
-    \hline
-    \textbf{Test} & \textbf{bez tuned} & \textbf{s tuned} & \textbf{rozdiel} & \textbf{rozdiel [\%]} \\ \hline
-    simple\_disk xfs & 113 s & 98 s & 15 s & 13.28\,\% \\
-    \hline
-    raid0 xfs & 116 s & 105 s & 11 s & 9.49\,\% \\
-    \hline
-    raid1 xfs & 123 s & 110 s & 13 s & 10.57\,\% \\
-    \hline
-    \textbf{Priemery} & 117.33 s & 104.33 s & 13.00 s & 11.66\,\% \\
-    \hline
-\end{tabular}
-\caption{Výsledky testov pre súborový systém xfs}
+\caption{Výsledky testov pre profil virtual-guest}
 \label{tab:results-xfs}
 \end{center}
 \end{table}
