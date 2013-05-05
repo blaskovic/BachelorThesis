@@ -117,7 +117,7 @@ do
     PROF_AVG_PERCENT="`echo $PERCENT_SUM_PROF $COUNT_PROF | awk '{printf "%.2f", $1 / $2}'`"
 
     echo -n "    "
-    echo -n "\\textbf{Celkové riemery} & "
+    echo -n "\\textbf{Celkové priemery} & "
     echo -n "\\textbf{$PROF_AVG_TUNED s}\\,& \\textbf{$PROF_AVG_TUNED\\,s} & \\textbf{$PROF_AVG_DIFF\\,s} & \\textbf{$PROF_AVG_PERCENT\\,\%} "
     echo "\\\\"
 
