@@ -9,15 +9,15 @@ veľmi náročné vytvoriť linuxovú distribúciu, ktorá by pokrývala požiad
 každého a~bola optimalizovaná pre všetky operácie. Preto je potrebné systém
 nastaviť tak, aby presne vyhovoval naším potrebám a~získali sme maximálny výkon
 pre naše potreby. Kedže sa jedná a~množstvo druhov nastavení, vznikol balíček
-\emph{tuned}\cite{tunedHomepage}, ktorý ich zahrňuje.
+\emph{tuned}~\cite{tunedHomepage}, ktorý ich zahrňuje.
 
 Cieľom tejto práce je priblížiť \emph{tuned}, zhrnúť jeho hlavné funkcie,
 popísať profily, implementovať sadu testov pre diskové operácie nad
 najpoužívanejšími súborovými systémami a~diskovými zariadeniami. Taktiež si
-popíšeme možnosti už existujúcich nástrojov na testovanie a popíšeme spôsob
+popíšeme možnosti už existujúcich nástrojov na testovanie a~popíšeme spôsob
 emulácie diskových zariadenií.
 
-Na záver budú testy spustené, výsledky vyhodnotené a diskutované.
+Na záver budú testy spustené, výsledky vyhodnotené a~diskutované.
 
 %
 % Popis komponenty
@@ -26,7 +26,7 @@ Na záver budú testy spustené, výsledky vyhodnotené a diskutované.
 \chapter{Popis komponenty tuned}
 
 Balíček \emph{tuned} je primárne napísaný pre linuxovú distribúciu
-Fedora\cite{fedoraHomepage} a~Red Hat Enterprise Linux. Démon \emph{tuned} neustále
+Fedora~\cite{fedoraHomepage} a~Red Hat Enterprise Linux. Démon \emph{tuned} neustále
 beží, skenuje systém a~upravuje nastavenia podľa potreby. Napríklad najväčšia
 záťaž na disk je pri štarte systému alebo pri ukladaní dát na disk (napríklad
 filmov). Inak je disk skoro nečinný. \emph{tuned} dokáže optimalizovať zápis práve v
@@ -34,13 +34,13 @@ tej dobe, keď je to potreba. Rovnako je to aj pri sieťových operáciach.
 
 %Niektoré profily zamedzujú aj prepínaniu Cx stavov \footnote{Cx sú stavy, v
 %ktorých sa môže vyskytovať procesor, typicky firmy Intel. Tieto stavy sa volajú
-%Spiacie stavy (ang. Sleep states) \cite{sleepStates}. Spiace stavy procesoru
+%Spiacie stavy (ang. Sleep states)~\cite{sleepStates}. Spiace stavy procesoru
 %slúžia na šetrenie energie.}.
 
 Súčasťou \emph{tuned} je aj program \emph{tuned-adm}, ktorý nám dovoľuje
 prepínať medzi profilmi. Každý z~profilov slúži na iné zameranie a~napriamo
 podľa toho upravuje systém, čím dosahujeme ešte lepšie výsledky. Tieto profily
-sú bližšie popísané v sekcii \ref{sec:profiles}.
+sú bližšie popísané v~sekcii \ref{sec:profiles}.
 
 %
 % Historia tuned
@@ -54,12 +54,12 @@ Komponenta \emph{tuned} je vyvýjaná od roku 2008. Prvými autormi boli
 \emph{Ján Včelák}, \emph{Jaroslav Škarvada} a~\emph{Ján Kaluža}.  \emph{tuned}
 je aktuálne vo verzii \emph{2}. Medzi verziou \emph{1} a~\emph{2} je veľký
 rozdiel, pretože bol celý kód od základov prepísaný. Prechod na túto verziu
-nastal len nedávno, približne s vydaním operačného systému \emph{Fedora~17}.
+nastal len nedávno, približne s~vydaním operačného systému \emph{Fedora~17}.
 Jedna z~najväčších zmien je v~používaní \emph{D-BUS} \footnote{Systém pre
 jednoduché zasielanie správ a~komunikáciu medzi aplikáciami}. Ďalšia zmena je
 v~profiloch. Niektoré profily boli zmenené alebo odobraté. Pre zachovanie
 spätnej kompatibility vznikol preto balík \emph{tuned-profiles-compat}, ktorý
-obsahuje všetky profily z verzie \emph{tuned~1}.
+obsahuje všetky profily z~verzie \emph{tuned~1}.
 
 %
 % Profily tuned
@@ -70,7 +70,7 @@ obsahuje všetky profily z verzie \emph{tuned~1}.
 
 Profily su hlavne zamerané na optimalizáciu CPU, diskov, sieťových zariadení
 a~FSB \footnote{Front-Side Bus - datová zbernica, ktorá zaisťuje komunikáciu
-medzi CPU a~hardvérom. Využíva sa v procesoroch \emph{Intel}}. Samotný balíček
+medzi CPU a~hardvérom. Využíva sa v~procesoroch \emph{Intel}}. Samotný balíček
 obsahuje niekoľko predpripravených profilov a~ako základný profil je po spustení
 démona profil \emph{balanced}.
 
@@ -115,14 +115,14 @@ nevyužívame. Túto rýchlosť ovplyvňujú rôzne druhy plánovačov.} proceso
 \texttt{ondemand}|\footnote{Nastavuje rýchlosť procesora podľa využitia.}
 a~\texttt{performance}\footnote{Nastaví rýchlosť procesora na najvyššiu hodnotu
 bez ohľadu na využitie.}. Viac o~tejto vlastnosti je možné dočítať sa na wiki
-stránkach Arch Linuxu\cite{arch:governor}.
+stránkach Arch Linuxu~\cite{arch:governor}.
 
 Ďalej je to nastavovanie plánovačov diskov. Toto nastavenie sa mení v~súbore
 \texttt{/sys\-/block\-/<dev>\-/queue\-/scheduler}. Niektoré profily ho prepínajú z
 predvoleného plánovača na \emph{deadline}\footnote{Tento plánovač sa používa
 pre zníženie latencie. Obsahuje dve fronty a~každá požiadavka má deadline}.
 Viac o~plánovačoch diskov je možné sa dočítať na stránkach dokumentácie
-\emph{OpenSuse}\cite{suse:scheduler} alebo v článku \cite{book:scheduler}.
+\emph{OpenSuse}~\cite{suse:scheduler} alebo v článku~\cite{book:scheduler}.
 
 Niektoré profily taktiež vypínajú bariéry\footnote{Vypnutím bariér hrozí
 poškodenie dát pri odpojení napájania diskov, pokiaľ disk nemá záložnú
@@ -136,13 +136,13 @@ batériu.} pri pripojovaní diskov.
 \label{sec:powertop2tuned}
 
 Profily si môžeme aj samy vytvárať. Ak si nie sme istý, čo je potrebné upraviť,
-môžeme využiť odporúčania z~programu \emph{powertop}\cite{powertopHomepage}~a
+môžeme využiť odporúčania z~programu \emph{powertop}~\cite{powertopHomepage}~a
 za pomoci skriptu \emph{powertop2tuned} si nechať profil vytvoriť automaticky.
 
-Vytvorenie takéhoto profila a jeho čiastočný obsah je v ukážke \ref{alg:powertop2tuned}.
+Vytvorenie takéhoto profila a~jeho čiastočný obsah je na obrázku \ref{alg:powertop2tuned}.
 
-\renewcommand{\lstlistingname}{Ukážka}
-\begin{lstlisting}[label=alg:powertop2tuned,caption=Príklad vytvorenia profilu za pomoci powertop2tuned]
+\begin{figure}[H]
+\begin{lstlisting}[label=alg:powertop2tuned]
 # /bin/powertop2tuned test-profile
 Generating shell script /etc/tuned/test-profile/script.sh
 Generating Tuned config file /etc/tuned/test-profile/tuned.conf
@@ -169,12 +169,13 @@ start() {
         #echo '1500'>'/proc/sys/vm/dirty_writeback_centisecs';
         ...
 \end{lstlisting}
-\renewcommand{\lstlistingname}{\listingAlgoritmus}
+\caption{Príklad vytvorenia profilu za pomoci powertop2tuned}
+\end{figure}
 
-Z ukážky je vidieť, že takto vytvorený profil sa už nenachádza v zložke
-\texttt{/usr/lib/tuned} ale v \texttt{/etc/tuned}. Taktiež je potrebné si po
-vytvorení profil otvoriť a ručne skontrolovať, pretože má všetky nastavenia
-zakomentované a je na používateľovi, ktoré povolí. 
+Z obrázka je vidieť, že takto vytvorený profil sa už nenachádza v~zložke
+\texttt{/usr/lib/tuned} ale v~\texttt{/etc/tuned}. Taktiež je potrebné si po
+vytvorení profil otvoriť a~ručne skontrolovať, pretože má všetky nastavenia
+zakomentované a~je na používateľovi, ktoré povolí. 
 
 Takýto profil si môžeme vytvoriť aj ručne, bez použitia nástroja
 \emph{powertop2tuned}, pokiaľ presne vieme, čo by bolo vhodné upraviť. 
@@ -183,36 +184,36 @@ Takýto profil si môžeme vytvoriť aj ručne, bez použitia nástroja
 % Emulacia diskovych zariadeni a sietovych sluzieb
 %
 
-\chapter{Emulácia diskových zariadení a sieťových služieb}
+\chapter{Emulácia diskových zariadení a~sieťových služieb}
 
-V tejto kapitole sa budem venovať emulácií diskových zariadení a sieťových
-služieb v teoretickej rovine. Je potrebné si uvedomiť, že na to, aby bolo
-testovanie na 100\,\% valídne nám emulácia nestačí a bolo by potrebné všetky
-testovacie prostriedky mať k dispozícií, čo nie je možné.
+V tejto kapitole sa budem venovať emulácií diskových zariadení a~sieťových
+služieb v~teoretickej rovine. Je potrebné si uvedomiť, že na to, aby bolo
+testovanie na 100\,\% valídne nám emulácia nestačí a~bolo by potrebné všetky
+testovacie prostriedky mať k~dispozícií, čo nie je možné.
 
 Aj keby tomu tak bolo, program nie je možné dokonale otestovať, pretože
-väčšinou existuje nekonečne veľa možností vstupu. V prípade testovania hardvéru
+väčšinou existuje nekonečne veľa možností vstupu. V~prípade testovania hardvéru
 sa táto skutočnosť ešte násobi, kedže na neho môže vplývať ešte viac okolností
-ako na softvér. Tejto myšlienke sa venuje aj \emph{Ron Patton} v Knihe
-\emph{Software Testing} \cite{Software_testing_patton}, kde opisuje testovanie
+ako na softvér. Tejto myšlienke sa venuje aj \emph{Ron Patton} v~Knihe
+\emph{Software Testing}~\cite{Software_testing_patton}, kde opisuje testovanie
 obyčajnej kalkulačky.
 
 \section{Sieťové služby}
 
-Ak chceme testovať rôzne typy sietí, \emph{Linux} nám k tomu poskytuje sieťové
-skripty, ktorými dokážeme vytvárať pomerne zložité návrhy sietí v rámci jedného
-systému -- napríklad mosty medzi zariadeniami, virtuálne podsiete a podobne.
+Ak chceme testovať rôzne typy sietí, \emph{Linux} nám k~tomu poskytuje sieťové
+skripty, ktorými dokážeme vytvárať pomerne zložité návrhy sietí v~rámci jedného
+systému -- napríklad mosty medzi zariadeniami, virtuálne podsiete a~podobne.
 
 V prípade, že využijeme virtuálne systémy, dajú sa vytvoriť aj pokročilejšie
-situácie a pri testovaní môžeme využívať služby na rôznych strojoch. Na webový,
-emailový a DNS server môžeme použiť oddelené systémy a testovať ich navzájom.
+situácie a~pri testovaní môžeme využívať služby na rôznych strojoch. Na webový,
+emailový a~DNS server môžeme použiť oddelené systémy a~testovať ich navzájom.
 
 Existuje množstvo hardvérových riešení pre emuláciu sietí. Tieto zariadenia ale
 nie sú relevantné pre komponentu \emph{tuned}, pretože vyžaduje operačný systém
 \emph{Fedora} alebo jemu podobné. Pri týchto riešeniach sa jedná ale väčšinou o
 rôzne vstavané systémy.
 
-Testovanie sietí je veľmi obsiahla téma a nie je zameraním tejto bakalárskej
+Testovanie sietí je veľmi obsiahla téma a~nie je zameraním tejto bakalárskej
 práce.
 
 %
@@ -225,7 +226,7 @@ K emulácii diskových zariadení sa dá pristupovať dvoma spôsobmi.
 
 \begin{enumerate}
     \item Bez využitia virtuálneho systému \label{item:without-virt-system}
-    \item S využítím virtuálneho systému \label{item:with-virt-system}
+    \item S~využítím virtuálneho systému \label{item:with-virt-system}
 \end{enumerate}
 
 %
@@ -235,42 +236,48 @@ K emulácii diskových zariadení sa dá pristupovať dvoma spôsobmi.
 \subsection{Bez využítia virtuálneho systému}
 
 Ak nechceme využiť virtuálny systém, potrebujeme vytvoriť blokové zariadenie
-diskou bez toho, aby sme v skutočnosti pripojili fyzický disk. K tomu slúži
+diskou bez toho, aby sme v~skutočnosti pripojili fyzický disk. K~tomu slúži
 napríklad balíček \texttt{scsi-target-utils}, ktorý obsahuje nástroj
 \texttt{/usr/bin/tgtadm}.  Tento nástroj dokáže vytvoriť \emph{SCSI} cieľový
 disk aj zo súbora. 
 
 Ďalej budeme potrebovať spustiť službu \texttt{tgtd}, ktorá nám takto pridaný
 disk sprístupní na sieť. Tento prístup sa používa vtedy, keď potrebujeme takýto
-disk nazdielať po lokálnej sieti. Samozrejme, môžeme ho pripojiť aj s využítím
+disk nazdielať po lokálnej sieti. Samozrejme, môžeme ho pripojiť aj s~využítím
 \emph{localhost} PC.
 
 Keď máme takýto disk prichystaný, pripojíme ho za pomoci príkazu uvedeného v
-algoritme \ref{alg:iscsiadm-discovery}. Tento nástroj sa nachádza v balíčku
+algoritme \ref{alg:iscsiadm-discovery}. Tento nástroj sa nachádza v~balíčku
 \texttt{iscsi-initiator-utils}.
-\\
-\begin{lstlisting}[caption=Vyhľadávanie diskov na sieti pomocou iscsiadm,label=alg:iscsiadm-discovery]
+
+\begin{figure}[H]
+\begin{lstlisting}[label=alg:iscsiadm-discovery]
     /usr/sbin/iscsiadm -m discovery -t st -p 127.0.0.1
 \end{lstlisting}
+\caption{Vyhľadávanie diskov na sieti pomocou iscsiadm}
+\end{figure}
 
 Pre korektnosť pripojenia je vhodné premazať všetky nepoužité mapy zariadení.
-Na to nám poslúži nástroj \texttt{/sbin/multipath} z balíčka
+Na to nám poslúži nástroj \texttt{/sbin/multipath} z~balíčka
 \texttt{device-mapper-multipath}. Aby sme ho mohli využiť, je taktiež potrebné
 zaviesť do jadra modul \texttt{dm-multipath}. Následne je potrebné reštartovať celú
-službu \texttt{multipathd}. Celý postup je uvedený v algoritme
+službu \texttt{multipathd}. Celý postup je uvedený v~algoritme
 \ref{alg:multipathd}.
-\\
-\begin{lstlisting}[label=alg:multipathd,caption=Vyhľadanie zariadení pomocou multipathd]
+
+\begin{figure}[H]
+\begin{lstlisting}[label=alg:multipathd]
     modprobe dm-multipath
     /sbin/multipath -F
     /etc/init.d/multipathd restart
     multipath -ll
 \end{lstlisting}
+\caption{Vyhľadanie zariadení pomocou multipathd}
+\end{figure}
 
 Keď som testoval tento typ pripojenia diskov, narazil som na problém s
 načasovaním. Je nevyhnutné nechať medzi príkazmi krátke časové intervaly na to,
 aby všetko prebehlo korektne. Ak sa tieto príkazy spustia za sebou, je vysoká
-pravdepodbobnosť, že sa disky nenájdu a nepripoja.
+pravdepodbobnosť, že sa disky nenájdu a~nepripoja.
 
 %
 % S vyuzitim virtualneho systemu
@@ -278,30 +285,30 @@ pravdepodbobnosť, že sa disky nenájdu a nepripoja.
 
 \subsection{S využítím virtuálneho systému}
 
-S virtuálnym systémom sa situácia zjednodušuje. Virtualizácia je v dnešnej dobe
-veľmi pokročilá. Ak sa rozhodneme používať \emph{libvirt} a \emph{qemu-kvm},
-tak existuje viacero nástrojov, ktoré nám uľahčujú prácu s virtuálnymi
+S virtuálnym systémom sa situácia zjednodušuje. Virtualizácia je v~dnešnej dobe
+veľmi pokročilá. Ak sa rozhodneme používať \emph{libvirt} a~\emph{qemu-kvm},
+tak existuje viacero nástrojov, ktoré nám uľahčujú prácu s~virtuálnymi
 systémami.
 
 Pre tých, ktorí majú radi klikacie nástroje, existuje skoro dokonalý
-\emph{virt-manager}. Vytvoriť si v ňom virtuálny systém a podrobne si ho
+\emph{virt-manager}. Vytvoriť si v ňom virtuálny systém a~podrobne si ho
 nastaviť je otázka niekoľkých ťahov myšou. 
 
 Automatické testy ale nemôžu používať klikacie GUI nástroje. Preto existuje
-nástroj \texttt{/bin/virsh} z balíka \texttt{libvirt-client}, ktorý dokáže
-zjednodušene pracovať s virtuálnymi systémami z príkazovej riadky.  
+nástroj \texttt{/bin/virsh} z~balíka \texttt{libvirt-client}, ktorý dokáže
+zjednodušene pracovať s~virtuálnymi systémami z~príkazovej riadky.  
 
 Nastavenia virtuálneho stroja cez \emph{libvirt} sa ukladajú ako
 \emph{XML}\footnote{eXtensible Markup Languagei -- rozšíriteľný značkovací
-jazyk} dokument. Tieto konfiguračné súbory sú uložené štandardne v zložke
-\texttt{/etc/libvirt/qemu} a majú ľahko pochopiteľnú štruktúru.
+jazyk} dokument. Tieto konfiguračné súbory sú uložené štandardne v~zložke
+\texttt{/etc/libvirt/qemu} a~majú ľahko pochopiteľnú štruktúru.
 
-Ak chceme pridať nový disk, tak pridáme nového potomka k uzlu
-\texttt{<devices>}, ktorý môže vyzerať napríklad ako v ukážke
+Ak chceme pridať nový disk, tak pridáme nového potomka k~uzlu
+\texttt{<devices>}, ktorý môže vyzerať napríklad ako na obrázku
 \ref{alg:libvirt-xml-disk}.
-\\
-\renewcommand{\lstlistingname}{Ukážka}
-\begin{lstlisting}[label=alg:libvirt-xml-disk,caption=Príklad diskového zariadenia pre libvirt]
+
+\begin{figure}[H]
+\begin{lstlisting}[label=alg:libvirt-xml-disk]
 <disk type='file' device='disk'>
     <driver name='qemu' type='raw'/>
     <source file='/home/user/Virtuals/F18.img'/>
@@ -309,28 +316,32 @@ Ak chceme pridať nový disk, tak pridáme nového potomka k uzlu
     <address type='drive' controller='0' bus='0' target='0' unit='0'/>
 </disk>
 \end{lstlisting}
-\renewcommand{\lstlistingname}{\listingAlgoritmus}
+\caption{Príklad diskového zariadenia pre libvirt}
+\end{figure}
 
 Niektoré typy zariadení je možné pripájať dokonca aj počas behu virtuálneho
-systému. Na to sa používa príkaz uvedený v \ref{alg:virsh-attach-device}.
-\\
-\begin{lstlisting}[label=alg:virsh-attach-device,caption=Pripojenie zariadenia bez priamej úpravy XML súbora]
+systému. Na to sa používa príkaz uvedený v~\ref{alg:virsh-attach-device}.
+
+\begin{figure}[H]
+\begin{lstlisting}[label=alg:virsh-attach-device]
 /bin/virsh attach-device <názov stroja> súbor.xml
 \end{lstlisting}
+\caption{Pripojenie zariadenia bez priamej úpravy XML súbora}
+\end{figure}
 
 Treba brať na vedomie ale to, že takto pridané zariadenie je pripojené len do
 najbližsieho vypnutia stroja, pretože tento príkaz neovplyvňuje hlavný XML
-súbor uložený v \texttt{/etc/libvirt/qemu}.
+súbor uložený v~\texttt{/etc/libvirt/qemu}.
 
 %
-% Testovanie diskovych zariadeni a sietovych sluzieb
+% Testovanie diskovych zariadeni a~sietovych sluzieb
 %
 
-\chapter{Testovanie diskových zariadení a sieťových služieb}
+\chapter{Testovanie diskových zariadení a~sieťových služieb}
 
 Či už zariadenia máme fyzicky pripojené alebo ich len simulujeme, nemalo by to
 mať vplyv na spôsob ich testovania. Preto už nie je potrebné rozlišovať
-virtualizovaný a nevirtualizovaný systém.
+virtualizovaný a~nevirtualizovaný systém.
 
 %
 % Testy pre sietove sluzby
@@ -339,46 +350,47 @@ virtualizovaný a nevirtualizovaný systém.
 \section{Testy pre sieťové služby}
 
 V prvom rade je potrebné si rozmyslieť, čo konkrétne chceme zo sieťových
-služieb testovať a uvedomiť si, čo všetko má na testovanie vplyv a obsiahnuť
-všetky možnosti je nad rámec bakalárskej a asi aj diplomovej práce.
+služieb testovať a~uvedomiť si, čo všetko má na testovanie vplyv a~obsiahnuť
+všetky možnosti je nad rámec bakalárskej a~asi aj diplomovej práce.
 
 Ako príklad môžeme uviesť jednoduchý test -- meranie rýchlosti/priepustnosti
 LAN siete.  Najjednoduchšia varianta, čo by mohla niekoho napadnúť je, merať
 rýchlosť sťahovania pripraveného súbora cez HTTP protokol. Na jednom uzly siete
-sa vytvorí server a na druhom uzly začneme sťahovanie. Toto riešenie ale nie je
+sa vytvorí server a~na druhom uzly začneme sťahovanie. Toto riešenie ale nie je
 úplne presné, kedže samotný protokol má taktiež nejakú réžiu. Preto treba ísť
-na čo najnižšiu vrstvu a ideálne si spraviť vlastný merací nástroj, ktorý bude
-pracovať priamo s paketmi. Na meranie ale má vplyv každé zariadenie, ktoré je
-v ceste od jedného bodu k druhému.
+na čo najnižšiu vrstvu a~ideálne si spraviť vlastný merací nástroj, ktorý bude
+pracovať priamo s~paketmi. Na meranie ale má vplyv každé zariadenie, ktoré je
+v ceste od jedného bodu k~druhému.
 
 %
 % iperf
 %
 
-\subsection{iperf}
+\subsection*{iperf}
 
 Na meranie výkonnosti siete existuje napríklad nástroj
 \emph{iperf}\footnote{Domovská stránka -- http://iperf.sourceforge.net}
 vyvýjaný \emph{NLANR/DAST}, ktorý dokáže merať priepustnosť siete, stratu
-paketov a iné.  Projekt NLANR bohužial skončil pred pár rokmi a preto je
-projekt neaktívny.  Posledná zmena na ňom bola v roku 2011.
+paketov a~iné.  Projekt NLANR bohužial skončil pred pár rokmi a~preto je
+projekt neaktívny.  Posledná zmena na ňom bola v~roku 2011.
 
-\emph{Iperf} je potrebné spustiť na jednom systéme ako server a na druhom ako
-klient. Príklad najjednoduchšieho použitia je v ukážke \ref{alg:iperf-usage}.
-\\
-\renewcommand{\lstlistingname}{Ukážka}
-\begin{lstlisting}[label=alg:iperf-usage,caption=Príklad použitia iperf]
+\emph{Iperf} je potrebné spustiť na jednom systéme ako server a~na druhom ako
+klient. Príklad najjednoduchšieho použitia je na obrázku \ref{alg:iperf-usage}.
+
+\begin{figure}[H]
+\begin{lstlisting}[label=alg:iperf-usage]
 /bin/iperf -s # Spustenie ako server
 /bin/iperf -c <host> # Spustenie ako klient, kde <host> je IP adresa servera
 \end{lstlisting}
-\renewcommand{\lstlistingname}{\listingAlgoritmus}
+\caption{Príklad použitia iperf}
+\end{figure}
 
-Výsledok takéhoto jednoduchého príkladu môže vyzerať napríklad ako v ukážke
+Výsledok takéhoto jednoduchého príkladu môže vyzerať napríklad ako na obrázku
 \ref{alg:iperf-results}. Ako je vidieť, server mal IP adresu
-\texttt{192.168.0.103} a program nameral rýchlosť 168\,Mbits/sec.
-\\
-\renewcommand{\lstlistingname}{Ukážka}
-\begin{lstlisting}[label=alg:iperf-results,caption=Výstup z programu iperf]
+\texttt{192.168.0.103} a~program nameral rýchlosť 168\,Mbits/sec.
+
+\begin{figure}[H]
+\begin{lstlisting}[label=alg:iperf-results]
 -------------------------------------
 Client connecting to 192.168.0.103, TCP port 5001
 TCP window size: 22.9 KByte (default)
@@ -387,55 +399,57 @@ TCP window size: 22.9 KByte (default)
 [ ID] Interval       Transfer     Bandwidth
 [  3]  0.0-10.0 sec   201 MBytes   168 Mbits/sec
 \end{lstlisting}
-\renewcommand{\lstlistingname}{\listingAlgoritmus}
+\caption{Výstup z~programu iperf}
+\end{figure}
 
 %
 % TTCP
 %
 
-\subsection{TTCP}
+\subsection*{TTCP}
 
 Ďalší nástroj, ktorý je možné použiť je \emph{PCATTCP}\footnote{PCAUSA Test TCP
 -- http://www.pcausa.com/Utilities/pcattcp.htm}. Tento program má podporu aj
-pre \emph{IPv6} a je vyvýjaný pre Windows. Jeho unixová varianta sa volá
+pre \emph{IPv6} a~je vyvýjaný pre Windows. Jeho unixová varianta sa volá
 \emph{Unix Test TCP}. 
 
 \section{Testy diskových zariadení}
 
 Meranie rýchlosti zápisu alebo čítania disku nie je až tak problematické
-narozdiel od sietí, ak si dáme pozor na to, či zápis prebehol v skutočnosti
+narozdiel od sietí, ak si dáme pozor na to, či zápis prebehol v~skutočnosti
 alebo ešte len čaká vo vyrovnávacej pamäti.
 
 %
 % dd
 %
 
-\subsection{dd}
+\subsection*{dd}
 
 Najjednoduchší spôsob merania zápisu môžeme previesť
-nástrojom \texttt{/bin/dd}. Príklad použitia a jeho výsledku je možné vidieť v
-ukážke \ref{alg:dd-usage}.
-\\
-\renewcommand{\lstlistingname}{Ukážka}
-\begin{lstlisting}[label=alg:dd-usage,caption=Príklad použitia a výsledok nástroja dd]
+nástrojom \texttt{/bin/dd}. Príklad použitia a~jeho výsledku je možné vidieť na
+obrázku \ref{alg:dd-usage}.
+
+\begin{figure}[H]
+\begin{lstlisting}[label=alg:dd-usage]
 $ /bin/dd if=/dev/zero of=file bs=1M count=300 conv=fdatasync
 300+0 records in
 300+0 records out
 314572800 bytes (315 MB) copied, 2.96816 s, 106 MB/s
 \end{lstlisting}
-\renewcommand{\lstlistingname}{\listingAlgoritmus}
+\caption{Príklad použitia a~výsledok nástroja dd}
+\end{figure}
 
 Voľba \texttt{conv=fdatasync} nám zabezpečuje to, že \emph{dd} po zápise
-vyžiada synchronizáciu systému a tým sú dáta v skutočnosti naozaj zapísané na
+vyžiada synchronizáciu systému a~tým sú dáta v~skutočnosti naozaj zapísané na
 disku.
 
 %
 % hdparm
 %
 
-\subsection{hdparm}
+\subsection*{hdparm}
 
-Ďalšou možnosťou je použiť program \texttt{/usr/sbin/hdparm}. Konkrétne nás na účely testovania rýchlosti disku budú zaujímať prepínače uvedené v tabuľke \ref{tab:hdparm-args}.
+Ďalšou možnosťou je použiť program \texttt{/usr/sbin/hdparm}. Konkrétne nás na účely testovania rýchlosti disku budú zaujímať prepínače uvedené v~tabuľke \ref{tab:hdparm-args}.
 
 \begin{table}[H]
 \begin{center}
@@ -444,7 +458,7 @@ disku.
     \textbf{Argument} & \textbf{Popis} \\
     \hline
     \texttt{-t}  & Testuje rýchlosť čítania cez vyrovnávaciu pamäť disku \\
-    \texttt{-T}  & Testuje rýchlosť čítania priamo z linuxovej vyrovnávacej pamäte \\
+    \texttt{-T}  & Testuje rýchlosť čítania priamo z~linuxovej vyrovnávacej pamäte \\
     \hline
 \end{tabular}
 \caption{Popis argumentov hdparm pre testovanie rýchlosti}
@@ -456,26 +470,27 @@ Existuje aj argument \texttt{-f}, ktorý pred koncom synchronizuje systém a
 vyprázdni vyrovnávaciu pamäť. Pri použití prepínača \texttt{-t} alebo
 \texttt{-T} to nie je potrebné, pretože to robia implicitne.
 
-\renewcommand{\lstlistingname}{Ukážka}
-\begin{lstlisting}[label=alg:hdparm-usage,caption=Príklad použitia nástroja hdparm]
+\begin{figure}[H]
+\begin{lstlisting}[label=alg:hdparm-usage]
 $ /usr/sbin/hdparm -t -T /dev/sda
 /dev/sda:
  Timing cached reads:   22722 MB in  1.98 seconds = 11476.62 MB/sec
   Timing buffered disk reads: 386 MB in  3.01 seconds = 128.18 MB/sec
 
 \end{lstlisting}
-\renewcommand{\lstlistingname}{\listingAlgoritmus}
+\caption{Príklad použitia nástroja hdparm}
+\end{figure}
 
 %
 % bonnie++
 %
 
-\subsection{bonnie++}
+\subsection*{bonnie++}
 
 Medzi pokročilejšie merače rýchlosti môžeme zaradiť napríklad \emph{Bonnie++}.
 
-\renewcommand{\lstlistingname}{Ukážka}
-\begin{lstlisting}[label=alg:bonnie-usage,caption=Príklad použitia nástroja Bonnie++]
+\begin{figure}[H]
+\begin{lstlisting}[label=alg:bonnie-usage]
 $ /usr/sbin/bonnie++
 Writing a byte at a time...done
 Writing intelligently...
@@ -503,30 +518,31 @@ hostname            -Create-- --Read--- -Delete-- -Create-- --Read--- -Delete--
                                1.96,1.96,laura.blaskovic.sk,1,1367789311,31984M,,1118,96,95761,7,46341,5,4279,78,115086,8,216.4,2,16,,,,,17190,37,+++++,+++,+++++,+++,28574,59,+++++,+++,
                                +++++,+++,9476us,17262ms,13180ms,42596us,258ms,1516ms,90450us,226us,252us,91us,29us,151us
 \end{lstlisting}
-\renewcommand{\lstlistingname}{\listingAlgoritmus}
+\caption{Príklad použitia nástroja Bonnie++}
+\end{figure}
 
-Z ukážky \ref{alg:bonnie-usage} je vidieť, aké testy približne \emph{bonnie++}
-prevádza. Jedná sa o zápis do súbora, jeho prepisovanie, čítanie, mazanie a
-iné. Oproti vyššie uvedeným nástrojom ako \emph{dd} a \emph{hdparm} je
-\emph{bonnie++} priamo určený na meranie rýchlosti pevného disku a preto sú
+Na obrázku \ref{alg:bonnie-usage} je vidieť, aké testy približne \emph{bonnie++}
+prevádza. Jedná sa o~zápis do súbora, jeho prepisovanie, čítanie, mazanie a
+iné. Oproti vyššie uvedeným nástrojom ako \emph{dd} a~\emph{hdparm} je
+\emph{bonnie++} priamo určený na meranie rýchlosti pevného disku a~preto sú
 jeho výsledky pravdepodobne viac relevantné.
 
 %
 % iozone
 %
 
-\subsection{iozone}
+\subsection*{iozone}
 
-Ďalší z rady meračov rýchlosti diskov má názov \emph{IOzone Filesystem
+Ďalší z~rady meračov rýchlosti diskov má názov \emph{IOzone Filesystem
 Benchmark}. Podobne ako \emph{bonnie++} testuje zápis, čítanie, opätovný zápis,
-opätovné čítanie, náhodné čítanie a iné. Tento nástroj sa nenachádza v
-bežných\footnote{Základné repozitáre a rpmfusion repozitár} repozitároch
-systému \emph{Fedora} a je ho potrebné stiahnuť na jeho domovskej stránke
+opätovné čítanie, náhodné čítanie a~iné. Tento nástroj sa nenachádza v
+bežných\footnote{Základné repozitáre a~rpmfusion repozitár} repozitároch
+systému \emph{Fedora} a~je ho potrebné stiahnuť na jeho domovskej stránke
 \texttt{http://www.iozone.org}.
 
 Pre bližšiu špecifikáciu toho, čo chceme otestovať, je možné presne definovať,
 aké testy sa majú spustiť. \emph{IOzone} rozlišuje presne 13 testov, ktoré sa
-dajú nastaviť argumentom \texttt{-i}. Prehľad testov je v tabuľke
+dajú nastaviť argumentom \texttt{-i}. Prehľad testov je v~tabuľke
 \ref{tab:iozone-tests}.
 
 \begin{table}[H]
@@ -567,12 +583,12 @@ Tento nástroj ma naozaj širokú škálu nastavení. Medzi zaujímavé možnost
 %\section{References}
 
 %\section{Introduction}
-\section{Úvod}
+\section{Úvod do testovania}
 
-Na testovanie tuned využijeme pomocnú knižnicu \emph{beakerlib}
-\cite{beakerlibHomepage} pre jednoduchšie písanie testov a~prehľadnejšiu
-interpretáciu dosiahnutých výsledkov. Cieľom testovania je zistiť, nakoľko
-\emph{tuned} ovplyvňuje rýchlosť diskových operácií.
+Na testovanie tuned využijeme pomocnú knižnicu
+\emph{beakerlib}~\cite{beakerlibHomepage} pre jednoduchšie písanie testov
+a~prehľadnejšiu interpretáciu dosiahnutých výsledkov. Cieľom testovania je
+zistiť, nakoľko \emph{tuned} ovplyvňuje rýchlosť diskových operácií.
 
 %\section{Test Items}
 \section{Testovacie položky}
@@ -662,8 +678,8 @@ Celé testovania sa skladá z~niekoľkých súčastí:
     \item Vyhodnotenie výsledkov.
 \end{itemize}
 
-Výsledky testov majú podobu nameraných hodnôt v tabuľkách (generujú sa
-automaticky) a písomného popisu týchto hodnôt.
+Výsledky testov majú podobu nameraných hodnôt v~tabuľkách (generujú sa
+automaticky) a~písomného popisu týchto hodnôt.
 
 %\section{Remaining Test Tasks}
 %\section{Environmental Needs}
@@ -678,7 +694,7 @@ automaticky) a písomného popisu týchto hodnôt.
 % Testovanie
 %
 
-\chapter{Príprava prostredia a implementácia testov}
+\chapter{Príprava prostredia a~implementácia testov}
 
 \section{Nastavenia systému}
 
@@ -688,17 +704,20 @@ bude testovať rýchlosť zápisu a čítania by mal byť v~ideálnom prípade
 nekešovaný.  Pred testovaním aj po testovaním je potrebné hostiteľský aj
 virtualizovaný systém synchronizovať a~zmazať nakešované stránky (Algoritmus
 \ref{alg:sync}).
-\\
-\begin{lstlisting}[caption=Synchronizácia systému,label=alg:sync]
+
+\begin{figure}[H]
+\begin{lstlisting}[label=alg:sync]
     /bin/sync
     echo 3 > /proc/sys/vm/drop_caches
 \end{lstlisting}
+\caption{Synchronizácia systému}
+\end{figure}
 
 Každé miesto, kde je možnosť, že by systém si uchovával nejaké nakešované data,
 ktoré by mohli ovplyvniť výsledky testovania je potrebné poznať (Obrázok
 \ref{graf-cache}).
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \begin{center}
   \makebox[\textwidth]{\includegraphics[width=\paperwidth/2]{data/cache.pdf}}
   \caption{Vyznačenie miest, kde môže nastať kešovanie}
@@ -804,7 +823,7 @@ uvedené na obrázku \ref{graf-cache} a~zároveň neovplyvňujú prácu \emph{tu
 % Testflow
 %
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \begin{center}
   \makebox[\textwidth]{\includegraphics[width=\paperwidth-200pt]{data/testflow.pdf}}
   \caption{Priebeh testovania}
@@ -842,8 +861,8 @@ dodatočne okomentovať, tento \LaTeX~kód očakáva dodatočné súbory s~menom
 \texttt{obsah-test-<názov tuned profilu>.tex}. Ak tento súbor existuje, jeho
 text sa vloží pre tabuľku s~výsledkami.
 
-Skript priebežne počíta aj priemerné časy a priemerné percentuálne zlepšenie
-pre každý súborový systém zvlášť a na záver pre celý profil. 
+Skript priebežne počíta aj priemerné časy a~priemerné percentuálne zlepšenie
+pre každý súborový systém zvlášť a~na záver pre celý profil. 
 
 %
 % Vyhodnotenie testov
@@ -851,7 +870,7 @@ pre každý súborový systém zvlášť a na záver pre celý profil.
 
 \section{Vyhodnotenie testov}
 
-% Nacitaj subory s vysledkami
+% Nacitaj subory s~vysledkami
 \IfFileExists{test-results}{\input{test-results}}{}
 
 %
@@ -956,12 +975,12 @@ Tieto chyby boli väčśinou opravené do pár dní. Ich prehľad je v~tabuľke 
 
 Tieto chyby neovplyvnili testovanie, pretože neboli až tak závažné alebo ich
 vývojár rýchlo opravil. Jedine chyba v~\texttt{mkfs.btrfs} znemožnila
-testovanie tohoto súborového systému po dlhý čas a bola opravená len pár dní
+testovanie tohoto súborového systému po dlhý čas a~bola opravená len pár dní
 pred ukončením tejto práce.
 
 Na množstvo ďalších chýb som narazil, ktoré už ale boli nahlásene aj opravené,
 len sa nedostali do repozitárov. Preto bolo potrebné niekedy aktualizovať
-balíček z testovacieho repozitára alebo priamo z upstreamu.
+balíček z~testovacieho repozitára alebo priamo z~upstreamu.
 
 
 %
@@ -976,33 +995,33 @@ zrýchlenie diskových operácií pre niektoré \emph{tuned} profily.
 Medzi najvhodnejšie profily patrí \emph{throughput-performance} a
 \emph{latency-performance}. Pri použití na virtuálnom systéme by bolo asi
 najvhodnejšie použiť profil \emph{virtual-guest},  ktorý kopíruje
-\emph{throughput-performance} a dodatočne vylepšuje ešte ďalšie nastavenia
+\emph{throughput-performance} a~dodatočne vylepšuje ešte ďalšie nastavenia
 vhodné pri virtualizácii.
 
 %
-% Najrychlejsi FS a naj zrychlenie
+% Najrychlejsi FS a~naj zrychlenie
 %
 
-\section{Najrýchlejší súborový systém a najväčšie zrýchlenie}
+\section{Najrýchlejší súborový systém a~najväčšie zrýchlenie}
 
 Najväčšie zrýchlenie po aplikovaní \emph{tuned} profila zaznamenal pomerne
 neznámy súborový systém \emph{JFS}. Narozdiel od \emph{extN} nikdy nezaznamenal
-zhoršenie so zapnutým \emph{tuned} a preto je možné \emph{tuned} bez obáv
+zhoršenie so zapnutým \emph{tuned} a~preto je možné \emph{tuned} bez obáv
 použi, ak ho používate.
 
-Zrýchlenie je ale relatívne a neznamená to, že na \emph{JFS} boli diskové
+Zrýchlenie je ale relatívne a~neznamená to, že na \emph{JFS} boli diskové
 operácie najrýchlejšie. Experimentálny súborový systém \emph{btrfs} jednoznačne
-vyhráva v rýchlosti. V kombinácií s \emph{raid1} jednoznačne víťazí nad
+vyhráva v~rýchlosti. V~kombinácií s~\emph{raid1} jednoznačne víťazí nad
 ostatnými.
 
-\section{Kam ďalej pokračovať}
+\section{Ďalší možný rozvoj testovania}
 
 Aby sme dosiahli ešte lepšie výsledky, môžeme použíť program \emph{powertop},
-ktorý nám navrhuje, čo by sa dalo na systéme vylepšiť a programom
+ktorý nám navrhuje, čo by sa dalo na systéme vylepšiť a~programom
 \emph{powertop2tuned} si nechať na základe odporúčaní vygenerovať profil na
-mieru tak, ako bolo popisované v sekcii \ref{sec:powertop2tuned}.
+mieru tak, ako bolo popisované v~sekcii \ref{sec:powertop2tuned}.
 
-Na toto riešenie je ale potrebné dokonale rozumieť problematike a obsiahnuť
+Na toto riešenie je ale potrebné dokonale rozumieť problematike a~obsiahnuť
 všetky možnosti nastavení pre automatizované testovanie by bolo veľmi výpočetne
 nároćné.
 

@@ -90,7 +90,7 @@ je nezákonné, s výnimkou zákonom definovaných prípadov.}
 %Vyber typu projektu
 \newcommand{\set@project}[1]{%
  \naselfalse
- \ifEqString{#1}{BP}{Bakalárska práca}{\@projecttype@CS}%
+ \ifEqString{#1}{BP}{Bakalářská práce}{\@projecttype@CS}%
  \ifEqString{#1}{BP}{Bachelor's thesis}{\@projecttype@EN}%
  \ifEqString{#1}{SP}{Semestrální projekt}{\@projecttype@CS}%
  \ifEqString{#1}{SP}{Term project}{\@projecttype@EN}%
