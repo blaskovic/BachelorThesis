@@ -32,7 +32,6 @@ do
     echo
 
         # Header of table
-        echo "{\\renewcommand{\\arraystretch}{1.1}"
         echo "\\begin{table}[H]"
         echo "\\begin{center}"
         echo "\\begin{tabular}{|l|r r r r|}"
@@ -103,7 +102,7 @@ do
         echo "    \\hline"
         echo -n "    "
         echo -n "\\textbf{Priemery} & "
-        echo -n "\\textbf{$AVG_TUNED s}\\,& \\textbf{$AVG_TUNED\\,s} & \\textbf{$AVG_DIFF\\,s} & \\textbf{$AVG_PERCENT\\,\%} "
+        echo -n "\\textbf{$AVG_NOTUNED s}\\,& \\textbf{$AVG_TUNED\\,s} & \\textbf{$AVG_DIFF\\,s} & \\textbf{$AVG_PERCENT\\,\%} "
         echo "\\\\"
 
     done
