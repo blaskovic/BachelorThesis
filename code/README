@@ -1,0 +1,12 @@
+Testovacia sada pre tuned profily.
+
+- Pred testovanim je potrebne si vytvorit virtualny stroj s operacnym systemom Fedora (testovane na verzii 18).
+- Nasledovne nastavit vsetky potrebne udaje v subore "config" - ich popis je v obsahu bakalarskej prace v sekcii implementacii testov.
+- Testovanie sa spusta skriptom "test_disk.sh"
+- Po ukonceni testovania sa vysledky spracovavaju skriptom "make_results.sh".
+
+Informacie k skriptom:
+- Subory zacinajuce "fun_" obsahuju pomocne funkcie.
+- Subory zacinajuce "inc_" obsahuju jednotlive testy.
+- Skript "bootstrap.sh" zaistuje nacitanie vsetkych potrebnych suborov/funkcii a pripravu testovacieho prostredia.
+- Skript "cleanup.sh" cisti hostitelsky system po skonceni testovania.
