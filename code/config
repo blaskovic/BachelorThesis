@@ -3,7 +3,6 @@
 #
 # Test config
 #
-DISK_TYPE=virtio
 declare -A FS
 
 FS[ext2]="mkfs.ext2 -F"
@@ -15,6 +14,7 @@ FS[reiserfs]="yes | mkfs.reiserfs -f"
 FS[btrfs]="mkfs.btrfs"
 
 TEST_COMMAND="sync; date '+%s' > /tmp/TIME_START; for i in `seq -s \" \" 1 6`; do /bin/dd bs=1M count=500 if=/dev/zero of=/mnt/disk1/test\$i.img conv=fdatasync; done; for i in `seq -s \" \" 1 6`; do /bin/cp -vf /mnt/disk1/test\$i.img /mnt/disk1/test\$i-2.img; done; /bin/rm -vrf /mnt/disk1/test*.img; sync; date '+%s' > /tmp/TIME_END;"
+DISK_TYPE=virtio
 TO_TEST="simple_disk raid0 raid1"
 TUNED_STATUS="stop"
 TUNED_PROFILES="balanced latency-performance powersave throughput-performance virtual-guest"
@@ -25,11 +25,13 @@ TUNED_PROFILES="balanced latency-performance powersave throughput-performance vi
 
 MACHINE_NAME="F18"
 MACHINE_IP="192.168.0.120"
+MACHINE_DISK="/home/branislav/Virtuals/F18.img"
+MACHINE_DISK_SOURCE="/home/branislav/Virtuals/F18_source.img"
 
 #
 # Log files config
 #
 
-LOG_FILE="/tmp/tuned-results.log"
+LOG_FILE="/tmp/tuned-results.log.tmp"
 FAILED_RUN_LOG="/tmp/failedRun"
 

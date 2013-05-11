@@ -36,6 +36,7 @@ rlPhaseStartTest "TEST: Simple speed"
             while failedRunCheck
             do
                 tlVirshShutdown
+                rlRun "cp -vf $MACHINE_DISK_SOURCE $MACHINE_DISK"
                 
                 failedRunClear
                 . $ORIGINAL_DIR/inc_$name.sh
@@ -51,6 +52,7 @@ rlPhaseStartTest "TEST: Simple speed"
                 while failedRunCheck
                 do
                     tlVirshShutdown
+                    rlRun "cp -vf $MACHINE_DISK_SOURCE $MACHINE_DISK"
 
                     failedRunClear
                     . $ORIGINAL_DIR/inc_$name.sh
