@@ -6,9 +6,9 @@
 
 Každý linuxový server alebo osobný počítač môže slúžiť na niečo iné. Preto je
 veľmi náročné vytvoriť linuxovú distribúciu, ktorá by pokrývala požiadavky
-každého a~zároveň bola optimalizovaná pre všetky operácie. Preto je potrebné systém
-nastaviť tak, aby presne vyhovoval naším potrebám a~získali sme maximálny výkon
-pre naše potreby. Kedže sa jedná a~množstvo druhov nastavení, vznikol balíček
+každého a~zároveň bola optimalizovaná pre všetky operácie. Preto je potrebné
+systém nastaviť tak, aby presne vyhovoval naším potrebám a zároveň sme získali
+maximálny výkon. Kedže sa jedná o veľký počet nastavení, vznikol balíček
 \emph{tuned}~\cite{tunedHomepage}, ktorý ich zahrňuje.
 
 Cieľom tejto práce je priblížiť \emph{tuned}, zhrnúť jeho hlavné funkcie,
@@ -18,27 +18,27 @@ popíšeme možnosti už existujúcich nástrojov na testovanie a~popíšeme sp�
 emulácie diskových zariadenií.
 
 Do práce bude zahrnutých aj niekoľko bočných tém, ktoré nie sú síce predmetom
-práce ale úzko súvisia s \emph{tuned} a jeho testovaním, ako napríklad
+práce ale úzko súvisia s~\emph{tuned} a~jeho testovaním, ako napríklad
 testovací deň \emph{Fedora~19}.
 
 V kapitolách bude postupne najprv predstavené \emph{tuned}, jeho história,
 náhľad do profilov aj popísaná možnosť vytvorenia vlastného profila.
 Nasledujúca kapitola sa zaoberá možnosťami emulácie diskových zariadení a
-sieťových služieb. Táto kapitola uvádza základné prístupy k problematike, ako
-postupovať v pripáde emulácie na virtualizovanom systéme, ale aj bez neho.
-Ďalej sa táto práca bude zaoberať testovaním diskových zariadení a sieťových
+sieťových služieb. Táto kapitola uvádza základné prístupy k~problematike, ako
+postupovať v~pripáde emulácie na virtualizovanom systéme, ale aj bez neho.
+Ďalej sa táto práca bude zaoberať testovaním diskových zariadení a~sieťových
 služieb. Uvedieme si niekoľko existujúcich nástrojov, príklad ich použitia a
 krátky popis, na čo presne slúžia. Potom si popíšeme plán testovania, aké sú
-riziká pri testovaní, čo budeme testovať a aké výsledky sa budeme snažiť
-dosiahnuť. Nasleduje príprava testovacieho prostredia a implementácia testov.
-Obrázkami a textom bude vysvetlené fungovanie testovacej sady a jej prepojenosť
+riziká pri testovaní, čo budeme testovať a~aké výsledky sa budeme snažiť
+dosiahnuť. Nasleduje príprava testovacieho prostredia a~implementácia testov.
+Obrázkami a~textom bude vysvetlené fungovanie testovacej sady a~jej prepojenosť
 s automatickým spracovaním výsledkov. Ďalej práca obsahuje popis automatického
-spracovania výsledkov, ich vyhodnotenie v tabuľkách a prirovnaním nameraných
-hodnôt k jednotlivým profilom a ich nastavení. Počas testovania som narazil na
-niekoľko chýb, ktoré sú zhrnuté v tabuľke a taktiež popísaný problém s
-\emph{libvirtd}, na ktorý som narazil. Na záver si zhrnieme výsledky testov,
-určíme najefektívnejší profil pre optimalizáciu diskových operácií a popíšeme
-možnosti ďalšieho pokračovania.
+spracovania výsledkov, ich vyhodnotenie v~tabuľkách a~prirovnaním nameraných
+hodnôt k~jednotlivým profilom a~ich nastavení. Počas testovania som narazil na
+niekoľko chýb, ktoré sú zhrnuté v~tabuľke a~taktiež popísaný problém s
+\emph{libvirtd}, ktorý ostáva nevyriešený. Na záver si zhrnieme výsledky
+testov, určíme najefektívnejší profil pre optimalizáciu diskových operácií
+a~popíšeme možnosti ďalšieho pokračovania.
 
 %
 % Popis komponenty
@@ -52,11 +52,6 @@ beží, skenuje systém a~upravuje nastavenia podľa potreby. Napríklad najvä�
 záťaž na disk je pri štarte systému alebo pri ukladaní dát na disk (napríklad
 filmov). Inak je disk skoro nečinný. \emph{tuned} dokáže optimalizovať zápis práve v
 tej dobe, keď je to potreba. Rovnako je to aj pri sieťových operáciach.
-
-%Niektoré profily zamedzujú aj prepínaniu Cx stavov \footnote{Cx sú stavy, v
-%ktorých sa môže vyskytovať procesor, typicky firmy Intel. Tieto stavy sa volajú
-%Spiacie stavy (ang. Sleep states)~\cite{sleepStates}. Spiace stavy procesoru
-%slúžia na šetrenie energie.}.
 
 Súčasťou \emph{tuned} je aj program \emph{tuned-adm}, ktorý nám dovoľuje
 prepínať medzi profilmi. Každý z~profilov slúži na iné zameranie a~napriamo
@@ -107,7 +102,7 @@ adresári sa taktiež nachádza súbor s~funkciami, ktoré tieto profily využí
 Práve tieto súbory sú najviac vyvýjané a~menené.
 
 Prehľad profilov zo základného balíčka \emph{tuned}. Zoznam je platný pre
-verziu \texttt{tuned-2.2.2-1} na \emph{Fedora~18}:
+verziu \texttt{tuned-\-2.\-2.\-2\--1} na \emph{Fedora~18}:
 
 \begin{itemize}
     \item \textbf{balanced} -- predvolený profil pre väčšinu systémov s~výnimkou virtuálnych
@@ -133,7 +128,7 @@ Balíček \emph{tuned-profiles-compat} rozširuje zoznam o~tieto ďalšie profil
 Medzi najčastejšie operácie profilov patrí menenie governoru\footnote{Rýchlosť
 procesora je možné meniť a~tým šetriť energiu v čase, keď ho naplno
 nevyužívame. Túto rýchlosť ovplyvňujú rôzne druhy plánovačov.} procesoru medzi
-\texttt{ondemand}|\footnote{Nastavuje rýchlosť procesora podľa využitia.}
+\texttt{ondemand}\footnote{Nastavuje rýchlosť procesora podľa využitia.}
 a~\texttt{performance}\footnote{Nastaví rýchlosť procesora na najvyššiu hodnotu
 bez ohľadu na využitie.}. Viac o~tejto vlastnosti je možné dočítať sa na wiki
 stránkach Arch Linuxu~\cite{arch:governor}.
@@ -141,7 +136,7 @@ stránkach Arch Linuxu~\cite{arch:governor}.
 Ďalej je to nastavovanie plánovačov diskov. Toto nastavenie sa mení v~súbore
 \texttt{/sys\-/block\-/<dev>\-/queue\-/scheduler}. Niektoré profily ho prepínajú z
 predvoleného plánovača na \emph{deadline}\footnote{Tento plánovač sa používa
-pre zníženie latencie. Obsahuje dve fronty a~každá požiadavka má deadline}.
+pre zníženie latencie. Obsahuje dve fronty a~každá požiadavka má deadline.}.
 Viac o~plánovačoch diskov je možné sa dočítať na stránkach dokumentácie
 \emph{OpenSuse}~\cite{suse:scheduler} alebo v článku~\cite{book:scheduler}.
 
@@ -268,6 +263,7 @@ disk sprístupní na sieť. Tento prístup sa používa vtedy, keď potrebujeme 
 disk nazdielať po lokálnej sieti. Samozrejme, môžeme ho pripojiť aj s~využítím
 \emph{localhost} PC.
 
+
 Keď máme takýto disk prichystaný, pripojíme ho za pomoci príkazu uvedeného na
 obrázku \ref{alg:iscsiadm-discovery}. Tento nástroj sa nachádza v~balíčku
 \texttt{iscsi-initiator-utils}.
@@ -307,7 +303,7 @@ pravdepodbobnosť, že sa disky nenájdu a~nepripoja.
 % S vyuzitim virtualneho systemu
 %
 
-\subsection{Emulácia s využítím virtuálneho systému}
+\subsection{Emulácia s~využítím virtuálneho systému}
 
 S virtuálnym systémom sa situácia zjednodušuje. Virtualizácia je v~dnešnej dobe
 veľmi pokročilá. Ak sa rozhodneme používať \emph{libvirt} a~\emph{qemu-kvm},
@@ -323,7 +319,7 @@ nástroj \texttt{/bin/virsh} z~balíka \texttt{libvirt-client}, ktorý dokáže
 zjednodušene pracovať s~virtuálnymi systémami z~príkazovej riadky.  
 
 Nastavenia virtuálneho stroja cez \emph{libvirt} sa ukladajú ako
-\emph{XML}\footnote{eXtensible Markup Languagei -- rozšíriteľný značkovací
+\emph{XML}\footnote{eXtensible Markup Language -- rozšíriteľný značkovací
 jazyk} dokument. Tieto konfiguračné súbory sú uložené štandardne v~zložke
 \texttt{/etc/libvirt/qemu} a~majú ľahko pochopiteľnú štruktúru.
 
@@ -345,7 +341,7 @@ Ak chceme pridať nový disk, tak pridáme nového potomka k~uzlu
 \end{figure}
 
 Niektoré typy zariadení je možné pripájať dokonca aj počas behu virtuálneho
-systému. Na to sa používa príkaz uvedený v~\ref{alg:virsh-attach-device}.
+systému. Na to sa používa príkaz uvedený na obrázku~\ref{alg:virsh-attach-device}.
 
 \begin{figure}[H]
 \begin{lstlisting}
@@ -455,10 +451,10 @@ alebo ešte len čaká vo vyrovnávacej pamäti.
 
 Najjednoduchší spôsob merania zápisu môžeme previesť nástrojom
 \texttt{/bin/dd}. Po spustení kopíruje zo zdroja do výstupu podľa zadaných
-argumentov (ako napríklad veľkosť načítaného bloku dát) a po ukončení mimo iné
-vypíše veľkosť prenesených dát s rýchlosťou operácie. Pokiaľ nás zaujímajú
+argumentov (ako napríklad veľkosť načítaného bloku dát) a~po ukončení mimo iné
+vypíše veľkosť prenesených dát s~rýchlosťou operácie. Pokiaľ nás zaujímajú
 priebežné štatistiky počas kopírovania, program po odchytení signálu
-\texttt{SIGUSR1} vypíše aktuálne údaje o prenose.  Príklad použitia a~jeho
+\texttt{SIGUSR1} vypíše aktuálne údaje o~prenose.  Príklad použitia a~jeho
 výsledku je možné vidieť na obrázku \ref{alg:dd-usage}.
 
 \begin{figure}[H]
@@ -482,7 +478,9 @@ disku.
 
 \subsection*{Nástroj hdparm}
 
-Ďalšou možnosťou je použiť program \texttt{/usr/sbin/hdparm}. Konkrétne nás na účely testovania rýchlosti disku budú zaujímať prepínače uvedené v~tabuľke \ref{tab:hdparm-args}.
+Ďalšou možnosťou je použiť program \texttt{/usr/sbin/hdparm}. Konkrétne nás na
+účely testovania rýchlosti disku budú zaujímať prepínače uvedené v~tabuľke
+\ref{tab:hdparm-args}.
 
 \begin{table}[H]
 \begin{center}
@@ -521,7 +519,7 @@ $ /usr/sbin/hdparm -t -T /dev/sda
 
 \subsection*{Nástroj bonnie++}
 
-Medzi pokročilejšie merače rýchlosti môžeme zaradiť napríklad \emph{Bonnie++}. Program sa spúšťa bez argumentov. Testovanie trvá niekoľko minút a počas testov by sa na počíťači nemalo pracovať pre čo najpresnejšie výsledky. Po skončení testov sa nám zobrazí tabuľka výsledkov s hodnotami latencie pre jednotlivé diskové operácie.
+Medzi pokročilejšie merače rýchlosti môžeme zaradiť napríklad \emph{Bonnie++}. Program sa spúšťa bez argumentov. Testovanie trvá niekoľko minút a~počas testov by sa na počíťači nemalo pracovať pre čo najpresnejšie výsledky. Po skončení testov sa nám zobrazí tabuľka výsledkov s~hodnotami latencie pre jednotlivé diskové operácie.
 
 \begin{figure}[H]
 \begin{lstlisting}
@@ -636,21 +634,21 @@ súborovými systémami uvedenými v~zozname nižsie.
 \begin{itemize}
     \item \textbf{ext2} -- Pôvodne navrhnutý francúzskym vývojárom \emph{Rémy
     Card}-om. Tento súborový systém prišiel ako náhrada za \emph{ext}.
-    \item \textbf{ext3} -- Jeho vývoj viedol \emph{Stephen Tweedie} a hlavný
-    rozdiel oproti \emph{ext2} je v pridanej žurnálovacej vrstve.
+    \item \textbf{ext3} -- Jeho vývoj viedol \emph{Stephen Tweedie} a~hlavný
+    rozdiel oproti \emph{ext2} je v~pridanej žurnálovacej vrstve.
     \item \textbf{ext4} -- Bol zahrnutý do linuxového jadra verzie 2.6.19.
-    Zachováva spätnú kompatibilitu s \emph{ext2} a \emph{ext3}.
+    Zachováva spätnú kompatibilitu s~\emph{ext2} a~\emph{ext3}.
     \item \textbf{xfs} -- pôvodne slúžil ako predvolený súborový systém v
     operačnom systéme \emph{IRIX}\footnote{Operačný systém vyvýjaný
-    spoločnosťou Silicon Graphics, postavený na MIPS architektúre.} a až neskôr
+    spoločnosťou Silicon Graphics, postavený na MIPS architektúre.} a~až neskôr
     bolportovaný do linuxového jadra.
     \item \textbf{jfs} -- Žurnálovací súborový systém, ktorý uschováva
     plánované zmeny žurnálu pred zápisom. Tým predcháza poškodeniu dát v
     prípade havárie.
-    \item \textbf{ReiserFS} -- oproti \emph{ext2} a \emph{ext3} je rýchlejší
+    \item \textbf{ReiserFS} -- oproti \emph{ext2} a~\emph{ext3} je rýchlejší
     pre súbory menšie ako 4\,KiB vďaka \emph{tail packingu}\footnote{Princíp
     redukcie internej fragmentácie.}.
-    \item \textbf{btrfs} -- Experimentálny B--strom súborový systém s podporou
+    \item \textbf{btrfs} -- Experimentálny B--strom súborový systém s~podporou
     obrazov disku.
 \end{itemize}
 
@@ -754,7 +752,7 @@ Toto testovanie prináša ale aj množstvo nevýhod.
 
 \begin{itemize}
     \item Hostiteľský systém môže obmedzovať virtualizovaný systém.
-    \item Medzi systémami môže nastať kešovanie (ako je zobrazené aj na obrázku
+    \item Medzi systémami môže nastať ukladanie do vyrovnávacej pamäte (ako je zobrazené aj na obrázku
     \ref{graf-cache}). Toto sa ale dá do veľkej miery eliminovať a~nemalo by
     mať vplyv na výsledky testov.
     \item Virtualizovaný systém a~taktiež aj virtuálne disky budú vždy odlišné
@@ -765,7 +763,10 @@ Toto testovanie prináša ale aj množstvo nevýhod.
 
 \subsection{Zhrnutie}
 
-Virtuálny systém nebude nikdy pre testovanie výkonu úplne ideálny. Výkon by bolo najvhodnejšie testovať priamo bez virtualizácie a najvhodnejšie na viacerých druhoch hardvéru a v prípade testu diskových operácií aj s viacerými typmi diskových zariadení od rôznych výrobcov a výsledky nakoniec zpriemerovať.  
+Virtuálny systém nebude nikdy pre testovanie výkonu úplne ideálny. Výkon by
+bolo najvhodnejšie testovať priamo bez virtualizácie a~najvhodnejšie na
+viacerých druhoch hardvéru a~v prípade testu diskových operácií aj s~viacerými
+typmi diskových zariadení od rôznych výrobcov a~výsledky nakoniec zpriemerovať.  
 
 Aj napriek všetkým nevýhodám je testovanie na virtualizovanom systéme vhodné
 pre naše použitie.  Výsledky testov sú porovnávacie (so zapnutým a~vypnutým
@@ -782,14 +783,14 @@ preto virtualizácia pri testovaní nie je prekážkou.
 \chapter{Príprava prostredia a~implementácia testov}
 
 Táto kapitola popisuje testovacie prostredie, ako správne nakonfigurovať
-systém, na čo si pri testovaní dať pozor a na záver približuje implementáciu
-testov, ich parametrizáciu a popis riešenia problémov, ktoré môžu nastať.
+systém, na čo si pri testovaní dať pozor a~na záver približuje implementáciu
+testov, ich parametrizáciu a~popis riešenia problémov, ktoré môžu nastať.
 
 \section{Nastavenia systému}
 
 Pred testovaním je potrebné pripraviť si nainštalovaný systém \emph{Fedora~18}
 ako obraz disku. Tento obraz sa bude spúšťať cez \emph{qemu-kvm}. Disk, na
-ktorom sa bude testovať rýchlosť zápisu a čítania by mal mať v ideálnom prípade
+ktorom sa bude testovať rýchlosť zápisu a čítania by mal mať v~ideálnom prípade
 vypnutú vyrovnávaciu pamäť.  Pred testovaním aj po testovaní je potrebné
 hostiteľský aj virtualizovaný systém synchronizovať a~zmazať stránky vo
 vyrovnávacej pamäti (Obrázok \ref{alg:sync}).
@@ -829,10 +830,10 @@ ktoré môžeme nájsť v~adresároch \texttt{/etc/cron.*}.
 \section{Implementácia testov}
 
 Na implementáciu testov je využitý prevažne jazyk \emph{bash}. Testovanie riadi
-hlavný súbor \emph{test\_disk.sh}, v~ktorom sa nastavujú parametre testov.
-Tieto testy su popísane v~tabuľke \ref{tab:test-params}. Konkrétne podtesty
-začínajú prefixom \texttt{inc\_*}. Virtuálny systém sa pred každým testom
-vypne, obnoví zo zálohy disku a~znova zapne.
+hlavný súbor \emph{test\_disk.sh}. Súbor \emph{config} obsahuje parametre
+testov.  Tieto nastavenia su popísane v~tabuľke \ref{tab:test-params}.
+Konkrétne súbory podtestov začínajú prefixom \texttt{inc\_*}. Virtuálny systém
+sa pred každým testom vypne, obnoví zo zálohy disku a~znova zapne.
 
 \begin{table}[H]
 \begin{center}
@@ -847,7 +848,7 @@ vypne, obnoví zo zálohy disku a~znova zapne.
     TUNED\_PROFILES         & Profily \emph{tuned}, ktoré sa zahrnú v~testoch \\
     MACHINE\_NAME           & Názov virtuálneho systému pre ovládanie cez \emph{virsh} \\
     MACHINE\_IP             & IP adresa virtuálneho systému \\
-    MACHINE\_DISK\_SOURCE   & Obraz predpripraveného disku s nainštalovaným systémom \\
+    MACHINE\_DISK\_SOURCE   & Obraz predpripraveného disku s~nainštalovaným systémom \\
     MACHINE\_DISK           & Miesto, kde \emph{libvirtd} očakáva hlavný disk systému \\
     LOG\_FILE               & Súbor s~výsledkami \\
     FAILED\_RUN\_LOG        & Súbor s~príznakom chyby \\
@@ -858,9 +859,10 @@ vypne, obnoví zo zálohy disku a~znova zapne.
 \end{center}
 \end{table}
 
-Disky sa pripájajú podľa toho, ako to vyžaduje aktuálny test. Kešovanie diskov
-medzi hostiteľským a~virtualizovaným systémom je vypnuté na miestach, ktoré su
-uvedené na obrázku \ref{graf-cache} a~zároveň neovplyvňujú prácu \emph{tuned}. 
+Disky sa pripájajú podľa toho, ako to vyžaduje aktuálny test. Vyrovnávacia
+pamäť diskov medzi hostiteľským a~virtualizovaným systémom je vypnutá na
+miestach, ktoré sú uvedené na obrázku \ref{graf-cache} a~zároveň neovplyvňujú
+prácu \emph{tuned}. 
 
 %
 % Testflow
@@ -913,6 +915,12 @@ pre každý súborový systém zvlášť a~na záver pre celý profil.
 
 \section{Vyhodnotenie testov}
 
+Nasleduje vyhodnotenie jednotlivých testov. Výsledky sú delené podľa
+testovaného profila. Tabuľka obsahuje čas trvania testu, kde v~riadkoch sú
+jednotlivé testy nad súborovými systémami a~v stĺpcoch výsledky so zapnutým a
+vypnutým \emph{tuned}. Tabuľka taktiež obsahuje rozdiel týchto hodnôt a
+zrýchlenie (poprípade spomalenie) v~percentách.
+
 % Nacitaj subory s~vysledkami
 \IfFileExists{test-results}{\input{test-results}}{}
 
@@ -930,11 +938,9 @@ pre každý súborový systém zvlášť a~na záver pre celý profil.
 \label{sec:libvirt-problem}
 
 Pri pripájaní diskov k~virtuálnemu systému za použitia príkazu \texttt{virsh
-attach-device }, sa systém občas náhodne vypne. Nepodarilo sa mi spoľahlivo
+attach-device}, sa systém občas náhodne vypne. Nepodarilo sa mi spoľahlivo
 zreprodukovať túto chybu do takého stavu, aby som ju mohol nahlásiť vývojárom,
-pretože nastávala nepravidelne. 
-
-O páde systému som nenašiel žiadnu zmienku v~logoch virtualizovaného ani
+pretože nastávala nepravidelne. O páde systému som nenašiel žiadnu zmienku v~logoch virtualizovaného ani
 hostovacieho systému. 
 
 Tento problém som riešil tým, že kontrolujem úspešnosť operácií a~test sa
@@ -1055,7 +1061,7 @@ použiť, ak ho máme.
 Zrýchlenie je ale relatívne a~neznamená to, že na \emph{JFS} boli diskové
 operácie najrýchlejšie. Experimentálny súborový systém \emph{btrfs} jednoznačne
 vyhráva v~rýchlosti. V~kombinácií s~\emph{raid1} jednoznačne víťazí nad
-ostatnými a vďaka jeho schopnosti zaznamenávania obrazov diskov určite stojí za
+ostatnými a~vďaka jeho schopnosti zaznamenávania obrazov diskov určite stojí za
 vyskúšanie.
 
 \section{Ďalší možný rozvoj testovania}

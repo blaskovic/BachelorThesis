@@ -66,7 +66,7 @@
 \def\@fit@EN{Faculty of Information Technology}
 \def\@author@CS{Autor práce}
 \def\@author@EN{Author}
-\def\@supervisor@CS{Vedúci práce}
+\def\@supervisor@CS{Vedoucí práce}
 \def\@supervisor@EN{Supervisor}
 \def\@dep@CS{Ústav}
 \def\@dep@EN{Department of}
@@ -74,13 +74,11 @@
 \def\@abstract@EN{Abstract}
 \def\@keywords@CS{Klíčová slova}
 \def\@keywords@EN{Keywords}
-\def\@cite@CS{Citácia}
-\def\@copyright@CS{Táto práca vznikla ako školské dielo na Vysokém učení technickém v Brne,
-Fakulte informačných technológií.
-Práca je chránená autorským zákonom a jej použitie bez udelenia oprávnenia autorom
-je nezákonné, s výnimkou zákonom definovaných prípadov.}
-\def\@tdecl@CS{Prehlásenie}
-\def\@tackn@CS{Poďakovanie}
+\def\@cite@CS{Citace}
+\def\@copyright@CS{Tato práce vznikla jako školní dílo na Vysokém učení technickém v Brně, Fakultě informačních technologií.
+Práce je chráněna autorským zákonem a její užití bez udělení oprávnění autorem je nezákonné, s výjimkou zákonem definovaných případů.}
+\def\@tdecl@CS{Prohlášení}
+\def\@tackn@CS{Poděkování}
 
 \newif\ifnasel
 \def\ifEqString#1#2#3#4{\def\testa{#1}\def\testb{#2}%
@@ -278,7 +276,8 @@ je nezákonné, s výnimkou zákonom definovaných prípadov.}
   \begin{flushright}
       \makebox[4cm]{\dotfill} \\
       \@author\\
-      \@date
+      13. května 2013
+      %\@date
   \end{flushright}
 
 \ifx\undefined\@acknowledgment
