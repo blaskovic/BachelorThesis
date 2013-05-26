@@ -1,0 +1,10 @@
+Tento profil ovplyvňuje disky podobne ako \emph{latency-performance}. Veľkým
+rozdielom ale je v \emph{transparent huge pages}, ktoré
+\emph{latency-performance} nastavuje na \texttt{never} a
+\emph{throughput-performance} na \texttt{always}.
+
+Zrýchlenie diskových operácií s týmto profilom dosahuje hodnoty aj cez 10 \% a
+tým sa stáva ideálnym profilom, ak chceme optimalizovať prácu s diskami.
+
+Najlepšie zrýchlenie dosiahol na súborovom systéme \emph{JFS}, avšak
+najrýchlejší čas mal s \emph{btrfs} a s použitím \emph{raid1}.
